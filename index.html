@@ -366,6 +366,70 @@ button{font-family:inherit}
   .day-group{break-inside:avoid;box-shadow:none}
   .day-group.past{opacity:1}
 }
+
+/* ── ROLES ── */
+body:not(.role-admin) .adm-only{display:none!important}
+body.role-viewer .edit-only{display:none!important}
+body.role-viewer .bn-add{visibility:hidden}
+body.role-viewer .oc-done-btn,body.role-viewer .empty-day{display:none!important}
+body.role-viewer .modal-body input,body.role-viewer .modal-body select,body.role-viewer .modal-body textarea{pointer-events:none;background:#fff}
+
+/* ── SUB-TABS ── */
+.seg{display:flex;background:var(--surface2);border:1px solid var(--line);border-radius:12px;padding:3px;margin-bottom:14px;gap:2px}
+.seg-btn{flex:1;padding:9px 4px;border:none;background:none;border-radius:9px;font-size:13px;font-weight:700;color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px}
+.seg-btn.on{background:#fff;color:var(--red);box-shadow:var(--shadow)}
+.seg-badge{background:var(--red);color:#fff;font-size:10px;min-width:17px;height:17px;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;padding:0 4px}
+.sub{display:none}.sub.on{display:block}
+
+/* ── PROFILE / USERS ── */
+.profile-card{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:var(--r2);padding:14px;margin-bottom:12px;box-shadow:var(--shadow)}
+.avatar{width:38px;height:38px;border-radius:50%;background:var(--surface3);color:var(--text2);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0;text-transform:uppercase}
+.avatar.big{width:52px;height:52px;font-size:19px;background:var(--red);color:#fff}
+.profile-name{font-family:'Roboto Condensed',sans-serif;font-size:18px;font-weight:800}
+.profile-email{font-size:12.5px;color:var(--text3);margin:1px 0 6px;word-break:break-all}
+.role-pill{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;background:var(--surface2);color:var(--text2)}
+.role-pill.admin{background:var(--red-soft);color:var(--red)}
+.role-pill.user{background:var(--blue-soft);color:var(--blue)}
+.role-pill.viewer{background:var(--surface2);color:var(--text2)}
+.role-pill.pending{background:var(--amber-soft);color:var(--amber)}
+.role-pill.blocked{background:#f1f1f1;color:#777;text-decoration:line-through}
+.info-box{font-size:12.5px;line-height:1.55;color:var(--text2);background:var(--surface2);border-radius:var(--r);padding:12px 14px;margin-bottom:12px}
+.user-row{background:#fff;border:1px solid var(--line);border-radius:var(--r2);padding:12px;margin-bottom:8px;box-shadow:var(--shadow)}
+.user-row.pending{border:2px solid #f6c56b;background:#fffcf5}
+.user-top{display:flex;align-items:center;gap:10px}
+.user-name{font-weight:800;font-size:15px}
+.user-email{font-size:12px;color:var(--text3);word-break:break-all}
+.user-meta{font-size:12px;color:var(--text3);margin-top:8px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.user-actions{display:flex;gap:6px;margin-top:10px;align-items:center}
+.user-actions select{flex:1;padding:9px 10px;font-size:14px}
+.btn-approve{padding:9px 14px;border-radius:9px;border:none;background:var(--green);color:#fff;font-weight:800;font-size:13px;cursor:pointer}
+.link-btn{background:none;border:none;color:var(--blue);font-weight:700;font-size:12.5px;cursor:pointer;padding:0}
+
+/* ── LOG ── */
+.log-day{font-size:11.5px;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin:14px 2px 6px}
+.log-item{display:flex;gap:10px;padding:11px 12px;background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:6px}
+.log-ic{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px;background:var(--surface2)}
+.log-ic.create{background:var(--green-soft)}.log-ic.update{background:var(--blue-soft)}.log-ic.delete{background:var(--red-soft)}
+.log-ic.done{background:var(--green-soft)}.log-ic.bulk{background:var(--amber-soft)}.log-ic.admin{background:var(--viber-soft)}
+.log-body{flex:1;min-width:0}
+.log-head{font-size:13.5px;line-height:1.35}
+.log-head b{font-weight:800}
+.log-text{font-size:12.5px;color:var(--text2);margin-top:3px;line-height:1.45;word-break:break-word}
+.log-time{font-size:11.5px;color:var(--text3);margin-top:4px}
+.log-link{color:var(--blue);cursor:pointer;font-weight:700}
+.chg{display:block}
+.chg s{color:#a0a6ae}
+.chg i{font-style:normal;color:var(--text);font-weight:600}
+
+/* ── AUDIT ── */
+.oc-meta{font-size:11.5px;color:var(--text3);margin-top:8px;display:flex;align-items:center;gap:5px}
+.audit-box{font-size:12.5px;color:var(--text2);background:var(--surface2);border-radius:var(--r);padding:11px 13px;margin-bottom:14px;line-height:1.55}
+.audit-box .hist{margin-top:8px;border-top:1px solid var(--line);padding-top:8px}
+.audit-box .hist div{margin-bottom:6px}
+
+/* ── WAIT ── */
+.wait-ic{font-size:44px;margin:4px 0 10px}
+.wait-txt{font-size:14.5px;color:var(--text2);line-height:1.55}
 </style>
 </head>
 <body>
@@ -377,7 +441,17 @@ button{font-family:inherit}
     <div class="auth-title" id="authTitle">Вхід</div>
     <div class="auth-sub">Увійдіть, щоб синхронізувати графік між пристроями</div>
     <div class="auth-error" id="authError"></div>
-    <form onsubmit="authSubmit(event)">
+    <div id="waitBox" style="display:none;text-align:center">
+      <div class="wait-ic">⏳</div>
+      <div class="wait-txt" id="waitTxt"></div>
+      <button class="auth-submit" style="margin-top:18px" onclick="recheckRole()">Перевірити ще раз</button>
+      <div class="auth-switch"><a onclick="fbAuth.signOut()">Вийти з акаунту</a></div>
+    </div>
+    <form onsubmit="authSubmit(event)" id="authForm">
+      <div class="auth-field" id="nameField" style="display:none">
+        <label for="authName">Ваше ім'я</label>
+        <input type="text" id="authName" placeholder="Як вас звати" autocomplete="name">
+      </div>
       <div class="auth-field">
         <label for="authEmail">Email</label>
         <input type="email" id="authEmail" placeholder="name@example.com" autocomplete="email" required>
@@ -391,8 +465,8 @@ button{font-family:inherit}
         <span id="authBtnTxt">Увійти</span>
       </button>
     </form>
-    <div class="auth-switch" id="authSwitch">Немає акаунту? <a onclick="toggleAuthMode()">Зареєструватися</a></div>
-    <div class="auth-switch"><a onclick="resetPassword()" style="color:var(--text3);font-weight:500">Забули пароль?</a></div>
+    <div class="auth-switch auth-links" id="authSwitch">Немає акаунту? <a onclick="toggleAuthMode()">Зареєструватися</a></div>
+    <div class="auth-switch auth-links"><a onclick="resetPassword()" style="color:var(--text3);font-weight:500">Забули пароль?</a></div>
   </div>
 </div>
 
@@ -428,7 +502,7 @@ button{font-family:inherit}
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
     <span>Пошук</span>
   </button>
-  <button class="bn bn-add" id="bn2" onclick="openModal()">
+  <button class="bn bn-add edit-only" id="bn2" onclick="openModal()">
     <div class="plus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><path d="M12 5v14M5 12h14"/></svg></div>
     <span>Додати</span>
   </button>
@@ -467,7 +541,7 @@ button{font-family:inherit}
 
 <!-- ══ EXCEL ══ -->
 <div class="panel" id="tab-export">
-  <div class="export-section" style="border:1.5px dashed #f3c27a;background:#fffbf3">
+  <div class="export-section adm-only" style="border:1.5px dashed #f3c27a;background:#fffbf3">
     <div class="exp-title" style="color:var(--amber)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--amber)"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
       Завантажити з Excel
@@ -504,62 +578,113 @@ button{font-family:inherit}
 
 <!-- ══ ЩЕ ══ -->
 <div class="panel" id="tab-settings">
-  <div class="settings-logo"><img class="logo-img" alt=""></div>
-
-  <div class="settings-section">
-    <div class="sec-hd">Майстри</div>
-    <div class="settings-row" style="display:block">
-      <div class="tag-list" id="mastersList"></div>
-      <div class="add-row">
-        <input class="inp" id="newMaster" placeholder="Новий майстер..." onkeydown="if(event.key==='Enter')addMaster()">
-        <button class="settings-btn" onclick="addMaster()">Додати</button>
-      </div>
-    </div>
+  <div class="seg adm-only" id="segBar">
+    <button class="seg-btn on" data-sub="set" onclick="goSub('set')">Налаштування</button>
+    <button class="seg-btn" data-sub="users" onclick="goSub('users')">Користувачі<span class="seg-badge" id="pendingBadge" style="display:none"></span></button>
+    <button class="seg-btn" data-sub="log" onclick="goSub('log')">Журнал</button>
   </div>
 
-  <div class="settings-section">
-    <div class="sec-hd">Карти</div>
-    <div class="settings-row" style="display:block">
-      <div class="sr-lbl">Регіон для пошуку адрес</div>
-      <div class="sr-sub" style="margin-bottom:8px">Додається до адреси в Google Maps, щоб точно знаходило (напр. «Львів» або «Львівська область»)</div>
-      <div class="add-row" style="margin-top:0">
+  <!-- SUB: НАЛАШТУВАННЯ -->
+  <div class="sub on" id="sub-set">
+    <div class="profile-card">
+      <div class="avatar big" id="meAvatar">?</div>
+      <div style="flex:1;min-width:0">
+        <div class="profile-name" id="meName">—</div>
+        <div class="profile-email" id="acctEmail">—</div>
+        <span class="role-pill" id="meRole">—</span>
+      </div>
+      <button class="settings-btn" onclick="logout()">Вийти</button>
+    </div>
+
+    <div class="settings-section">
+      <div class="sec-hd">Моє ім'я</div>
+      <div class="settings-row" style="display:block">
+        <div class="sr-sub" style="margin:0 0 8px">Так вас бачитимуть у журналі та на картках замовлень</div>
+        <div class="add-row" style="margin-top:0">
+          <input class="inp" id="myName" placeholder="Ваше ім'я" onkeydown="if(event.key==='Enter')saveMyName()">
+          <button class="settings-btn" onclick="saveMyName()">Зберегти</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="settings-section adm-only">
+      <div class="sec-hd">Майстри</div>
+      <div class="settings-row" style="display:block">
+        <div class="tag-list" id="mastersList"></div>
+        <div class="add-row">
+          <input class="inp" id="newMaster" placeholder="Новий майстер..." onkeydown="if(event.key==='Enter')addMaster()">
+          <button class="settings-btn" onclick="addMaster()">Додати</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="settings-section adm-only">
+      <div class="sec-hd">Карти</div>
+      <div class="settings-row" style="display:block">
+        <div class="sr-lbl">Регіон для пошуку адрес</div>
+        <div class="sr-sub" style="margin-bottom:8px">Додається до адреси в Google Maps (напр. «Львів» або «Львівська область»)</div>
         <input class="inp" id="mapRegion" placeholder="Львів" onchange="saveRegion(this.value)">
       </div>
     </div>
+
+    <div class="settings-section adm-only">
+      <div class="sec-hd">Очищення даних за період</div>
+      <div class="clr-body">
+        <div class="quick-row">
+          <button class="chip" onclick="clrQuick('cur')">Поточний місяць</button>
+          <button class="chip" onclick="clrQuick('prev')">Минулий місяць</button>
+          <button class="chip" onclick="clrQuick('past')">Все до сьогодні</button>
+          <button class="chip" onclick="clrQuick('all')">Усе</button>
+        </div>
+        <div class="fg"><label>Місяць</label><input type="month" id="clrMonth" onchange="clrFromMonth(this.value)"></div>
+        <div class="fg-row">
+          <div class="fg"><label>З дати</label><input type="date" id="clrFrom" onchange="updateClrInfo()"></div>
+          <div class="fg"><label>По дату</label><input type="date" id="clrTo" onchange="updateClrInfo()"></div>
+        </div>
+        <label class="check-row"><input type="checkbox" id="clrBackup" checked> Спершу зберегти копію в Excel</label>
+        <div class="clr-info" id="clrInfo">Оберіть період</div>
+        <button class="btn-danger" id="clrBtn" onclick="clearPeriod()" disabled>Видалити за період</button>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <div class="settings-row">
+        <div><div class="sr-lbl">Версія</div><div class="sr-sub">Е-Монтаж v5.0 · Командна робота</div></div>
+      </div>
+    </div>
   </div>
 
-  <div class="settings-section">
-    <div class="sec-hd">Очищення даних за період</div>
-    <div class="clr-body">
-      <div class="quick-row">
-        <button class="chip" onclick="clrQuick('cur')">Поточний місяць</button>
-        <button class="chip" onclick="clrQuick('prev')">Минулий місяць</button>
-        <button class="chip" onclick="clrQuick('past')">Все до сьогодні</button>
-        <button class="chip" onclick="clrQuick('all')">Усе</button>
-      </div>
-      <div class="fg">
-        <label>Місяць</label>
-        <input type="month" id="clrMonth" onchange="clrFromMonth(this.value)">
-      </div>
-      <div class="fg-row">
-        <div class="fg"><label>З дати</label><input type="date" id="clrFrom" onchange="updateClrInfo()"></div>
-        <div class="fg"><label>По дату</label><input type="date" id="clrTo" onchange="updateClrInfo()"></div>
-      </div>
-      <label class="check-row"><input type="checkbox" id="clrBackup" checked> Спершу зберегти копію в Excel</label>
-      <div class="clr-info" id="clrInfo">Оберіть період</div>
-      <button class="btn-danger" id="clrBtn" onclick="clearPeriod()" disabled>Видалити за період</button>
+  <!-- SUB: КОРИСТУВАЧІ -->
+  <div class="sub" id="sub-users">
+    <div class="info-box">
+      <b>Адміністратор</b> — усе, включно з видаленням, очищенням, імпортом, майстрами, користувачами та журналом.<br>
+      <b>Користувач</b> — переглядає, додає й редагує замовлення, відмічає виконання. Видаляти не може.<br>
+      <b>Лише перегляд</b> — бачить графік, дзвонить і будує маршрут, але нічого не змінює.<br>
+      Нові акаунти чекають, доки ви їх не підтвердите.
     </div>
+    <div id="usersList"></div>
   </div>
 
-  <div class="settings-section">
-    <div class="sec-hd">Акаунт</div>
-    <div class="settings-row">
-      <div><div class="sr-lbl">Ви увійшли як</div><div class="sr-sub" id="acctEmail">—</div></div>
-      <button class="settings-btn" onclick="logout()">Вийти</button>
+  <!-- SUB: ЖУРНАЛ -->
+  <div class="sub" id="sub-log">
+    <div class="fg-row" style="margin-bottom:10px">
+      <select class="inp" id="logUser" onchange="renderLog()"><option value="">Усі користувачі</option></select>
+      <select class="inp" id="logAction" onchange="renderLog()">
+        <option value="">Усі дії</option>
+        <option value="create">Додавання</option>
+        <option value="update">Редагування</option>
+        <option value="done">Виконання</option>
+        <option value="delete">Видалення</option>
+        <option value="bulk">Масові дії</option>
+        <option value="admin">Адміністрування</option>
+        <option value="login">Входи</option>
+      </select>
     </div>
-    <div class="settings-row">
-      <div><div class="sr-lbl">Версія</div><div class="sr-sub">Е-Монтаж v4.0 · Хмарна синхронізація</div></div>
+    <div class="search-bar" style="margin-bottom:12px">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input class="search-in" id="logSearch" placeholder="Клієнт, адреса, текст..." oninput="renderLog()" autocomplete="off">
     </div>
+    <div id="logList"><div class="muted" style="text-align:center;padding:30px">Завантаження…</div></div>
   </div>
 </div>
 
@@ -599,11 +724,12 @@ button{font-family:inherit}
       <div class="sum-preview"><span>Сума</span><b id="sumPreview">0 ₴</b></div>
       <div class="fg"><label>Нотатки</label><textarea id="fNotes" placeholder="Поверх, код домофону, що взяти..."></textarea></div>
       <label class="check-row"><input type="checkbox" id="fDone"> Монтаж виконано</label>
+      <div class="audit-box" id="auditBox" style="display:none"></div>
       <input type="hidden" id="fId" value="">
-      <button class="btn-save" onclick="saveOrder()">Зберегти</button>
+      <button class="btn-save edit-only" onclick="saveOrder()">Зберегти</button>
       <div class="btn-row" id="editBtns" style="display:none">
-        <button class="btn-sec" onclick="duplicateOrder()">Дублювати</button>
-        <button class="btn-del" onclick="deleteOrder()">Видалити</button>
+        <button class="btn-sec edit-only" onclick="duplicateOrder()">Дублювати</button>
+        <button class="btn-del adm-only" onclick="deleteOrder()">Видалити</button>
       </div>
     </div>
   </div>
@@ -828,6 +954,8 @@ function orderCardHTML(o) {
   if(o.qty && !reserve) tags.push(`<div class="oc-tag">${esc(o.qty)} шт.</div>`);
   if(o.delivery && o.delivery !== "В клієнта") tags.push(`<div class="oc-tag delivery">${esc(o.delivery)}</div>`);
   if(tags.length || o.sum) h += `<div class="oc-bottom"><div class="oc-tags">${tags.join("")}</div>${o.sum ? `<div class="oc-price">${fmt(o.sum)} ₴</div>` : ""}</div>`;
+  const who = o.updatedByName || o.createdByName;
+  if(who) h += `<div class="oc-meta">✎ ${esc(who)} · ${relTime(o.updatedAt || o.createdAt)}</div>`;
   return h + `</div>`;
 }
 
@@ -839,7 +967,7 @@ function toggleDay(key) {
 
 function toggleDone(id) {
   const o = orders.find(x => x.id === id);
-  if(!o) return;
+  if(!o || !can("edit")) return;
   o.done = !o.done;
   saveData(); renderStats(); renderSchedule();
   if(document.getElementById("tab-search").classList.contains("on")) doSearch();
@@ -889,10 +1017,13 @@ function openModal(id) {
   if(id) {
     const o = orders.find(x => x.id === id);
     if(o) fillForm(o);
-    document.getElementById("modalTitle").textContent = "Редагувати";
-    document.getElementById("editBtns").style.display = "grid";
+    renderAuditBox(o);
+    document.getElementById("modalTitle").textContent = can("edit") ? "Редагувати" : "Замовлення";
+    document.getElementById("editBtns").style.display = can("edit") ? "grid" : "none";
   } else {
+    if(!can("edit")) return;
     resetForm();
+    renderAuditBox(null);
     document.getElementById("modalTitle").textContent = "Нове замовлення";
     document.getElementById("editBtns").style.display = "none";
   }
@@ -901,6 +1032,7 @@ function openModal(id) {
   document.body.style.overflow = "hidden";
 }
 function openModalForDate(date) {
+  if(!can("edit")) return;
   openModal();
   document.getElementById("fDate").value = date;
   if(masterFilter) document.getElementById("fMaster").value = masterFilter;
@@ -985,6 +1117,7 @@ function duplicateOrder() {
   document.getElementById("fId").value = "";
   document.getElementById("fDone").checked = false;
   document.getElementById("modalTitle").textContent = "Копія замовлення";
+  document.getElementById("auditBox").style.display = "none";
   document.getElementById("editBtns").style.display = "none";
   toast("Змініть дату/дані та натисніть «Зберегти»","info",3000);
   document.getElementById("fDate").focus();
@@ -1086,6 +1219,8 @@ function exportExcelAll() {
 // SETTINGS
 // ═══════════════════════════════════════
 function renderSettings() {
+  renderProfile();
+  if(!can("admin")) return;
   document.getElementById("mastersList").innerHTML = masters.map((m,i) =>
     `<span class="tag-item">${esc(m)}<button onclick="removeMaster(${i})" aria-label="Видалити">×</button></span>`).join("") || '<span class="muted">Список порожній</span>';
   document.getElementById("mapRegion").value = mapRegion || "";
@@ -1158,8 +1293,8 @@ function clearPeriod() {
   const ids = new Set(list.map(o => o.id));
   const backup = orders.slice();
   orders = orders.filter(o => !ids.has(o.id));
-  saveData(); renderAll(); updateClrInfo();
-  toast(`Видалено ${list.length} ${plural(list.length,"запис","записи","записів")}`, "info", 6000, {label:"Скасувати", fn:() => { orders = backup; saveData(); renderAll(); updateClrInfo(); toast("Відновлено","ok"); }});
+  saveData(`Очищення за період ${fmtHuman(f)} — ${fmtHuman(t)}`); renderAll(); updateClrInfo();
+  toast(`Видалено ${list.length} ${plural(list.length,"запис","записи","записів")}`, "info", 6000, {label:"Скасувати", fn:() => { orders = backup; saveData("Скасування очищення"); renderAll(); updateClrInfo(); toast("Відновлено","ok"); }});
 }
 
 // ═══════════════════════════════════════
@@ -1224,6 +1359,7 @@ function seedData() {
   ];
   orders = raw.map((r,i) => ({...r, id: "seed_"+i, sum: r.qty * r.price, notes: ""}));
 }
+
 
 
 function importExcel(input) {
@@ -1360,7 +1496,7 @@ function importExcel(input) {
         }
       });
 
-      saveData();
+      saveData("Імпорт з Excel");
       renderAll();
 
       if(importedCount > 0) {
@@ -1392,8 +1528,9 @@ function importExcel(input) {
 }
 
 
+
 // ═══════════════════════════════════════
-// FIREBASE: AUTH + REALTIME DATABASE
+// FIREBASE: AUTH + ROLES + SHARED DATABASE + AUDIT LOG
 // ═══════════════════════════════════════
 const firebaseConfig = {
   apiKey: "AIzaSyBNgEIqrWhs1qSTq2A0PLgQ6WlpwVwR3XI",
@@ -1404,135 +1541,333 @@ const firebaseConfig = {
   messagingSenderId: "473524966677",
   appId: "1:473524966677:web:0ef32531c29d917f32c51c"
 };
-let fbAuth = null, fbDb = null, userRef = null;
-let currentUid = null;
-let authMode = "login";        // "login" | "register"
-let firstSnapshot = true;
-let lastSavedJson = "";        // to skip echo of our own writes
+const ROLES = { admin:"Адміністратор", user:"Користувач", viewer:"Лише перегляд", pending:"Очікує підтвердження", blocked:"Заблоковано" };
+const ORDER_FIELDS = [["date","Дата"],["time","Час"],["client","Клієнт"],["phone","Телефон"],["addr","Адреса"],["delivery","Доставка"],
+  ["manuf","Виробник"],["qty","К-сть"],["price","Ціна"],["master","Майстер"],["notes","Нотатки"],["done","Виконано"]];
+const STAMP_FIELDS = ["createdAt","createdBy","createdByName","updatedAt","updatedBy","updatedByName"];
+
+let fbAuth = null, fbDb = null;
+let currentUid = null, me = null;          // me = {uid,email,name,role,...}
+let cloudOrders = {}, cloudMeta = null;
+let dataRefs = [], userRef = null, usersRef = null, logRef = null;
+let dataStarted = false, firstOrders = true, loginLogged = false;
+let usersCache = {}, logCache = [];
+let authMode = "login";
 const splashStart = Date.now();
 
+function can(p) {
+  const r = me && me.role;
+  if(p === "view")  return r === "admin" || r === "user" || r === "viewer";
+  if(p === "edit")  return r === "admin" || r === "user";
+  if(p === "admin") return r === "admin";
+  return false;
+}
+function myName() { return (me && (me.name || (me.email||"").split("@")[0])) || "?"; }
+
 function hideSplash() {
-  const wait = Math.max(0, 1200 - (Date.now() - splashStart));
+  const wait = Math.max(0, 1000 - (Date.now() - splashStart));
   setTimeout(() => document.getElementById("splash").classList.add("hide"), wait);
 }
 
 function initFirebase() {
   if(typeof firebase === "undefined") {
-    // SDK didn't load (no internet) — work from local cache
     loadLocal(); if(!orders.length) seedData();
+    me = {role:"viewer", name:"Офлайн"}; applyRoleUI();
     renderAll(); hideSplash();
-    toast("Немає зв'язку з сервером — офлайн-режим","err",4000);
+    toast("Немає зв'язку з сервером — показано збережену копію (лише перегляд)","err",5000);
     return;
   }
   firebase.initializeApp(firebaseConfig);
   fbAuth = firebase.auth();
   fbDb = firebase.database();
   fbAuth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(()=>{});
-
   fbDb.ref(".info/connected").on("value", snap => setConn(snap.val() === true));
+  fbAuth.onAuthStateChanged(user => user ? onSignedIn(user) : onSignedOut());
+}
 
-  fbAuth.onAuthStateChanged(user => {
-    if(user) {
-      currentUid = user.uid;
-      document.getElementById("authScreen").classList.add("hide");
-      document.getElementById("connBadge").style.display = "flex";
-      const ae = document.getElementById("acctEmail");
-      if(ae) ae.textContent = user.email || "—";
-      setupRealtimeSync(user.uid);
+async function onSignedIn(user) {
+  currentUid = user.uid;
+  try {
+    const uref = fbDb.ref("app/users/" + user.uid);
+    let rec = (await uref.once("value")).val();
+    if(!rec) {
+      const hasAdmin = (await fbDb.ref("app/hasAdmin").once("value")).val();
+      rec = {
+        email: user.email || "",
+        name: (window.__regName || user.displayName || (user.email||"").split("@")[0]).trim(),
+        role: hasAdmin ? "pending" : "admin",
+        createdAt: Date.now(), lastSeen: Date.now()
+      };
+      const up = {["app/users/" + user.uid]: rec};
+      if(!hasAdmin) up["app/hasAdmin"] = true;
+      await fbDb.ref().update(up);
+      if(!hasAdmin) toast("Ви — перший користувач, тому отримали роль адміністратора","ok",5000);
     } else {
-      if(userRef) userRef.off();
-      userRef = null; currentUid = null; firstSnapshot = true; lastSavedJson = "";
-      orders = [];
-      document.getElementById("connBadge").style.display = "none";
-      document.getElementById("authScreen").classList.remove("hide");
-      hideSplash();
+      uref.update({lastSeen: Date.now(), email: user.email || rec.email || ""}).catch(()=>{});
     }
-  });
-}
-
-function setupRealtimeSync(uid) {
-  if(userRef) userRef.off();
-  userRef = fbDb.ref("users/" + uid);
-  firstSnapshot = true;
-  userRef.on("value", snap => {
-    const data = snap.val();
-    if(firstSnapshot) {
-      firstSnapshot = false;
-      if(!data || !data.orders) {
-        // First login: migrate local data (or seed) to cloud
-        loadLocal();
-        if(!orders.length) seedData();
-        saveData();
-        if(orders.length) toast("Дані перенесено в хмару ☁️","ok",3000);
-        renderAll(); hideSplash();
-        return;
-      }
-    }
-    applyCloud(data || {});
-    renderAll();
-    if(document.getElementById("tab-settings").classList.contains("on")) renderSettings();
+    if(userRef) userRef.off();
+    userRef = uref;
+    uref.on("value", snap => {
+      const v = snap.val();
+      if(!v) return;
+      const prevRole = me && me.role;
+      me = {...v, uid: user.uid};
+      onRoleChanged(prevRole);
+    });
+  } catch(err) {
+    console.error(err);
+    showAuthScreen();
+    showAuthError("Помилка доступу до бази: " + (err.code === "PERMISSION_DENIED" ? "оновіть правила безпеки у Firebase (див. інструкцію)" : err.message));
     hideSplash();
-  }, err => {
-    console.error(err);
-    toast("Помилка доступу до бази: " + err.message, "err", 5000);
-    loadLocal(); renderAll(); hideSplash();
-  });
+  }
 }
 
-function applyCloud(data) {
-  const o = data.orders || {};
-  orders = Object.keys(o).map(k => ({...o[k], id: o[k].id || k}));
-  const meta = data.meta || {};
-  if(Array.isArray(meta.masters)) masters = meta.masters;
-  if(Array.isArray(meta.stores))  stores  = meta.stores;
-  if(typeof meta.region === "string") mapRegion = meta.region;
-  saveLocal();
+function onRoleChanged(prevRole) {
+  applyRoleUI();
+  if(!can("view")) {
+    stopData();
+    showWait(me.role);
+    hideSplash();
+    return;
+  }
+  document.getElementById("authScreen").classList.add("hide");
+  document.getElementById("connBadge").style.display = "flex";
+  if(prevRole && prevRole !== me.role) toast("Вашу роль змінено: " + ROLES[me.role], "info", 4000);
+  if(!loginLogged) {
+    loginLogged = true;
+    writeLog([{action:"login", text:"Увійшов у програму"}]);
+  }
+  startData();
+  if(can("admin")) startAdmin(); else stopAdmin();
+  renderAll();
+  if(document.getElementById("tab-settings").classList.contains("on")) renderSettings();
 }
 
-// Firebase keys can't contain . # $ [ ] /
+function applyRoleUI() {
+  const b = document.body;
+  b.classList.remove("role-admin","role-user","role-viewer");
+  if(me && can("view")) b.classList.add("role-" + me.role);
+  if(!can("admin")) goSub && goSub("set", true);
+}
+
+function onSignedOut() {
+  stopData(); stopAdmin();
+  if(userRef) userRef.off();
+  userRef = null; currentUid = null; me = null; loginLogged = false;
+  orders = []; cloudOrders = {}; cloudMeta = null;
+  document.body.classList.remove("role-admin","role-user","role-viewer");
+  document.getElementById("connBadge").style.display = "none";
+  showAuthScreen();
+  hideSplash();
+}
+
+// ── Shared data listeners ──
+function startData() {
+  if(dataStarted) return;
+  dataStarted = true; firstOrders = true;
+  const oref = fbDb.ref("app/orders");
+  oref.on("value", snap => {
+    const val = snap.val() || {};
+    if(firstOrders) {
+      firstOrders = false;
+      if(!snap.exists() && can("admin")) { migrateLegacy(); return; }
+    }
+    cloudOrders = JSON.parse(JSON.stringify(val));
+    orders = Object.keys(val).map(k => ({...val[k], id: val[k].id || k}));
+    saveLocal(); renderAll(); hideSplash();
+  }, onDbError);
+  const mref = fbDb.ref("app/meta");
+  mref.on("value", snap => {
+    const m = snap.val();
+    cloudMeta = m ? JSON.parse(JSON.stringify(m)) : null;
+    if(m) {
+      if(Array.isArray(m.masters)) masters = m.masters;
+      stores = Array.isArray(m.stores) ? m.stores : [];
+      if(typeof m.region === "string") mapRegion = m.region;
+    }
+    renderChips();
+    if(document.getElementById("tab-settings").classList.contains("on")) renderSettings();
+  }, onDbError);
+  dataRefs = [oref, mref];
+}
+function stopData() {
+  dataRefs.forEach(r => r.off()); dataRefs = []; dataStarted = false;
+}
+function onDbError(err) {
+  console.error(err);
+  toast("Помилка доступу до бази: " + err.message, "err", 5000);
+  loadLocal(); renderAll(); hideSplash();
+}
+
+// One-time: move data from the old personal storage (users/{uid}) into the shared base
+async function migrateLegacy() {
+  let legacy = null;
+  try { legacy = (await fbDb.ref("users/" + currentUid).once("value")).val(); } catch(e) {}
+  if(legacy && legacy.orders) {
+    const o = legacy.orders;
+    orders = Object.keys(o).map(k => ({...o[k], id: o[k].id || k}));
+    const m = legacy.meta || {};
+    if(Array.isArray(m.masters)) masters = m.masters;
+    if(typeof m.region === "string") mapRegion = m.region;
+  } else {
+    loadLocal();
+    if(!orders.length) seedData();
+  }
+  cloudOrders = {};
+  saveData("Перенесення даних у спільну базу");
+  renderAll(); hideSplash();
+  if(orders.length) toast(`Перенесено ${orders.length} замовлень у спільну базу ☁️`, "ok", 4000);
+}
+
+// ── Saving: diff against cloud → per-order writes + audit log ──
 function fbKey(id) { return String(id).replace(/[.#$\[\]\/]/g, "_"); }
-
-function clean(o) {
-  // RTDB rejects undefined values
-  const r = {};
-  for(const k in o) if(o[k] !== undefined) r[k] = o[k];
-  return r;
+function clean(o) { const r = {}; for(const k in o) if(o[k] !== undefined && k !== "_k") r[k] = o[k]; return r; }
+function normVal(f, v) {
+  if(f === "done") return v ? "так" : "ні";
+  if(f === "qty" || f === "price") return String(+v || 0);
+  if(f === "delivery") return String(v || "В клієнта").trim();
+  return String(v ?? "").trim();
+}
+function diffFields(prev, cur) {
+  const ch = [];
+  ORDER_FIELDS.forEach(([f, label]) => {
+    const a = normVal(f, prev[f]), b = normVal(f, cur[f]);
+    if(a !== b) ch.push({f, label, from: a, to: b});
+  });
+  return ch;
+}
+function pickMeta(m) { return {masters: (m && m.masters) || [], stores: (m && m.stores) || [], region: (m && typeof m.region === "string") ? m.region : "Львів"}; }
+function orderLabel(o) {
+  const d = o.date ? parseDate(o.date) : null;
+  return `${o.client || "—"}${d ? ", " + d.getDate() + " " + MONTHS_GEN[d.getMonth()].toLowerCase() : ""}${o.time ? " о " + o.time : ""}`;
 }
 
-function saveData() {
+function saveData(label) {
   saveLocal();
-  if(!userRef) return;
-  const ordersObj = {};
-  orders.forEach(o => { ordersObj[fbKey(o.id)] = clean(o); });
-  const payload = { orders: ordersObj, meta: { masters, stores, region: mapRegion, updated: Date.now() } };
-  const json = JSON.stringify(payload.orders) + JSON.stringify(masters) + JSON.stringify(stores) + mapRegion;
-  if(json === lastSavedJson) return;
-  lastSavedJson = json;
-  userRef.set(payload).catch(err => {
+  if(!fbDb || !me) return;
+  if(!can("edit")) { toast("У вас немає прав на зміни","err"); revertToCloud(); return; }
+  const now = Date.now(), uid = me.uid, name = myName();
+  const updates = {}, events = [];
+  const cur = {};
+  orders.forEach(o => { cur[fbKey(o.id)] = o; });
+
+  for(const k in cur) {
+    const o = cur[k], prev = cloudOrders[k];
+    o.sum = (+o.qty||0) * (+o.price||0) || +o.sum || 0;
+    if(!prev) {
+      if(!o.createdAt) { o.createdAt = now; o.createdBy = uid; o.createdByName = name; }
+      o.updatedAt = now; o.updatedBy = uid; o.updatedByName = name;
+      updates["app/orders/" + k] = clean(o);
+      events.push({action:"create", orderId:o.id, client:o.client||"", date:o.date||"", text:"Додав замовлення: " + orderLabel(o)});
+    } else {
+      const ch = diffFields(prev, o);
+      if(!ch.length) continue;
+      o.updatedAt = now; o.updatedBy = uid; o.updatedByName = name;
+      if(!o.createdAt && prev.createdAt) { o.createdAt = prev.createdAt; o.createdBy = prev.createdBy; o.createdByName = prev.createdByName; }
+      updates["app/orders/" + k] = clean(o);
+      const onlyDone = ch.length === 1 && ch[0].f === "done";
+      events.push({
+        action: onlyDone ? "done" : "update", orderId:o.id, client:o.client||"", date:o.date||"",
+        text: onlyDone ? (o.done ? "Відмітив виконаним: " : "Зняв позначку «виконано»: ") + orderLabel(o) : "Змінив замовлення: " + orderLabel(o),
+        changes: onlyDone ? null : ch.map(c => ({l:c.label, a:c.from, b:c.to}))
+      });
+    }
+  }
+  const deletes = Object.keys(cloudOrders).filter(k => !cur[k]);
+  if(deletes.length && !can("admin")) {
+    toast("Видаляти замовлення може лише адміністратор","err",4000);
+    revertToCloud(); return;
+  }
+  deletes.forEach(k => {
+    const o = cloudOrders[k];
+    updates["app/orders/" + k] = null;
+    events.push({action:"delete", orderId:o.id||k, client:o.client||"", date:o.date||"", text:"Видалив замовлення: " + orderLabel(o)});
+  });
+
+  if(can("admin")) {
+    const before = pickMeta(cloudMeta), after = {masters, stores, region: mapRegion};
+    if(JSON.stringify(before) !== JSON.stringify(after)) {
+      updates["app/meta"] = {...after, updatedAt: now, updatedBy: name};
+      const parts = [];
+      const added = after.masters.filter(m => !before.masters.includes(m)), removed = before.masters.filter(m => !after.masters.includes(m));
+      if(added.length) parts.push("додав майстра: " + added.join(", "));
+      if(removed.length) parts.push("прибрав майстра: " + removed.join(", "));
+      if(before.region !== after.region) parts.push(`регіон карт: «${before.region}» → «${after.region}»`);
+      if(cloudMeta && parts.length) events.push({action:"admin", text:"Налаштування — " + parts.join("; ")});
+    }
+  }
+  if(!Object.keys(updates).length) return;
+
+  // Log: individual entries for small changes, one summary for bulk operations
+  let logEvents = events;
+  if(events.length > 3 || (label && events.length > 1)) {
+    const c = a => events.filter(e => e.action === a).length;
+    const bits = [];
+    if(c("create")) bits.push(`додано ${c("create")}`);
+    if(c("update") + c("done")) bits.push(`змінено ${c("update") + c("done")}`);
+    if(c("delete")) bits.push(`видалено ${c("delete")}`);
+    logEvents = [{action:"bulk", text: (label || "Масова зміна") + ": " + bits.join(", ") + " " + plural(events.length,"замовлення","замовлення","замовлень")}];
+  }
+  writeLog(logEvents, updates);
+
+  // optimistic cloud mirror
+  for(const p in updates) {
+    if(!p.startsWith("app/orders/")) continue;
+    const k = p.slice(11);
+    if(updates[p] === null) delete cloudOrders[k]; else cloudOrders[k] = JSON.parse(JSON.stringify(updates[p]));
+  }
+  if(updates["app/meta"]) cloudMeta = JSON.parse(JSON.stringify(updates["app/meta"]));
+
+  fbDb.ref().update(updates).catch(err => {
     console.error(err);
-    toast("Не вдалося зберегти: " + err.message, "err", 4000);
+    toast("Не вдалося зберегти: " + (err.code === "PERMISSION_DENIED" ? "недостатньо прав" : err.message), "err", 5000);
+    resync();
   });
 }
 
-// Local cache (offline fallback + migration source)
+function writeLog(events, updates) {
+  if(!fbDb || !me || !can("view")) return;
+  const now = Date.now();
+  const own = !updates;
+  updates = updates || {};
+  events.forEach((e, i) => {
+    const key = fbDb.ref("app/log").push().key;
+    const entry = {ts: now + i, uid: me.uid, name: myName(), action: e.action, text: e.text || ""};
+    if(e.orderId) entry.orderId = String(e.orderId);
+    if(e.client) entry.client = e.client;
+    if(e.date) entry.date = e.date;
+    if(e.changes && e.changes.length) entry.changes = e.changes;
+    updates["app/log/" + key] = entry;
+  });
+  if(own) fbDb.ref().update(updates).catch(err => console.warn("log", err));
+}
+
+function revertToCloud() {
+  orders = Object.keys(cloudOrders).map(k => ({...cloudOrders[k], id: cloudOrders[k].id || k}));
+  if(cloudMeta) { const m = pickMeta(cloudMeta); masters = m.masters; mapRegion = m.region; }
+  renderAll();
+}
+async function resync() {
+  try {
+    const v = (await fbDb.ref("app/orders").once("value")).val() || {};
+    cloudOrders = JSON.parse(JSON.stringify(v));
+    revertToCloud();
+  } catch(e) { revertToCloud(); }
+}
+
+// Local cache (offline fallback)
 function saveLocal() {
   try {
     localStorage.setItem("em_orders",  JSON.stringify(orders));
     localStorage.setItem("em_masters", JSON.stringify(masters));
-    localStorage.setItem("em_stores",  JSON.stringify(stores));
     localStorage.setItem("em_region",  mapRegion);
   } catch(e) {}
 }
 function loadLocal() {
   try {
-    const o = localStorage.getItem("em_orders");
-    if(o) orders = JSON.parse(o);
-    const m = localStorage.getItem("em_masters");
-    if(m) masters = JSON.parse(m);
-    const s = localStorage.getItem("em_stores");
-    if(s) stores = JSON.parse(s);
-    const r = localStorage.getItem("em_region");
-    if(r !== null) mapRegion = r;
+    const o = localStorage.getItem("em_orders"); if(o) orders = JSON.parse(o);
+    const m = localStorage.getItem("em_masters"); if(m) masters = JSON.parse(m);
+    const r = localStorage.getItem("em_region"); if(r !== null) mapRegion = r;
   } catch(e) {}
 }
 function loadData() { loadLocal(); }
@@ -1542,6 +1877,58 @@ function setConn(online) {
   b.className = "sync-dot " + (online ? "online" : "offline");
   document.getElementById("connTxt").textContent = online ? "" : "Офлайн";
   b.title = online ? "Синхронізовано" : "Немає зв'язку — зміни збережуться пізніше";
+}
+
+// ── Admin: users & log ──
+function startAdmin() {
+  if(!usersRef) {
+    usersRef = fbDb.ref("app/users");
+    usersRef.on("value", snap => {
+      usersCache = snap.val() || {};
+      const pend = Object.values(usersCache).filter(u => u.role === "pending").length;
+      const badge = document.getElementById("pendingBadge");
+      badge.style.display = pend ? "inline-flex" : "none"; badge.textContent = pend;
+      if(pend && !window.__pendNotified) { window.__pendNotified = true; toast(`Нових користувачів очікують підтвердження: ${pend}`, "warn", 5000, {label:"Переглянути", fn:() => { goTab("settings",4); goSub("users"); }}); }
+      renderUsers(); fillLogUsers();
+    });
+  }
+  if(!logRef) {
+    logRef = fbDb.ref("app/log").orderByChild("ts").limitToLast(500);
+    logRef.on("value", snap => {
+      const arr = [];
+      snap.forEach(ch => { arr.push({...ch.val(), _k: ch.key}); });
+      logCache = arr.reverse();
+      renderLog();
+      renderUsers();
+    });
+  }
+}
+function stopAdmin() {
+  if(usersRef) usersRef.off(); if(logRef) logRef.off();
+  usersRef = null; logRef = null; usersCache = {}; logCache = [];
+}
+
+function setUserRole(uid, role) {
+  const u = usersCache[uid];
+  if(!u || u.role === role) return;
+  if(uid === me.uid) { toast("Свою роль змінити не можна","warn"); renderUsers(); return; }
+  if(u.role === "admin" && role !== "admin" && Object.values(usersCache).filter(x => x.role === "admin").length <= 1) {
+    toast("Має залишитися хоча б один адміністратор","warn"); renderUsers(); return;
+  }
+  const up = {[`app/users/${uid}/role`]: role, [`app/users/${uid}/roleChangedAt`]: Date.now(), [`app/users/${uid}/roleChangedBy`]: myName()};
+  writeLog([{action:"admin", text:`Змінив роль користувача «${u.name || u.email}»: ${ROLES[u.role] || u.role} → ${ROLES[role]}`}], up);
+  fbDb.ref().update(up).then(() => toast(`${u.name || u.email}: ${ROLES[role]}`, "ok")).catch(err => { toast("Не вдалося: " + err.message, "err"); renderUsers(); });
+}
+
+async function saveMyName() {
+  const v = document.getElementById("myName").value.trim();
+  if(!v || !me || !fbDb) return;
+  if(v === me.name) return;
+  try {
+    await fbDb.ref("app/users/" + me.uid).update({name: v});
+    writeLog([{action:"admin", text:`Змінив своє ім'я: «${me.name || ""}» → «${v}»`}]);
+    toast("Ім'я збережено","ok");
+  } catch(e) { toast("Не вдалося зберегти: " + e.message, "err"); }
 }
 
 // ── Auth UI ──
@@ -1557,6 +1944,25 @@ const AUTH_ERRORS = {
   "auth/network-request-failed": "Немає з'єднання з інтернетом",
   "auth/operation-not-allowed": "Вхід через email/пароль не увімкнено в Firebase Console"
 };
+function showAuthScreen() {
+  document.getElementById("authScreen").classList.remove("hide");
+  document.getElementById("waitBox").style.display = "none";
+  document.getElementById("authForm").style.display = "";
+  document.querySelectorAll(".auth-links").forEach(e => e.style.display = "");
+  document.getElementById("authTitle").textContent = authMode === "register" ? "Реєстрація" : "Вхід";
+}
+function showWait(role) {
+  document.getElementById("authScreen").classList.remove("hide");
+  document.getElementById("authForm").style.display = "none";
+  document.querySelectorAll(".auth-links").forEach(e => e.style.display = "none");
+  document.getElementById("waitBox").style.display = "";
+  showAuthError("");
+  document.getElementById("authTitle").textContent = role === "blocked" ? "Доступ закрито" : "Майже готово";
+  document.getElementById("waitTxt").innerHTML = role === "blocked"
+    ? `Акаунт <b>${esc(me.email)}</b> заблоковано адміністратором.`
+    : `Акаунт <b>${esc(me.email)}</b> створено.<br>Попросіть адміністратора підтвердити доступ — після цього графік відкриється автоматично.`;
+}
+function recheckRole() { if(userRef) userRef.once("value").then(s => { if(s.val()) { me = {...s.val(), uid: currentUid}; onRoleChanged(); } }); }
 function showAuthError(msg) {
   const e = document.getElementById("authError");
   e.textContent = msg; e.style.display = msg ? "block" : "none";
@@ -1566,6 +1972,7 @@ function toggleAuthMode() {
   const reg = authMode === "register";
   document.getElementById("authTitle").textContent = reg ? "Реєстрація" : "Вхід";
   document.getElementById("authBtnTxt").textContent = reg ? "Створити акаунт" : "Увійти";
+  document.getElementById("nameField").style.display = reg ? "" : "none";
   document.getElementById("authPass").autocomplete = reg ? "new-password" : "current-password";
   document.getElementById("authSwitch").innerHTML = reg
     ? 'Вже є акаунт? <a onclick="toggleAuthMode()">Увійти</a>'
@@ -1577,12 +1984,19 @@ async function authSubmit(ev) {
   if(!fbAuth) return showAuthError("Firebase не завантажився. Перевірте інтернет.");
   const email = document.getElementById("authEmail").value.trim();
   const pass  = document.getElementById("authPass").value;
+  const name  = document.getElementById("authName").value.trim();
+  if(authMode === "register" && !name) return showAuthError("Вкажіть ваше ім'я");
   const btn = document.getElementById("authBtn");
   btn.disabled = true; document.getElementById("authSpin").style.display = "block";
   showAuthError("");
   try {
-    if(authMode === "register") await fbAuth.createUserWithEmailAndPassword(email, pass);
-    else await fbAuth.signInWithEmailAndPassword(email, pass);
+    if(authMode === "register") {
+      window.__regName = name;
+      const cred = await fbAuth.createUserWithEmailAndPassword(email, pass);
+      cred.user && cred.user.updateProfile && cred.user.updateProfile({displayName: name}).catch(()=>{});
+    } else {
+      await fbAuth.signInWithEmailAndPassword(email, pass);
+    }
     document.getElementById("authPass").value = "";
   } catch(err) {
     showAuthError(AUTH_ERRORS[err.code] || err.message);
@@ -1604,6 +2018,159 @@ function logout() {
   fbAuth.signOut();
 }
 
+// ═══════════════════════════════════════
+// ADMIN PANELS: USERS + ACTIVITY LOG + ORDER HISTORY
+// ═══════════════════════════════════════
+const LOG_ICONS = {create:"➕", update:"✏️", done:"✅", delete:"🗑️", bulk:"📦", admin:"🛡️", login:"🔑"};
+
+function goSub(name, silent) {
+  document.querySelectorAll(".seg-btn").forEach(b => b.classList.toggle("on", b.dataset.sub === name));
+  document.querySelectorAll(".sub").forEach(s => s.classList.toggle("on", s.id === "sub-" + name));
+  if(silent) return;
+  if(name === "users") renderUsers();
+  if(name === "log") renderLog();
+  window.scrollTo({top:0});
+}
+
+function initials(n) {
+  const p = String(n||"?").trim().split(/\s+/);
+  return ((p[0]||"?")[0] + (p[1] ? p[1][0] : "")).toUpperCase();
+}
+function relTime(ts) {
+  if(!ts) return "—";
+  const diff = Date.now() - ts, m = Math.round(diff/60000);
+  if(m < 1) return "щойно";
+  if(m < 60) return `${m} хв тому`;
+  const d = new Date(ts), t = `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  const today = fmtDate(new Date()), yest = fmtDate(new Date(Date.now()-86400000)), key = fmtDate(d);
+  if(key === today) return `сьогодні о ${t}`;
+  if(key === yest) return `вчора о ${t}`;
+  return `${d.getDate()} ${MONTHS_GEN[d.getMonth()].toLowerCase()}${d.getFullYear() !== new Date().getFullYear() ? " " + d.getFullYear() : ""} о ${t}`;
+}
+function timeHM(ts) { const d = new Date(ts); return `${pad(d.getHours())}:${pad(d.getMinutes())}`; }
+
+// ── Profile / settings ──
+function renderProfile() {
+  if(!me) return;
+  document.getElementById("meAvatar").textContent = initials(myName());
+  document.getElementById("meName").textContent = myName();
+  document.getElementById("acctEmail").textContent = me.email || "—";
+  const rp = document.getElementById("meRole");
+  rp.textContent = ROLES[me.role] || me.role; rp.className = "role-pill " + me.role;
+  const inp = document.getElementById("myName");
+  if(document.activeElement !== inp) inp.value = me.name || "";
+}
+
+// ── Users list ──
+function renderUsers() {
+  const box = document.getElementById("usersList");
+  if(!box || !can("admin")) return;
+  const counts = {}, last = {};
+  logCache.forEach(e => { counts[e.uid] = (counts[e.uid]||0) + (e.action === "login" ? 0 : 1); if(!last[e.uid] || e.ts > last[e.uid]) last[e.uid] = e.ts; });
+  const order = {pending:0, admin:1, user:2, viewer:3, blocked:4};
+  const list = Object.entries(usersCache).sort((a,b) => (order[a[1].role]??9) - (order[b[1].role]??9) || String(a[1].name).localeCompare(String(b[1].name)));
+  if(!list.length) { box.innerHTML = `<div class="muted">Користувачів ще немає</div>`; return; }
+  box.innerHTML = list.map(([uid, u]) => {
+    const self = uid === me.uid;
+    const seen = Math.max(u.lastSeen||0, last[uid]||0);
+    const opts = ["admin","user","viewer","pending","blocked"].map(r => `<option value="${r}" ${u.role===r?"selected":""}>${ROLES[r]}</option>`).join("");
+    return `<div class="user-row ${u.role==="pending"?"pending":""}">
+      <div class="user-top">
+        <div class="avatar">${esc(initials(u.name || u.email))}</div>
+        <div style="flex:1;min-width:0">
+          <div class="user-name">${esc(u.name || "Без імені")}${self ? ' <span class="muted">(ви)</span>' : ""}</div>
+          <div class="user-email">${esc(u.email||"")}</div>
+        </div>
+        <span class="role-pill ${u.role}">${ROLES[u.role]||u.role}</span>
+      </div>
+      <div class="user-meta">
+        <span>Був(ла): ${relTime(seen)} · дій: ${counts[uid]||0}</span>
+        <button class="link-btn" onclick="showUserLog('${uid}')">Що робив(ла) →</button>
+      </div>
+      ${self ? "" : `<div class="user-actions">
+        ${u.role === "pending" ? `<button class="btn-approve" onclick="setUserRole('${uid}','user')">✓ Підтвердити</button>` : ""}
+        <select class="inp" onchange="setUserRole('${uid}', this.value)">${opts}</select>
+      </div>`}
+    </div>`;
+  }).join("");
+}
+function showUserLog(uid) {
+  goSub("log");
+  fillLogUsers();
+  document.getElementById("logUser").value = uid;
+  document.getElementById("logAction").value = "";
+  document.getElementById("logSearch").value = "";
+  renderLog();
+}
+function fillLogUsers() {
+  const sel = document.getElementById("logUser");
+  if(!sel) return;
+  const cur = sel.value;
+  const names = {};
+  Object.entries(usersCache).forEach(([uid,u]) => names[uid] = u.name || u.email);
+  logCache.forEach(e => { if(!names[e.uid]) names[e.uid] = e.name; });
+  sel.innerHTML = `<option value="">Усі користувачі</option>` + Object.entries(names).sort((a,b)=>String(a[1]).localeCompare(String(b[1]))).map(([uid,n]) => `<option value="${uid}">${esc(n)}</option>`).join("");
+  sel.value = cur;
+}
+
+// ── Log ──
+function logEntryHTML(e, compact) {
+  const name = (usersCache[e.uid] && usersCache[e.uid].name) || e.name || "?";
+  let changes = "";
+  if(e.changes && e.changes.length) {
+    changes = e.changes.map(c => `<span class="chg">${esc(c.l)}: <s>${esc(c.a || "—")}</s> → <i>${esc(c.b || "—")}</i></span>`).join("");
+  }
+  const exists = e.orderId && orders.some(o => o.id === e.orderId);
+  const link = exists && !compact ? ` <span class="log-link" onclick="openFromLog('${esc(e.orderId)}')">відкрити</span>` : "";
+  return `<div class="log-item">
+    <div class="log-ic ${e.action}">${LOG_ICONS[e.action]||"•"}</div>
+    <div class="log-body">
+      <div class="log-head">${compact ? "" : `<b>${esc(name)}</b> · `}${esc(e.text)}${link}</div>
+      ${changes ? `<div class="log-text">${changes}</div>` : ""}
+      <div class="log-time">${compact ? `<b>${esc(name)}</b> · ` : ""}${timeHM(e.ts)}${compact ? " · " + relTime(e.ts) : ""}</div>
+    </div>
+  </div>`;
+}
+function renderLog() {
+  const box = document.getElementById("logList");
+  if(!box || !can("admin")) return;
+  const fu = document.getElementById("logUser").value, fa = document.getElementById("logAction").value;
+  const q = document.getElementById("logSearch").value.trim().toLowerCase();
+  let list = logCache.filter(e => (!fu || e.uid === fu) && (!fa || e.action === fa));
+  if(q) list = list.filter(e => [e.text, e.client, e.name, ...(e.changes||[]).map(c => c.a + " " + c.b)].join(" ").toLowerCase().includes(q));
+  if(!list.length) { box.innerHTML = `<div class="empty-state"><p>Записів не знайдено</p></div>`; return; }
+  let html = "", lastDay = "";
+  list.slice(0, 300).forEach(e => {
+    const d = new Date(e.ts), key = fmtDate(d);
+    if(key !== lastDay) {
+      lastDay = key;
+      const today = fmtDate(new Date()), yest = fmtDate(new Date(Date.now()-86400000));
+      html += `<div class="log-day">${key === today ? "Сьогодні" : key === yest ? "Вчора" : d.getDate() + " " + MONTHS_GEN[d.getMonth()].toLowerCase() + " " + d.getFullYear()} · ${DAYS_FULL[d.getDay()]}</div>`;
+    }
+    html += logEntryHTML(e);
+  });
+  if(list.length > 300) html += `<div class="muted" style="text-align:center;padding:10px">Показано останні 300 записів</div>`;
+  box.innerHTML = html;
+}
+function openFromLog(id) {
+  const o = orders.find(x => x.id === id);
+  if(o) openModal(id);
+}
+
+// ── Order audit inside the edit modal ──
+function renderAuditBox(o) {
+  const box = document.getElementById("auditBox");
+  if(!o || !(o.createdAt || o.updatedAt)) { box.style.display = "none"; return; }
+  let h = "";
+  if(o.createdAt) h += `<div>🆕 Створив(ла): <b>${esc(o.createdByName || "—")}</b>, ${relTime(o.createdAt)}</div>`;
+  if(o.updatedAt && o.updatedAt !== o.createdAt) h += `<div>✏️ Останні зміни: <b>${esc(o.updatedByName || "—")}</b>, ${relTime(o.updatedAt)}</div>`;
+  if(can("admin")) {
+    const hist = logCache.filter(e => e.orderId === o.id);
+    if(hist.length) h += `<div class="hist"><div style="font-weight:800;margin-bottom:6px">Історія змін (${hist.length})</div>${hist.slice(0,20).map(e => logEntryHTML(e, true)).join("")}</div>`;
+  }
+  box.innerHTML = h;
+  box.style.display = "block";
+}
 
 </script>
 </body>
