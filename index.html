@@ -460,6 +460,11 @@ body.role-viewer .hdr-user .avatar{background:#6b7280;box-shadow:0 0 0 2px var(-
 .prof-link:active{background:var(--surface2)}
 .prof-link.danger{color:var(--red);border-color:var(--red-line);background:var(--red-soft)}
 .prof-link .seg-badge{margin-left:auto}
+
+/* ── MANAGER / VIEWER: no totals ── */
+body.role-manager .totals,body.role-viewer .totals{display:none!important}
+.role-pill.manager{background:var(--viber-soft);color:var(--viber)}
+body.role-manager .hdr-user .avatar{background:var(--viber);box-shadow:0 0 0 2px #dcd6fd,0 3px 8px rgba(115,96,242,.25)}
 </style>
 </head>
 <body>
@@ -558,7 +563,7 @@ body.role-viewer .hdr-user .avatar{background:#6b7280;box-shadow:0 0 0 2px var(-
 
 <!-- ══ ГРАФІК ══ -->
 <div class="panel on" id="tab-schedule">
-  <div class="stats-bar" id="statsBar"></div>
+  <div class="stats-bar totals" id="statsBar"></div>
   <div class="toolbar">
     <div class="chips" id="masterChips"></div>
     <div class="switch-row">
@@ -613,7 +618,7 @@ body.role-viewer .hdr-user .avatar{background:#6b7280;box-shadow:0 0 0 2px var(-
       Друк / PDF графіка
     </button>
   </div>
-  <div class="export-section" id="exportPreview"></div>
+  <div class="export-section totals" id="exportPreview"></div>
 </div>
 
 <!-- ══ ЩЕ ══ -->
@@ -678,7 +683,7 @@ body.role-viewer .hdr-user .avatar{background:#6b7280;box-shadow:0 0 0 2px var(-
 
     <div class="settings-section">
       <div class="settings-row">
-        <div><div class="sr-lbl">Версія</div><div class="sr-sub">Е-Монтаж v5.0 · Командна робота</div></div>
+        <div><div class="sr-lbl">Версія</div><div class="sr-sub">Е-Монтаж v5.1 · Командна робота</div></div>
       </div>
     </div>
   </div>
@@ -688,7 +693,8 @@ body.role-viewer .hdr-user .avatar{background:#6b7280;box-shadow:0 0 0 2px var(-
     <div class="info-box">
       <b>Адміністратор</b> — усе, включно з видаленням, очищенням, імпортом, майстрами, користувачами та журналом.<br>
       <b>Користувач</b> — переглядає, додає й редагує замовлення, відмічає виконання. Видаляти не може.<br>
-      <b>Лише перегляд</b> — бачить графік, дзвонить і будує маршрут, але нічого не змінює.<br>
+      <b>Менеджер</b> — те саме, що Користувач, але не бачить загальної кількості замовлень, дверей і сум.<br>
+      <b>Лише перегляд</b> — бачить графік, дзвонить і будує маршрут, нічого не змінює і не бачить загальних підсумків.<br>
       Нові акаунти чекають, доки ви їх не підтвердите.
     </div>
     <div id="usersList"></div>
@@ -744,6 +750,17 @@ body.role-viewer .hdr-user .avatar{background:#6b7280;box-shadow:0 0 0 2px var(-
       <div class="prof-sec">Моя активність · <span id="profMonth"></span></div>
       <div class="prof-stats" id="profStats"></div>
       <div id="profRecent"></div>
+
+      <div class="prof-sec adm-only">Моя роль</div>
+      <div class="adm-only">
+        <select class="inp" id="profRoleSel" onchange="setUserRole(me.uid, this.value)">
+          <option value="admin">Адміністратор</option>
+          <option value="user">Користувач</option>
+          <option value="manager">Менеджер</option>
+          <option value="viewer">Лише перегляд</option>
+        </select>
+        <div class="muted" style="margin-top:6px">Щоб перевірити, як програму бачать інші, можна тимчасово змінити свою роль. Повернути роль адміністратора зможе інший адміністратор, тому спершу призначте ще одного.</div>
+      </div>
 
       <div class="prof-sec adm-only">Адміністрування</div>
       <div class="prof-links adm-only">
@@ -921,6 +938,7 @@ function getMonthOrders() {
 }
 
 function renderStats() {
+  if(!can("totals")) { document.getElementById("statsBar").innerHTML = ""; return; }
   const mo = visibleOrders(getMonthOrders()).filter(o => !isReserve(o));
   const total = mo.reduce((s,o) => s + (+o.sum||0), 0);
   const qty   = mo.reduce((s,o) => s + (+o.qty||0), 0);
@@ -982,7 +1000,7 @@ function renderSchedule() {
           <div class="day-name">${isToday ? DAYS_FULL[dow] : DAYS_UA[dow]}${isToday?'<span class="today-badge">Сьогодні</span>':""}</div>
           <div class="day-count">${countTxt}</div>
         </div>
-        ${daySum > 0 ? `<div class="day-sum">${fmt(daySum)} ₴</div>` : ""}
+        ${daySum > 0 && can("totals") ? `<div class="day-sum">${fmt(daySum)} ₴</div>` : ""}
         <div class="day-chevron ${open?"open":""}" id="chev-${key}">›</div>
       </div>
       <div class="orders-wrap ${open?"":"collapsed"}" id="ow-${key}">`;
@@ -1240,6 +1258,8 @@ function clearSearch() {
 // EXPORT EXCEL
 // ═══════════════════════════════════════
 function buildExportPreview() {
+  document.getElementById("expMonthBtn").textContent = `${MONTHS_UA[currentMonth]} ${currentYear}`;
+  if(!can("totals")) { document.getElementById("exportPreview").innerHTML = ""; return; }
   const mo = getMonthOrders().filter(o => !isReserve(o));
   const total = mo.reduce((s,o)=>s+(+o.sum||0),0), qty = mo.reduce((s,o)=>s+(+o.qty||0),0);
   document.getElementById("expMonthBtn").textContent = `${MONTHS_UA[currentMonth]} ${currentYear}`;
@@ -1265,11 +1285,12 @@ function exportRows(data, title, fname) {
   [...data].sort((a,b) => (a.date+a.time).localeCompare(b.date+b.time)).forEach(o => {
     wsData.push(["", DAYS_UA[parseDate(o.date).getDay()], o.date, o.time||"", o.client||"", o.phone||"", o.addr||"", o.delivery||"", o.manuf||"", +o.qty||0, +o.price||0, +o.sum||0, o.master||"", o.done ? "так" : "", o.notes||""]);
   });
-  wsData.push(["", "", "", "", "ВСЬОГО", "", "", "", "", data.reduce((s,o)=>s+(+o.qty||0),0), "", data.reduce((s,o)=>s+(+o.sum||0),0), "", "", ""]);
+  if(can("totals")) wsData.push(["", "", "", "", "ВСЬОГО", "", "", "", "", data.reduce((s,o)=>s+(+o.qty||0),0), "", data.reduce((s,o)=>s+(+o.sum||0),0), "", "", ""]);
   const ws = XLSX.utils.aoa_to_sheet(wsData);
   ws["!cols"] = [{wch:3},{wch:5},{wch:12},{wch:7},{wch:18},{wch:16},{wch:38},{wch:12},{wch:14},{wch:7},{wch:8},{wch:10},{wch:12},{wch:9},{wch:30}];
   ws["!merges"] = [{s:{r:0,c:0}, e:{r:0,c:14}}];
   XLSX.utils.book_append_sheet(wb, ws, "Графік");
+  if(can("totals")) {
   const byMaster = {};
   data.forEach(o => { const m = o.master||"Невідомо"; (byMaster[m] ||= {cnt:0,sum:0,qty:0}); byMaster[m].cnt++; byMaster[m].sum += +o.sum||0; byMaster[m].qty += +o.qty||0; });
   const st = [["Майстер", "Замовлень", "Дверей", "Сума (грн)"], ...Object.entries(byMaster).map(([m,v]) => [m, v.cnt, v.qty, v.sum]),
@@ -1277,6 +1298,7 @@ function exportRows(data, title, fname) {
   const ws2 = XLSX.utils.aoa_to_sheet(st);
   ws2["!cols"] = [{wch:20},{wch:12},{wch:12},{wch:14}];
   XLSX.utils.book_append_sheet(wb, ws2, "Статистика");
+  }
   XLSX.writeFile(wb, fname);
   return true;
 }
@@ -1613,7 +1635,7 @@ const firebaseConfig = {
   messagingSenderId: "473524966677",
   appId: "1:473524966677:web:0ef32531c29d917f32c51c"
 };
-const ROLES = { admin:"Адміністратор", user:"Користувач", viewer:"Лише перегляд", pending:"Очікує підтвердження", blocked:"Заблоковано" };
+const ROLES = { admin:"Адміністратор", user:"Користувач", manager:"Менеджер", viewer:"Лише перегляд", pending:"Очікує підтвердження", blocked:"Заблоковано" };
 const ORDER_FIELDS = [["date","Дата"],["time","Час"],["client","Клієнт"],["phone","Телефон"],["addr","Адреса"],["delivery","Доставка"],
   ["manuf","Виробник"],["qty","К-сть"],["price","Ціна"],["master","Майстер"],["notes","Нотатки"],["done","Виконано"]];
 const STAMP_FIELDS = ["createdAt","createdBy","createdByName","updatedAt","updatedBy","updatedByName"];
@@ -1629,8 +1651,9 @@ const splashStart = Date.now();
 
 function can(p) {
   const r = me && me.role;
-  if(p === "view")  return r === "admin" || r === "user" || r === "viewer";
-  if(p === "edit")  return r === "admin" || r === "user";
+  if(p === "view")  return r === "admin" || r === "user" || r === "manager" || r === "viewer";
+  if(p === "edit")  return r === "admin" || r === "user" || r === "manager";
+  if(p === "totals") return r === "admin" || r === "user";   // загальні підсумки: к-сть замовлень, дверей, суми
   if(p === "admin") return r === "admin";
   return false;
 }
@@ -1731,7 +1754,7 @@ function onRoleChanged(prevRole) {
 
 function applyRoleUI() {
   const b = document.body;
-  b.classList.remove("role-admin","role-user","role-viewer");
+  b.classList.remove("role-admin","role-user","role-manager","role-viewer");
   if(me && can("view")) b.classList.add("role-" + me.role);
   if(!can("admin")) goSub && goSub("set", true);
 }
@@ -1741,7 +1764,7 @@ function onSignedOut() {
   if(userRef) userRef.off();
   userRef = null; currentUid = null; me = null; loginLogged = false;
   orders = []; cloudOrders = {}; cloudMeta = null;
-  document.body.classList.remove("role-admin","role-user","role-viewer");
+  document.body.classList.remove("role-admin","role-user","role-manager","role-viewer");
   document.getElementById("connBadge").style.display = "none";
   document.getElementById("hdrUser").style.display = "none";
   window.__profPrompted = false;
@@ -2003,12 +2026,16 @@ function stopAdmin() {
 function setUserRole(uid, role) {
   const u = usersCache[uid];
   if(!u || u.role === role) return;
-  if(uid === me.uid) { toast("Свою роль змінити не можна","warn"); renderUsers(); return; }
   if(u.role === "admin" && role !== "admin" && Object.values(usersCache).filter(x => x.role === "admin").length <= 1) {
-    toast("Має залишитися хоча б один адміністратор","warn"); renderUsers(); return;
+    toast("Має залишитися хоча б один адміністратор — спершу призначте іншого","warn",4000); renderUsers(); renderProfileSheet(); return;
+  }
+  if(uid === me.uid) {
+    const msg = role === "admin" ? `Змінити свою роль на «${ROLES[role]}»?`
+      : `Змінити свою роль на «${ROLES[role]}»?\n\nВи втратите права адміністратора, і повернути їх зможе лише інший адміністратор.`;
+    if(!confirm(msg)) { renderUsers(); renderProfileSheet(); return; }
   }
   const up = {[`app/users/${uid}/role`]: role, [`app/users/${uid}/roleChangedAt`]: Date.now(), [`app/users/${uid}/roleChangedBy`]: myName()};
-  writeLog([{action:"admin", text:`Змінив роль користувача «${fullName(u) || u.email}»: ${ROLES[u.role] || u.role} → ${ROLES[role]}`}], up);
+  writeLog([{action:"admin", text: uid === me.uid ? `Змінив свою роль: ${ROLES[u.role] || u.role} → ${ROLES[role]}` : `Змінив роль користувача «${fullName(u) || u.email}»: ${ROLES[u.role] || u.role} → ${ROLES[role]}`}], up);
   fbDb.ref().update(up).then(() => toast(`${fullName(u) || u.email}: ${ROLES[role]}`, "ok")).catch(err => { toast("Не вдалося: " + err.message, "err"); renderUsers(); });
 }
 
@@ -2204,6 +2231,8 @@ function renderProfileSheet() {
   document.getElementById("profEmail").textContent = me.email || "";
   const rp = document.getElementById("profRole");
   rp.textContent = ROLES[me.role] || me.role; rp.className = "role-pill " + me.role;
+  const rs = document.getElementById("profRoleSel");
+  if(rs) rs.value = me.role;
   // pre-fill: if only legacy single "name", split it into first/last
   let f = me.firstName || "", l = me.lastName || "";
   if(!f && !l && me.name && !String(me.name).includes("@")) { const p = String(me.name).trim().split(/\s+/); f = p[0] || ""; l = p.slice(1).join(" "); }
@@ -2240,13 +2269,13 @@ function renderUsers() {
   if(!box || !can("admin")) return;
   const counts = {}, last = {};
   logCache.forEach(e => { counts[e.uid] = (counts[e.uid]||0) + (e.action === "login" ? 0 : 1); if(!last[e.uid] || e.ts > last[e.uid]) last[e.uid] = e.ts; });
-  const order = {pending:0, admin:1, user:2, viewer:3, blocked:4};
+  const order = {pending:0, admin:1, user:2, manager:3, viewer:4, blocked:5};
   const list = Object.entries(usersCache).sort((a,b) => (order[a[1].role]??9) - (order[b[1].role]??9) || String(a[1].name).localeCompare(String(b[1].name)));
   if(!list.length) { box.innerHTML = `<div class="muted">Користувачів ще немає</div>`; return; }
   box.innerHTML = list.map(([uid, u]) => {
     const self = uid === me.uid;
     const seen = Math.max(u.lastSeen||0, last[uid]||0);
-    const opts = ["admin","user","viewer","pending","blocked"].map(r => `<option value="${r}" ${u.role===r?"selected":""}>${ROLES[r]}</option>`).join("");
+    const opts = ["admin","user","manager","viewer","pending","blocked"].filter(r => !self || ["admin","user","manager","viewer"].includes(r)).map(r => `<option value="${r}" ${u.role===r?"selected":""}>${ROLES[r]}</option>`).join("");
     return `<div class="user-row ${u.role==="pending"?"pending":""}">
       <div class="user-top">
         <div class="avatar">${esc(initials(fullName(u) || u.email))}</div>
@@ -2260,7 +2289,7 @@ function renderUsers() {
         <span>Був(ла): ${relTime(seen)} · дій: ${counts[uid]||0}</span>
         <button class="link-btn" onclick="showUserLog('${uid}')">Що робив(ла) →</button>
       </div>
-      ${self ? "" : `<div class="user-actions">
+      ${`<div class="user-actions">
         ${u.role === "pending" ? `<button class="btn-approve" onclick="setUserRole('${uid}','user')">✓ Підтвердити</button>` : ""}
         <select class="inp" onchange="setUserRole('${uid}', this.value)">${opts}</select>
       </div>`}
