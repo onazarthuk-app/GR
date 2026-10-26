@@ -690,7 +690,7 @@ body.role-manager .price-only,body.role-viewer .price-only{display:none!importan
 
     <div class="settings-section">
       <div class="settings-row">
-        <div><div class="sr-lbl">Версія</div><div class="sr-sub">Е-Монтаж v5.3 · Командна робота</div></div>
+        <div><div class="sr-lbl">Версія</div><div class="sr-sub">Е-Монтаж v5.4 · Командна робота</div></div>
       </div>
     </div>
   </div>
@@ -1654,7 +1654,7 @@ const STAMP_FIELDS = ["createdAt","createdBy","createdByName","updatedAt","updat
 let fbAuth = null, fbDb = null;
 let currentUid = null, me = null;          // me = {uid,email,name,role,...}
 let cloudOrders = {}, cloudMeta = null, cloudPrices = {};
-let ordersLoaded = false, pricesLoaded = false, dataTotals = false, pricesMigrated = false;
+let ordersLoaded = false, pricesLoaded = false, dataTotals = false, pricesMigrated = false, pricesDenied = false;
 let dataRefs = [], userRef = null, usersRef = null, logRef = null;
 let dataStarted = false, firstOrders = true, loginLogged = false;
 let usersCache = {}, logCache = [];
@@ -1810,9 +1810,19 @@ function startData() {
     const pref = fbDb.ref("app/prices");
     pref.on("value", snap => {
       cloudPrices = JSON.parse(JSON.stringify(snap.val() || {}));
-      pricesLoaded = true;
+      pricesLoaded = true; pricesDenied = false;
       rebuildOrders();
-    }, onDbError);
+    }, err => {
+      if(!/permission/i.test(err.code || err.message || "")) return onDbError(err);
+      // Server rules are older than the app: keep working with prices stored inside orders
+      console.warn("app/prices not readable — old database rules", err);
+      pricesDenied = true; pricesLoaded = true; cloudPrices = {};
+      rebuildOrders();
+      if(can("admin") && !window.__rulesWarned) {
+        window.__rulesWarned = true;
+        toast("Оновіть правила бази у Firebase — програма працює, але ціни ще не захищені від менеджерів", "warn", 9000, {label:"Як?", fn: showRulesHelp});
+      }
+    });
     refs.push(pref);
   } else pricesLoaded = true;
   const mref = fbDb.ref("app/meta");
@@ -1856,7 +1866,7 @@ function rebuildOrders() {
 }
 // One-time (admin): move prices out of order records into app/prices
 function migrateInlinePrices() {
-  if(pricesMigrated || !can("admin") || !dataTotals) return;
+  if(pricesMigrated || pricesDenied || !can("admin") || !dataTotals) return;
   const up = {};
   for(const k in cloudOrders) {
     const o = cloudOrders[k];
@@ -1871,7 +1881,10 @@ function migrateInlinePrices() {
 }
 function stopData() {
   dataRefs.forEach(r => r.off()); dataRefs = []; dataStarted = false;
-  cloudPrices = {}; ordersLoaded = false; pricesLoaded = false;
+  cloudPrices = {}; ordersLoaded = false; pricesLoaded = false; pricesDenied = false;
+}
+function showRulesHelp() {
+  alert("Як оновити правила бази:\n\n1. Відкрийте console.firebase.google.com → проєкт GR2026\n2. Realtime Database → вкладка «Rules»\n3. Видаліть усе й вставте вміст файлу database.rules.json\n4. Натисніть «Publish»\n5. Оновіть цю сторінку\n\nПісля цього ціни автоматично перейдуть у захищений розділ.");
 }
 function onDbError(err) {
   console.error(err);
@@ -1933,6 +1946,7 @@ function saveData(label) {
   orders.forEach(o => { cur[fbKey(o.id)] = o; });
 
   const totals = can("totals") && dataTotals;
+  const inline = totals && pricesDenied;   // old server rules: keep prices inside the order record
   const stamp = {updatedAt: now, updatedBy: uid, updatedByName: name};
   const priceRec = o => { const price = +o.price || 0; return {price, sum: price ? (+o.qty||0) * price : (+o.sum || 0)}; };
   for(const k in cur) {
@@ -1942,8 +1956,8 @@ function saveData(label) {
     if(!base) {
       if(!o.createdAt) { o.createdAt = now; o.createdBy = uid; o.createdByName = name; }
       Object.assign(o, stamp);
-      updates["app/orders/" + k] = stripPrices(clean(o));
-      if(totals) updates["app/prices/" + k] = priceRec(o);
+      updates["app/orders/" + k] = inline ? {...clean(o), ...priceRec(o)} : stripPrices(clean(o));
+      if(totals && !inline) updates["app/prices/" + k] = priceRec(o);
       events.push({action:"create", orderId:o.id, client:o.client||"", date:o.date||"", text:"Додав замовлення: " + orderLabel(o)});
     } else {
       const prev = mergedOrder(k);
@@ -1958,7 +1972,10 @@ function saveData(label) {
         updates[`app/orders/${k}/${c.f}`] = v;
       });
       for(const s in stamp) updates[`app/orders/${k}/${s}`] = stamp[s];
-      if(totals && ch.some(c => c.f === "price" || c.f === "qty")) updates["app/prices/" + k] = priceRec(o);
+      if(totals && ch.some(c => c.f === "price" || c.f === "qty")) {
+        if(inline) { const p = priceRec(o); updates[`app/orders/${k}/price`] = p.price; updates[`app/orders/${k}/sum`] = p.sum; }
+        else updates["app/prices/" + k] = priceRec(o);
+      }
       const onlyDone = ch.length === 1 && ch[0].f === "done";
       events.push({
         action: onlyDone ? "done" : "update", orderId:o.id, client:o.client||"", date:o.date||"",
@@ -1975,7 +1992,7 @@ function saveData(label) {
   deletes.forEach(k => {
     const o = cloudOrders[k];
     updates["app/orders/" + k] = null;
-    updates["app/prices/" + k] = null;
+    if(!pricesDenied) updates["app/prices/" + k] = null;
     events.push({action:"delete", orderId:o.id||k, client:o.client||"", date:o.date||"", text:"Видалив замовлення: " + orderLabel(o)});
   });
 
