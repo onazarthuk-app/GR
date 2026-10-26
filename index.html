@@ -430,6 +430,36 @@ body.role-viewer .modal-body input,body.role-viewer .modal-body select,body.role
 /* ── WAIT ── */
 .wait-ic{font-size:44px;margin:4px 0 10px}
 .wait-txt{font-size:14.5px;color:var(--text2);line-height:1.55}
+
+/* ── HEADER USER ── */
+.hdr-user{position:absolute;left:0;top:50%;transform:translateY(-50%);background:none;border:none;padding:0;cursor:pointer}
+.hdr-user .avatar{width:40px;height:40px;font-size:15px;background:var(--red);color:#fff;border:2px solid #fff;box-shadow:0 0 0 2px var(--red-line),0 3px 8px rgba(230,36,41,.25)}
+body.role-user .hdr-user .avatar{background:var(--blue);box-shadow:0 0 0 2px #c9dcfb,0 3px 8px rgba(26,115,232,.25)}
+body.role-viewer .hdr-user .avatar{background:#6b7280;box-shadow:0 0 0 2px var(--line2)}
+.hdr-user:active .avatar{transform:scale(.94)}
+.hdr-user-dot{position:absolute;top:-2px;right:-3px;min-width:16px;height:16px;border-radius:8px;background:var(--amber);color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 4px;border:2px solid #fff}
+
+/* ── PROFILE SHEET ── */
+.prof-head{text-align:center;margin-bottom:14px}
+.avatar.xl{width:76px;height:76px;font-size:28px;background:var(--red);color:#fff;margin:0 auto 10px;box-shadow:0 6px 18px rgba(230,36,41,.3)}
+.prof-name{font-family:'Roboto Condensed',sans-serif;font-size:22px;font-weight:800}
+.prof-head .profile-email{margin:2px 0 8px}
+.prof-hint{background:var(--amber-soft);border:1px solid #fde3b4;color:#92400e;border-radius:var(--r);padding:11px 13px;font-size:13.5px;line-height:1.45;margin-bottom:14px}
+.prof-hint.flash{animation:hintFlash .6s ease 2}
+@keyframes hintFlash{50%{transform:scale(1.02);box-shadow:0 0 0 4px rgba(217,119,6,.15)}}
+.prof-sec{font-size:11.5px;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin:22px 2px 8px}
+.prof-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.prof-stats .stat{padding:10px 4px}
+.prof-recent{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;margin-top:6px;cursor:pointer;background:#fff}
+.prof-recent:active{background:var(--surface2)}
+.prof-recent .pr-main{flex:1;min-width:0}
+.prof-recent .pr-t{font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prof-recent .pr-s{font-size:12px;color:var(--text3);margin-top:1px}
+.prof-links{display:flex;flex-direction:column;gap:6px}
+.prof-link{display:flex;align-items:center;gap:8px;width:100%;text-align:left;padding:13px 14px;border-radius:12px;border:1px solid var(--line);background:#fff;font-size:15px;font-weight:600;color:var(--text);cursor:pointer}
+.prof-link:active{background:var(--surface2)}
+.prof-link.danger{color:var(--red);border-color:var(--red-line);background:var(--red-soft)}
+.prof-link .seg-badge{margin-left:auto}
 </style>
 </head>
 <body>
@@ -439,7 +469,7 @@ body.role-viewer .modal-body input,body.role-viewer .modal-body select,body.role
   <div class="auth-card">
     <img class="auth-logo logo-img" alt="Е-Монтаж">
     <div class="auth-title" id="authTitle">Вхід</div>
-    <div class="auth-sub">Увійдіть, щоб синхронізувати графік між пристроями</div>
+    <div class="auth-sub" id="authSub">Увійдіть, щоб працювати з графіком монтажів</div>
     <div class="auth-error" id="authError"></div>
     <div id="waitBox" style="display:none;text-align:center">
       <div class="wait-ic">⏳</div>
@@ -448,9 +478,15 @@ body.role-viewer .modal-body input,body.role-viewer .modal-body select,body.role
       <div class="auth-switch"><a onclick="fbAuth.signOut()">Вийти з акаунту</a></div>
     </div>
     <form onsubmit="authSubmit(event)" id="authForm">
-      <div class="auth-field" id="nameField" style="display:none">
-        <label for="authName">Ваше ім'я</label>
-        <input type="text" id="authName" placeholder="Як вас звати" autocomplete="name">
+      <div class="fg-row" id="nameField" style="display:none">
+        <div class="auth-field">
+          <label for="authFirst">Ім'я</label>
+          <input type="text" id="authFirst" placeholder="Іван" autocomplete="given-name">
+        </div>
+        <div class="auth-field">
+          <label for="authLast">Прізвище</label>
+          <input type="text" id="authLast" placeholder="Петренко" autocomplete="family-name">
+        </div>
       </div>
       <div class="auth-field">
         <label for="authEmail">Email</label>
@@ -479,6 +515,10 @@ body.role-viewer .modal-body input,body.role-viewer .modal-body select,body.role
 <!-- HEADER -->
 <header class="header">
   <div class="hdr-top">
+    <button class="hdr-user" id="hdrUser" onclick="openProfile()" aria-label="Мій профіль" style="display:none">
+      <span class="avatar" id="hdrAvatar">?</span>
+      <span class="hdr-user-dot" id="hdrUserDot" style="display:none"></span>
+    </button>
     <img class="hdr-logo logo-img" alt="Е-Монтаж">
     <div class="sync-dot" id="connBadge"><i></i><span id="connTxt">Офлайн</span></div>
   </div>
@@ -586,25 +626,14 @@ body.role-viewer .modal-body input,body.role-viewer .modal-body select,body.role
 
   <!-- SUB: НАЛАШТУВАННЯ -->
   <div class="sub on" id="sub-set">
-    <div class="profile-card">
+    <div class="profile-card" onclick="openProfile()" style="cursor:pointer">
       <div class="avatar big" id="meAvatar">?</div>
       <div style="flex:1;min-width:0">
         <div class="profile-name" id="meName">—</div>
         <div class="profile-email" id="acctEmail">—</div>
         <span class="role-pill" id="meRole">—</span>
       </div>
-      <button class="settings-btn" onclick="logout()">Вийти</button>
-    </div>
-
-    <div class="settings-section">
-      <div class="sec-hd">Моє ім'я</div>
-      <div class="settings-row" style="display:block">
-        <div class="sr-sub" style="margin:0 0 8px">Так вас бачитимуть у журналі та на картках замовлень</div>
-        <div class="add-row" style="margin-top:0">
-          <input class="inp" id="myName" placeholder="Ваше ім'я" onkeydown="if(event.key==='Enter')saveMyName()">
-          <button class="settings-btn" onclick="saveMyName()">Зберегти</button>
-        </div>
-      </div>
+      <span style="font-size:22px;color:var(--text3)">›</span>
     </div>
 
     <div class="settings-section adm-only">
@@ -685,6 +714,49 @@ body.role-viewer .modal-body input,body.role-viewer .modal-body select,body.role
       <input class="search-in" id="logSearch" placeholder="Клієнт, адреса, текст..." oninput="renderLog()" autocomplete="off">
     </div>
     <div id="logList"><div class="muted" style="text-align:center;padding:30px">Завантаження…</div></div>
+  </div>
+</div>
+
+<!-- ══ PROFILE ══ -->
+<div class="modal-ov" id="profileModal" onclick="if(event.target===this)closeProfile()">
+  <div class="modal-box">
+    <div class="modal-handle"></div>
+    <div class="modal-hd">
+      <div class="modal-title">Мій профіль</div>
+      <button class="modal-x" onclick="closeProfile()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="prof-head">
+        <div class="avatar xl" id="profAvatar">?</div>
+        <div class="prof-name" id="profName">—</div>
+        <div class="profile-email" id="profEmail">—</div>
+        <span class="role-pill" id="profRole">—</span>
+      </div>
+      <div class="prof-hint" id="profHint" style="display:none">👋 Вкажіть, будь ласка, ім'я та прізвище — так колеги бачитимуть, хто вносив зміни.</div>
+
+      <div class="fg-row">
+        <div class="fg"><label>Ім'я *</label><input type="text" id="profFirst" placeholder="Іван" autocomplete="given-name"></div>
+        <div class="fg"><label>Прізвище *</label><input type="text" id="profLast" placeholder="Петренко" autocomplete="family-name"></div>
+      </div>
+      <div class="fg"><label>Телефон</label><input type="tel" id="profPhone" placeholder="0XX XXX XX XX" inputmode="tel" autocomplete="tel"></div>
+      <button class="btn-save" onclick="saveProfile()">Зберегти</button>
+
+      <div class="prof-sec">Моя активність · <span id="profMonth"></span></div>
+      <div class="prof-stats" id="profStats"></div>
+      <div id="profRecent"></div>
+
+      <div class="prof-sec adm-only">Адміністрування</div>
+      <div class="prof-links adm-only">
+        <button class="prof-link" onclick="closeProfile();goTab('settings',4);goSub('users')">👥 Користувачі <span class="seg-badge" id="profPending" style="display:none"></span></button>
+        <button class="prof-link" onclick="closeProfile();goTab('settings',4);goSub('log')">📋 Журнал дій</button>
+      </div>
+
+      <div class="prof-sec">Акаунт</div>
+      <div class="prof-links">
+        <button class="prof-link" onclick="changePassword()">🔒 Змінити пароль</button>
+        <button class="prof-link danger" onclick="logout()">🚪 Вийти з акаунту</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -771,7 +843,7 @@ window.addEventListener("DOMContentLoaded", () => {
   const logo = document.getElementById("splashLogo").src;
   document.querySelectorAll(".logo-img").forEach(i => i.src = logo);
   document.getElementById("modal").addEventListener("click", e => { if(e.target.id === "modal") closeModal(); });
-  document.addEventListener("keydown", e => { if(e.key === "Escape") closeModal(); });
+  document.addEventListener("keydown", e => { if(e.key === "Escape") { closeModal(); closeProfile(); } });
   try { onlyBusy = localStorage.getItem("em_onlyBusy") === "1"; masterFilter = localStorage.getItem("em_masterFilter") || ""; } catch(e){}
   document.getElementById("onlyBusy").checked = onlyBusy;
   // Refresh "today" highlight if the app stays open past midnight
@@ -1562,7 +1634,12 @@ function can(p) {
   if(p === "admin") return r === "admin";
   return false;
 }
-function myName() { return (me && (me.name || (me.email||"").split("@")[0])) || "?"; }
+function fullName(u) {
+  if(!u) return "";
+  const fl = [u.firstName, u.lastName].filter(Boolean).join(" ").trim();
+  return fl || u.name || (u.email||"").split("@")[0] || "";
+}
+function myName() { return fullName(me) || "?"; }
 
 function hideSplash() {
   const wait = Math.max(0, 1000 - (Date.now() - splashStart));
@@ -1594,7 +1671,9 @@ async function onSignedIn(user) {
       const hasAdmin = (await fbDb.ref("app/hasAdmin").once("value")).val();
       rec = {
         email: user.email || "",
-        name: (window.__regName || user.displayName || (user.email||"").split("@")[0]).trim(),
+        firstName: (window.__regFirst || "").trim(),
+        lastName: (window.__regLast || "").trim(),
+        name: ([window.__regFirst, window.__regLast].filter(Boolean).join(" ") || user.displayName || (user.email||"").split("@")[0]).trim(),
         role: hasAdmin ? "pending" : "admin",
         createdAt: Date.now(), lastSeen: Date.now()
       };
@@ -1632,6 +1711,13 @@ function onRoleChanged(prevRole) {
   }
   document.getElementById("authScreen").classList.add("hide");
   document.getElementById("connBadge").style.display = "flex";
+  document.getElementById("hdrUser").style.display = "";
+  renderHeaderUser();
+  if(document.getElementById("profileModal").classList.contains("on")) renderProfileSheet();
+  if((!me.firstName || !me.lastName) && !window.__profPrompted) {
+    window.__profPrompted = true;
+    setTimeout(() => openProfile(true), 1300);
+  }
   if(prevRole && prevRole !== me.role) toast("Вашу роль змінено: " + ROLES[me.role], "info", 4000);
   if(!loginLogged) {
     loginLogged = true;
@@ -1657,6 +1743,9 @@ function onSignedOut() {
   orders = []; cloudOrders = {}; cloudMeta = null;
   document.body.classList.remove("role-admin","role-user","role-viewer");
   document.getElementById("connBadge").style.display = "none";
+  document.getElementById("hdrUser").style.display = "none";
+  window.__profPrompted = false;
+  closeProfile();
   showAuthScreen();
   hideSplash();
 }
@@ -1888,6 +1977,8 @@ function startAdmin() {
       const pend = Object.values(usersCache).filter(u => u.role === "pending").length;
       const badge = document.getElementById("pendingBadge");
       badge.style.display = pend ? "inline-flex" : "none"; badge.textContent = pend;
+      const pb = document.getElementById("profPending"); pb.style.display = pend ? "inline-flex" : "none"; pb.textContent = pend;
+      const hd = document.getElementById("hdrUserDot"); hd.style.display = pend ? "flex" : "none"; hd.textContent = pend;
       if(pend && !window.__pendNotified) { window.__pendNotified = true; toast(`Нових користувачів очікують підтвердження: ${pend}`, "warn", 5000, {label:"Переглянути", fn:() => { goTab("settings",4); goSub("users"); }}); }
       renderUsers(); fillLogUsers();
     });
@@ -1905,6 +1996,7 @@ function startAdmin() {
 }
 function stopAdmin() {
   if(usersRef) usersRef.off(); if(logRef) logRef.off();
+  const hd = document.getElementById("hdrUserDot"); if(hd) hd.style.display = "none";
   usersRef = null; logRef = null; usersCache = {}; logCache = [];
 }
 
@@ -1916,19 +2008,37 @@ function setUserRole(uid, role) {
     toast("Має залишитися хоча б один адміністратор","warn"); renderUsers(); return;
   }
   const up = {[`app/users/${uid}/role`]: role, [`app/users/${uid}/roleChangedAt`]: Date.now(), [`app/users/${uid}/roleChangedBy`]: myName()};
-  writeLog([{action:"admin", text:`Змінив роль користувача «${u.name || u.email}»: ${ROLES[u.role] || u.role} → ${ROLES[role]}`}], up);
-  fbDb.ref().update(up).then(() => toast(`${u.name || u.email}: ${ROLES[role]}`, "ok")).catch(err => { toast("Не вдалося: " + err.message, "err"); renderUsers(); });
+  writeLog([{action:"admin", text:`Змінив роль користувача «${fullName(u) || u.email}»: ${ROLES[u.role] || u.role} → ${ROLES[role]}`}], up);
+  fbDb.ref().update(up).then(() => toast(`${fullName(u) || u.email}: ${ROLES[role]}`, "ok")).catch(err => { toast("Не вдалося: " + err.message, "err"); renderUsers(); });
 }
 
-async function saveMyName() {
-  const v = document.getElementById("myName").value.trim();
-  if(!v || !me || !fbDb) return;
-  if(v === me.name) return;
+async function saveProfile() {
+  if(!me || !fbDb) return;
+  const first = document.getElementById("profFirst").value.trim().replace(/\s+/g," ");
+  const last  = document.getElementById("profLast").value.trim().replace(/\s+/g," ");
+  const phone = document.getElementById("profPhone").value.trim();
+  if(!first || !last) {
+    toast("Вкажіть ім'я та прізвище","err");
+    (first ? document.getElementById("profLast") : document.getElementById("profFirst")).focus();
+    return;
+  }
+  const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+  const nf = cap(first), nl = cap(last), name = nf + " " + nl;
+  const before = myName();
+  if(nf === me.firstName && nl === me.lastName && phone === (me.phone||"")) { closeProfile(); return; }
   try {
-    await fbDb.ref("app/users/" + me.uid).update({name: v});
-    writeLog([{action:"admin", text:`Змінив своє ім'я: «${me.name || ""}» → «${v}»`}]);
-    toast("Ім'я збережено","ok");
+    await fbDb.ref("app/users/" + me.uid).update({firstName: nf, lastName: nl, name, phone});
+    if(before !== name) writeLog([{action:"admin", text:`Оновив профіль: «${before}» → «${name}»`}]);
+    fbAuth.currentUser && fbAuth.currentUser.updateProfile && fbAuth.currentUser.updateProfile({displayName: name}).catch(()=>{});
+    toast("Профіль збережено ✓","ok");
+    closeProfile();
   } catch(e) { toast("Не вдалося зберегти: " + e.message, "err"); }
+}
+async function changePassword() {
+  if(!fbAuth || !me || !me.email) return;
+  if(!confirm(`Надіслати лист для зміни пароля на ${me.email}?`)) return;
+  try { await fbAuth.sendPasswordResetEmail(me.email); toast("Лист надіслано — перевірте пошту","ok",4000); }
+  catch(e) { toast("Не вдалося: " + (AUTH_ERRORS[e.code] || e.message), "err"); }
 }
 
 // ── Auth UI ──
@@ -1973,6 +2083,7 @@ function toggleAuthMode() {
   document.getElementById("authTitle").textContent = reg ? "Реєстрація" : "Вхід";
   document.getElementById("authBtnTxt").textContent = reg ? "Створити акаунт" : "Увійти";
   document.getElementById("nameField").style.display = reg ? "" : "none";
+  document.getElementById("authSub").textContent = reg ? "Створіть акаунт — адміністратор підтвердить доступ" : "Увійдіть, щоб працювати з графіком монтажів";
   document.getElementById("authPass").autocomplete = reg ? "new-password" : "current-password";
   document.getElementById("authSwitch").innerHTML = reg
     ? 'Вже є акаунт? <a onclick="toggleAuthMode()">Увійти</a>'
@@ -1984,14 +2095,16 @@ async function authSubmit(ev) {
   if(!fbAuth) return showAuthError("Firebase не завантажився. Перевірте інтернет.");
   const email = document.getElementById("authEmail").value.trim();
   const pass  = document.getElementById("authPass").value;
-  const name  = document.getElementById("authName").value.trim();
-  if(authMode === "register" && !name) return showAuthError("Вкажіть ваше ім'я");
+  const first = document.getElementById("authFirst").value.trim();
+  const last  = document.getElementById("authLast").value.trim();
+  const name  = [first, last].filter(Boolean).join(" ");
+  if(authMode === "register" && (!first || !last)) return showAuthError("Вкажіть ім'я та прізвище");
   const btn = document.getElementById("authBtn");
   btn.disabled = true; document.getElementById("authSpin").style.display = "block";
   showAuthError("");
   try {
     if(authMode === "register") {
-      window.__regName = name;
+      window.__regFirst = first; window.__regLast = last;
       const cred = await fbAuth.createUserWithEmailAndPassword(email, pass);
       cred.user && cred.user.updateProfile && cred.user.updateProfile({displayName: name}).catch(()=>{});
     } else {
@@ -2057,8 +2170,68 @@ function renderProfile() {
   document.getElementById("acctEmail").textContent = me.email || "—";
   const rp = document.getElementById("meRole");
   rp.textContent = ROLES[me.role] || me.role; rp.className = "role-pill " + me.role;
-  const inp = document.getElementById("myName");
-  if(document.activeElement !== inp) inp.value = me.name || "";
+}
+function renderHeaderUser() {
+  if(!me) return;
+  document.getElementById("hdrAvatar").textContent = initials(myName());
+  document.getElementById("hdrUser").title = myName() + " · " + (ROLES[me.role] || "");
+  renderProfile();
+}
+
+// ── Profile sheet ──
+function openProfile(prompt) {
+  if(!me || !can("view")) return;
+  renderProfileSheet();
+  const hint = document.getElementById("profHint");
+  const missing = !me.firstName || !me.lastName;
+  hint.style.display = missing ? "block" : "none";
+  if(prompt) { hint.classList.remove("flash"); void hint.offsetWidth; hint.classList.add("flash"); }
+  document.getElementById("profileModal").classList.add("on");
+  document.body.style.overflow = "hidden";
+  if(missing) setTimeout(() => document.getElementById(me.firstName ? "profLast" : "profFirst").focus(), 350);
+}
+function closeProfile() {
+  const m = document.getElementById("profileModal");
+  if(!m || !m.classList.contains("on")) return;
+  m.classList.remove("on");
+  document.body.style.overflow = "";
+}
+function renderProfileSheet() {
+  if(!me) return;
+  const nm = myName();
+  document.getElementById("profAvatar").textContent = initials(nm);
+  document.getElementById("profName").textContent = nm;
+  document.getElementById("profEmail").textContent = me.email || "";
+  const rp = document.getElementById("profRole");
+  rp.textContent = ROLES[me.role] || me.role; rp.className = "role-pill " + me.role;
+  // pre-fill: if only legacy single "name", split it into first/last
+  let f = me.firstName || "", l = me.lastName || "";
+  if(!f && !l && me.name && !String(me.name).includes("@")) { const p = String(me.name).trim().split(/\s+/); f = p[0] || ""; l = p.slice(1).join(" "); }
+  const fi = document.getElementById("profFirst"), li = document.getElementById("profLast"), ph = document.getElementById("profPhone");
+  if(document.activeElement !== fi) fi.value = f;
+  if(document.activeElement !== li) li.value = l;
+  if(document.activeElement !== ph) ph.value = me.phone || "";
+  // activity this month (from order stamps — available to every role)
+  const t = new Date(), pref = `${t.getFullYear()}-${pad(t.getMonth()+1)}`;
+  const inMonth = ts => { if(!ts) return false; const d = new Date(ts); return d.getFullYear() === t.getFullYear() && d.getMonth() === t.getMonth(); };
+  const created = orders.filter(o => o.createdBy === me.uid && inMonth(o.createdAt)).length;
+  const edited  = orders.filter(o => o.updatedBy === me.uid && inMonth(o.updatedAt) && o.updatedAt !== o.createdAt).length;
+  const mine = orders.filter(o => o.master && (o.master === me.firstName || o.master === nm) && o.date && o.date.startsWith(pref));
+  document.getElementById("profMonth").textContent = MONTHS_UA[t.getMonth()].toLowerCase();
+  document.getElementById("profStats").innerHTML = `
+    <div class="stat"><div class="stat-val green">${created}</div><div class="stat-lbl">Додано</div></div>
+    <div class="stat"><div class="stat-val blue">${edited}</div><div class="stat-lbl">Змінено</div></div>
+    <div class="stat"><div class="stat-val amber">${mine.length}</div><div class="stat-lbl">Моїх монтажів</div></div>`;
+  const recent = orders.filter(o => o.updatedBy === me.uid || o.createdBy === me.uid)
+    .sort((a,b) => (b.updatedAt||b.createdAt||0) - (a.updatedAt||a.createdAt||0)).slice(0,5);
+  document.getElementById("profRecent").innerHTML = recent.length
+    ? `<div class="prof-sec" style="margin-top:14px">Мої останні зміни</div>` + recent.map(o => {
+        const d = parseDate(o.date);
+        return `<div class="prof-recent" onclick="closeProfile();editOrder('${esc(o.id)}')">
+          <div class="pr-main"><div class="pr-t">${esc(o.client||"—")}</div><div class="pr-s">${d.getDate()} ${MONTHS_GEN[d.getMonth()].toLowerCase()}${o.time ? " о " + esc(o.time) : ""} · ${relTime(o.updatedAt||o.createdAt)}</div></div>
+          <span style="color:var(--text3);font-size:18px">›</span></div>`;
+      }).join("")
+    : `<div class="muted" style="margin-top:10px">Ви ще не вносили змін.</div>`;
 }
 
 // ── Users list ──
@@ -2076,9 +2249,9 @@ function renderUsers() {
     const opts = ["admin","user","viewer","pending","blocked"].map(r => `<option value="${r}" ${u.role===r?"selected":""}>${ROLES[r]}</option>`).join("");
     return `<div class="user-row ${u.role==="pending"?"pending":""}">
       <div class="user-top">
-        <div class="avatar">${esc(initials(u.name || u.email))}</div>
+        <div class="avatar">${esc(initials(fullName(u) || u.email))}</div>
         <div style="flex:1;min-width:0">
-          <div class="user-name">${esc(u.name || "Без імені")}${self ? ' <span class="muted">(ви)</span>' : ""}</div>
+          <div class="user-name">${esc(fullName(u) || "Без імені")}${self ? ' <span class="muted">(ви)</span>' : ""}</div>
           <div class="user-email">${esc(u.email||"")}</div>
         </div>
         <span class="role-pill ${u.role}">${ROLES[u.role]||u.role}</span>
@@ -2107,7 +2280,7 @@ function fillLogUsers() {
   if(!sel) return;
   const cur = sel.value;
   const names = {};
-  Object.entries(usersCache).forEach(([uid,u]) => names[uid] = u.name || u.email);
+  Object.entries(usersCache).forEach(([uid,u]) => names[uid] = fullName(u) || u.email);
   logCache.forEach(e => { if(!names[e.uid]) names[e.uid] = e.name; });
   sel.innerHTML = `<option value="">Усі користувачі</option>` + Object.entries(names).sort((a,b)=>String(a[1]).localeCompare(String(b[1]))).map(([uid,n]) => `<option value="${uid}">${esc(n)}</option>`).join("");
   sel.value = cur;
@@ -2115,7 +2288,7 @@ function fillLogUsers() {
 
 // ── Log ──
 function logEntryHTML(e, compact) {
-  const name = (usersCache[e.uid] && usersCache[e.uid].name) || e.name || "?";
+  const name = fullName(usersCache[e.uid]) || e.name || "?";
   let changes = "";
   if(e.changes && e.changes.length) {
     changes = e.changes.map(c => `<span class="chg">${esc(c.l)}: <s>${esc(c.a || "—")}</s> → <i>${esc(c.b || "—")}</i></span>`).join("");
