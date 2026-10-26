@@ -7,6 +7,11 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Е-Монтаж">
 <meta name="theme-color" content="#ffffff">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=2">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2">
+<link rel="manifest" href="manifest.webmanifest?v=2">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="Е-Монтаж">
 <title>Е-Монтаж — Графік монтажів</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;600;700;800;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -465,6 +470,8 @@ body.role-viewer .hdr-user .avatar{background:#6b7280;box-shadow:0 0 0 2px var(-
 body.role-manager .totals,body.role-viewer .totals{display:none!important}
 .role-pill.manager{background:var(--viber-soft);color:var(--viber)}
 body.role-manager .hdr-user .avatar{background:var(--viber);box-shadow:0 0 0 2px #dcd6fd,0 3px 8px rgba(115,96,242,.25)}
+
+body.role-manager .price-only,body.role-viewer .price-only{display:none!important}
 </style>
 </head>
 <body>
@@ -683,7 +690,7 @@ body.role-manager .hdr-user .avatar{background:var(--viber);box-shadow:0 0 0 2px
 
     <div class="settings-section">
       <div class="settings-row">
-        <div><div class="sr-lbl">Версія</div><div class="sr-sub">Е-Монтаж v5.1 · Командна робота</div></div>
+        <div><div class="sr-lbl">Версія</div><div class="sr-sub">Е-Монтаж v5.3 · Командна робота</div></div>
       </div>
     </div>
   </div>
@@ -693,8 +700,8 @@ body.role-manager .hdr-user .avatar{background:var(--viber);box-shadow:0 0 0 2px
     <div class="info-box">
       <b>Адміністратор</b> — усе, включно з видаленням, очищенням, імпортом, майстрами, користувачами та журналом.<br>
       <b>Користувач</b> — переглядає, додає й редагує замовлення, відмічає виконання. Видаляти не може.<br>
-      <b>Менеджер</b> — те саме, що Користувач, але не бачить загальної кількості замовлень, дверей і сум.<br>
-      <b>Лише перегляд</b> — бачить графік, дзвонить і будує маршрут, нічого не змінює і не бачить загальних підсумків.<br>
+      <b>Менеджер</b> — те саме, що Користувач, але не бачить цін, сум і загальної кількості замовлень і дверей.<br>
+      <b>Лише перегляд</b> — бачить графік, дзвонить і будує маршрут, нічого не змінює, не бачить цін і підсумків.<br>
       Нові акаунти чекають, доки ви їх не підтвердите.
     </div>
     <div id="usersList"></div>
@@ -808,9 +815,9 @@ body.role-manager .hdr-user .avatar{background:var(--viber);box-shadow:0 0 0 2px
       <div class="fg"><label>Виробник</label><input type="text" id="fManuf" placeholder="Марк, Максі, Термінус..." autocomplete="off" list="manufList"><datalist id="manufList"></datalist></div>
       <div class="fg-row">
         <div class="fg"><label>К-сть (шт.)</label><input type="number" id="fQty" value="1" min="0" max="999" inputmode="numeric" oninput="updateSumPreview()"></div>
-        <div class="fg"><label>Ціна (грн)</label><input type="number" id="fPrice" placeholder="0" min="0" inputmode="numeric" oninput="updateSumPreview()"></div>
+        <div class="fg price-only"><label>Ціна (грн)</label><input type="number" id="fPrice" placeholder="0" min="0" inputmode="numeric" oninput="updateSumPreview()"></div>
       </div>
-      <div class="sum-preview"><span>Сума</span><b id="sumPreview">0 ₴</b></div>
+      <div class="sum-preview price-only"><span>Сума</span><b id="sumPreview">0 ₴</b></div>
       <div class="fg"><label>Нотатки</label><textarea id="fNotes" placeholder="Поверх, код домофону, що взяти..."></textarea></div>
       <label class="check-row"><input type="checkbox" id="fDone"> Монтаж виконано</label>
       <div class="audit-box" id="auditBox" style="display:none"></div>
@@ -1043,7 +1050,8 @@ function orderCardHTML(o) {
   if(o.manuf && o.manuf !== "Резерв") tags.push(`<div class="oc-tag">${esc(o.manuf)}</div>`);
   if(o.qty && !reserve) tags.push(`<div class="oc-tag">${esc(o.qty)} шт.</div>`);
   if(o.delivery && o.delivery !== "В клієнта") tags.push(`<div class="oc-tag delivery">${esc(o.delivery)}</div>`);
-  if(tags.length || o.sum) h += `<div class="oc-bottom"><div class="oc-tags">${tags.join("")}</div>${o.sum ? `<div class="oc-price">${fmt(o.sum)} ₴</div>` : ""}</div>`;
+  const showPrice = can("totals") && o.sum;
+  if(tags.length || showPrice) h += `<div class="oc-bottom"><div class="oc-tags">${tags.join("")}</div>${showPrice ? `<div class="oc-price">${fmt(o.sum)} ₴</div>` : ""}</div>`;
   const who = o.updatedByName || o.createdByName;
   if(who) h += `<div class="oc-meta">✎ ${esc(who)} · ${relTime(o.updatedAt || o.createdAt)}</div>`;
   return h + `</div>`;
@@ -1170,8 +1178,8 @@ function updateSumPreview() {
 // SAVE / DELETE / DUPLICATE
 // ═══════════════════════════════════════
 function readForm() {
-  const qty = +document.getElementById("fQty").value||0, price = +document.getElementById("fPrice").value||0;
-  return {
+  const qty = +document.getElementById("fQty").value||0, price = can("totals") ? (+document.getElementById("fPrice").value||0) : 0;
+  const r = {
     date: document.getElementById("fDate").value,
     time: document.getElementById("fTime").value,
     client: document.getElementById("fClient").value.trim(),
@@ -1184,6 +1192,8 @@ function readForm() {
     notes: document.getElementById("fNotes").value.trim(),
     done: document.getElementById("fDone").checked
   };
+  if(!can("totals")) { delete r.price; delete r.sum; }
+  return r;
 }
 function saveOrder() {
   const f = readForm();
@@ -1280,15 +1290,16 @@ function exportRows(data, title, fname) {
   if(!data.length) { toast("Немає даних для вигрузки","warn"); return false; }
   if(typeof XLSX === "undefined") { toast("Модуль Excel не завантажився — перевірте інтернет","err"); return false; }
   const wb = XLSX.utils.book_new();
+  const money = can("totals");
   const wsData = [["Е-Монтаж — " + title],
-    ["", "День", "Дата", "Час", "Клієнт", "Номер телефону", "Адреса монтажу", "Доставка", "Виробник", "Кіл-ть", "Ціна", "Сума", "Майстер", "Виконано", "Нотатки"]];
+    ["", "День", "Дата", "Час", "Клієнт", "Номер телефону", "Адреса монтажу", "Доставка", "Виробник", "Кіл-ть", ...(money ? ["Ціна", "Сума"] : []), "Майстер", "Виконано", "Нотатки"]];
   [...data].sort((a,b) => (a.date+a.time).localeCompare(b.date+b.time)).forEach(o => {
-    wsData.push(["", DAYS_UA[parseDate(o.date).getDay()], o.date, o.time||"", o.client||"", o.phone||"", o.addr||"", o.delivery||"", o.manuf||"", +o.qty||0, +o.price||0, +o.sum||0, o.master||"", o.done ? "так" : "", o.notes||""]);
+    wsData.push(["", DAYS_UA[parseDate(o.date).getDay()], o.date, o.time||"", o.client||"", o.phone||"", o.addr||"", o.delivery||"", o.manuf||"", +o.qty||0, ...(money ? [+o.price||0, +o.sum||0] : []), o.master||"", o.done ? "так" : "", o.notes||""]);
   });
   if(can("totals")) wsData.push(["", "", "", "", "ВСЬОГО", "", "", "", "", data.reduce((s,o)=>s+(+o.qty||0),0), "", data.reduce((s,o)=>s+(+o.sum||0),0), "", "", ""]);
   const ws = XLSX.utils.aoa_to_sheet(wsData);
-  ws["!cols"] = [{wch:3},{wch:5},{wch:12},{wch:7},{wch:18},{wch:16},{wch:38},{wch:12},{wch:14},{wch:7},{wch:8},{wch:10},{wch:12},{wch:9},{wch:30}];
-  ws["!merges"] = [{s:{r:0,c:0}, e:{r:0,c:14}}];
+  ws["!cols"] = [{wch:3},{wch:5},{wch:12},{wch:7},{wch:18},{wch:16},{wch:38},{wch:12},{wch:14},{wch:7},...(money ? [{wch:8},{wch:10}] : []),{wch:12},{wch:9},{wch:30}];
+  ws["!merges"] = [{s:{r:0,c:0}, e:{r:0,c: money ? 14 : 12}}];
   XLSX.utils.book_append_sheet(wb, ws, "Графік");
   if(can("totals")) {
   const byMaster = {};
@@ -1642,7 +1653,8 @@ const STAMP_FIELDS = ["createdAt","createdBy","createdByName","updatedAt","updat
 
 let fbAuth = null, fbDb = null;
 let currentUid = null, me = null;          // me = {uid,email,name,role,...}
-let cloudOrders = {}, cloudMeta = null;
+let cloudOrders = {}, cloudMeta = null, cloudPrices = {};
+let ordersLoaded = false, pricesLoaded = false, dataTotals = false, pricesMigrated = false;
 let dataRefs = [], userRef = null, usersRef = null, logRef = null;
 let dataStarted = false, firstOrders = true, loginLogged = false;
 let usersCache = {}, logCache = [];
@@ -1746,6 +1758,7 @@ function onRoleChanged(prevRole) {
     loginLogged = true;
     writeLog([{action:"login", text:"Увійшов у програму"}]);
   }
+  if(dataStarted && dataTotals !== can("totals")) { stopData(); orders = []; }
   startData();
   if(can("admin")) startAdmin(); else stopAdmin();
   renderAll();
@@ -1777,17 +1790,31 @@ function onSignedOut() {
 function startData() {
   if(dataStarted) return;
   dataStarted = true; firstOrders = true;
+  ordersLoaded = false; pricesLoaded = false;
+  dataTotals = can("totals");
+  cloudPrices = {};
   const oref = fbDb.ref("app/orders");
   oref.on("value", snap => {
     const val = snap.val() || {};
     if(firstOrders) {
       firstOrders = false;
-      if(!snap.exists() && can("admin")) { migrateLegacy(); return; }
+      if(!snap.exists() && can("admin")) { pricesLoaded = true; ordersLoaded = true; migrateLegacy(); return; }
     }
     cloudOrders = JSON.parse(JSON.stringify(val));
-    orders = Object.keys(val).map(k => ({...val[k], id: val[k].id || k}));
-    saveLocal(); renderAll(); hideSplash();
+    ordersLoaded = true;
+    rebuildOrders();
   }, onDbError);
+  const refs = [oref];
+  if(dataTotals) {
+    // Prices live in a separate node that only Admin and User can read (Manager / Viewer never download them)
+    const pref = fbDb.ref("app/prices");
+    pref.on("value", snap => {
+      cloudPrices = JSON.parse(JSON.stringify(snap.val() || {}));
+      pricesLoaded = true;
+      rebuildOrders();
+    }, onDbError);
+    refs.push(pref);
+  } else pricesLoaded = true;
   const mref = fbDb.ref("app/meta");
   mref.on("value", snap => {
     const m = snap.val();
@@ -1800,10 +1827,51 @@ function startData() {
     renderChips();
     if(document.getElementById("tab-settings").classList.contains("on")) renderSettings();
   }, onDbError);
-  dataRefs = [oref, mref];
+  refs.push(mref);
+  dataRefs = refs;
+}
+
+// cloud order (no prices) + price record → order object used by the UI
+function priceOf(k) {
+  const p = cloudPrices[k], o = cloudOrders[k] || {};
+  if(p) return {price: +p.price || 0, sum: +p.sum || 0};
+  if(o.price !== undefined || o.sum !== undefined) return {price: +o.price || 0, sum: +o.sum || 0}; // old inline format
+  return {price: 0, sum: 0};
+}
+function mergedOrder(k) {
+  const o = {...cloudOrders[k], id: cloudOrders[k].id || k};
+  delete o.price; delete o.sum;
+  if(dataTotals && can("totals")) {
+    const p = priceOf(k);
+    o.price = p.price;
+    o.sum = p.price ? (+o.qty || 0) * p.price : p.sum;
+  }
+  return o;
+}
+function rebuildOrders() {
+  if(!ordersLoaded || !pricesLoaded) return;
+  orders = Object.keys(cloudOrders).map(mergedOrder);
+  saveLocal(); renderAll(); hideSplash();
+  migrateInlinePrices();
+}
+// One-time (admin): move prices out of order records into app/prices
+function migrateInlinePrices() {
+  if(pricesMigrated || !can("admin") || !dataTotals) return;
+  const up = {};
+  for(const k in cloudOrders) {
+    const o = cloudOrders[k];
+    if(o.price === undefined && o.sum === undefined) continue;
+    if(!cloudPrices[k]) up["app/prices/" + k] = {price: +o.price || 0, sum: +o.sum || 0};
+    up[`app/orders/${k}/price`] = null;
+    up[`app/orders/${k}/sum`] = null;
+  }
+  pricesMigrated = true;
+  if(!Object.keys(up).length) return;
+  fbDb.ref().update(up).then(() => toast("Ціни перенесено в захищений розділ бази 🔒","ok",3500)).catch(err => { pricesMigrated = false; console.warn("price migration", err); });
 }
 function stopData() {
   dataRefs.forEach(r => r.off()); dataRefs = []; dataStarted = false;
+  cloudPrices = {}; ordersLoaded = false; pricesLoaded = false;
 }
 function onDbError(err) {
   console.error(err);
@@ -1825,7 +1893,7 @@ async function migrateLegacy() {
     loadLocal();
     if(!orders.length) seedData();
   }
-  cloudOrders = {};
+  cloudOrders = {}; cloudPrices = {};
   saveData("Перенесення даних у спільну базу");
   renderAll(); hideSplash();
   if(orders.length) toast(`Перенесено ${orders.length} замовлень у спільну базу ☁️`, "ok", 4000);
@@ -1833,6 +1901,7 @@ async function migrateLegacy() {
 
 // ── Saving: diff against cloud → per-order writes + audit log ──
 function fbKey(id) { return String(id).replace(/[.#$\[\]\/]/g, "_"); }
+function stripPrices(o) { delete o.price; delete o.sum; return o; }
 function clean(o) { const r = {}; for(const k in o) if(o[k] !== undefined && k !== "_k") r[k] = o[k]; return r; }
 function normVal(f, v) {
   if(f === "done") return v ? "так" : "ні";
@@ -1863,20 +1932,33 @@ function saveData(label) {
   const cur = {};
   orders.forEach(o => { cur[fbKey(o.id)] = o; });
 
+  const totals = can("totals") && dataTotals;
+  const stamp = {updatedAt: now, updatedBy: uid, updatedByName: name};
+  const priceRec = o => { const price = +o.price || 0; return {price, sum: price ? (+o.qty||0) * price : (+o.sum || 0)}; };
   for(const k in cur) {
-    const o = cur[k], prev = cloudOrders[k];
-    o.sum = (+o.qty||0) * (+o.price||0) || +o.sum || 0;
-    if(!prev) {
+    const o = cur[k], base = cloudOrders[k];
+    if(!totals) { delete o.price; delete o.sum; }
+    else o.sum = priceRec(o).sum;
+    if(!base) {
       if(!o.createdAt) { o.createdAt = now; o.createdBy = uid; o.createdByName = name; }
-      o.updatedAt = now; o.updatedBy = uid; o.updatedByName = name;
-      updates["app/orders/" + k] = clean(o);
+      Object.assign(o, stamp);
+      updates["app/orders/" + k] = stripPrices(clean(o));
+      if(totals) updates["app/prices/" + k] = priceRec(o);
       events.push({action:"create", orderId:o.id, client:o.client||"", date:o.date||"", text:"Додав замовлення: " + orderLabel(o)});
     } else {
+      const prev = mergedOrder(k);
       const ch = diffFields(prev, o);
       if(!ch.length) continue;
-      o.updatedAt = now; o.updatedBy = uid; o.updatedByName = name;
+      Object.assign(o, stamp);
       if(!o.createdAt && prev.createdAt) { o.createdAt = prev.createdAt; o.createdBy = prev.createdBy; o.createdByName = prev.createdByName; }
-      updates["app/orders/" + k] = clean(o);
+      // write only the changed fields, so data this role cannot see is never overwritten
+      ch.forEach(c => {
+        if(c.f === "price") return;
+        const v = c.f === "done" ? !!o.done : c.f === "qty" ? (+o.qty || 0) : (o[c.f] ?? "");
+        updates[`app/orders/${k}/${c.f}`] = v;
+      });
+      for(const s in stamp) updates[`app/orders/${k}/${s}`] = stamp[s];
+      if(totals && ch.some(c => c.f === "price" || c.f === "qty")) updates["app/prices/" + k] = priceRec(o);
       const onlyDone = ch.length === 1 && ch[0].f === "done";
       events.push({
         action: onlyDone ? "done" : "update", orderId:o.id, client:o.client||"", date:o.date||"",
@@ -1893,6 +1975,7 @@ function saveData(label) {
   deletes.forEach(k => {
     const o = cloudOrders[k];
     updates["app/orders/" + k] = null;
+    updates["app/prices/" + k] = null;
     events.push({action:"delete", orderId:o.id||k, client:o.client||"", date:o.date||"", text:"Видалив замовлення: " + orderLabel(o)});
   });
 
@@ -1924,9 +2007,14 @@ function saveData(label) {
 
   // optimistic cloud mirror
   for(const p in updates) {
-    if(!p.startsWith("app/orders/")) continue;
-    const k = p.slice(11);
-    if(updates[p] === null) delete cloudOrders[k]; else cloudOrders[k] = JSON.parse(JSON.stringify(updates[p]));
+    const seg = p.split("/");
+    if(seg[1] === "orders") {
+      const k = seg[2];
+      if(seg.length === 3) { if(updates[p] === null) delete cloudOrders[k]; else cloudOrders[k] = JSON.parse(JSON.stringify(updates[p])); }
+      else if(cloudOrders[k]) cloudOrders[k][seg[3]] = updates[p];
+    } else if(seg[1] === "prices") {
+      if(updates[p] === null) delete cloudPrices[seg[2]]; else cloudPrices[seg[2]] = {...updates[p]};
+    }
   }
   if(updates["app/meta"]) cloudMeta = JSON.parse(JSON.stringify(updates["app/meta"]));
 
@@ -1955,7 +2043,7 @@ function writeLog(events, updates) {
 }
 
 function revertToCloud() {
-  orders = Object.keys(cloudOrders).map(k => ({...cloudOrders[k], id: cloudOrders[k].id || k}));
+  orders = Object.keys(cloudOrders).map(mergedOrder);
   if(cloudMeta) { const m = pickMeta(cloudMeta); masters = m.masters; mapRegion = m.region; }
   renderAll();
 }
