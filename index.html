@@ -472,6 +472,26 @@ body.role-manager .totals,body.role-viewer .totals{display:none!important}
 body.role-manager .hdr-user .avatar{background:var(--viber);box-shadow:0 0 0 2px #dcd6fd,0 3px 8px rgba(115,96,242,.25)}
 
 body.role-manager .price-only,body.role-viewer .price-only{display:none!important}
+
+/* ── DAYS OFF (red) ── */
+.day-group.dayoff{border-color:#ffc9cc}
+.day-group.dayoff .day-header{background:linear-gradient(90deg,#ffecec,#fff6f6)}
+.day-group.dayoff .day-num{color:var(--red);border-color:#ffc9cc;background:#fff}
+.day-group.dayoff .day-header .day-name{color:#e0565a}
+.day-group.dayoff .day-header .day-count{color:var(--red);font-weight:700}
+.day-group.today.dayoff .day-num{background:var(--red);color:#fff}
+.day-group.dayoff.past{opacity:.6}
+.off-badge{background:var(--red-soft);color:var(--red);border:1px solid var(--red-line);padding:1px 7px;border-radius:6px;font-size:9.5px;letter-spacing:.04em}
+.work-badge{background:var(--green-soft);color:var(--green);padding:1px 7px;border-radius:6px;font-size:9.5px;letter-spacing:.04em}
+.day-actions{display:flex;border-top:1px solid var(--line)}
+.day-actions button{flex:1;padding:11px 8px;background:none;border:none;font-size:13px;font-weight:600;color:var(--text3);cursor:pointer;font-family:inherit}
+.day-actions button:active{background:var(--surface2)}
+.day-actions .da-add{color:var(--text2)}
+.day-actions .da-off{border-left:1px solid var(--line);color:#c2410c}
+.day-actions .da-off.is-off{color:var(--green)}
+.day-group.dayoff .day-actions{background:#fffafa}
+.cache-box{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:var(--r2);padding:12px 14px;margin-bottom:12px;box-shadow:var(--shadow)}
+.cache-box .sr-sub{line-height:1.4}
 </style>
 </head>
 <body>
@@ -690,7 +710,7 @@ body.role-manager .price-only,body.role-viewer .price-only{display:none!importan
 
     <div class="settings-section">
       <div class="settings-row">
-        <div><div class="sr-lbl">Версія</div><div class="sr-sub">Е-Монтаж v5.4 · Командна робота</div></div>
+        <div><div class="sr-lbl">Версія</div><div class="sr-sub">Е-Монтаж v5.5 · Командна робота</div></div>
       </div>
     </div>
   </div>
@@ -709,6 +729,13 @@ body.role-manager .price-only,body.role-viewer .price-only{display:none!importan
 
   <!-- SUB: ЖУРНАЛ -->
   <div class="sub" id="sub-log">
+    <div class="cache-box">
+      <div style="flex:1;min-width:0">
+        <div class="sr-lbl">Кеш програми</div>
+        <div class="sr-sub">Оновлює програму до останньої версії та заново завантажує дані з сервера. Записи в базі не видаляються.</div>
+      </div>
+      <button class="settings-btn" onclick="clearAppCache()">🧹 Очистити кеш</button>
+    </div>
     <div class="fg-row" style="margin-bottom:10px">
       <select class="inp" id="logUser" onchange="renderLog()"><option value="">Усі користувачі</option></select>
       <select class="inp" id="logAction" onchange="renderLog()">
@@ -719,6 +746,7 @@ body.role-manager .price-only,body.role-viewer .price-only{display:none!importan
         <option value="delete">Видалення</option>
         <option value="bulk">Масові дії</option>
         <option value="admin">Адміністрування</option>
+        <option value="dayoff">Вихідні дні</option>
         <option value="login">Входи</option>
       </select>
     </div>
@@ -778,6 +806,7 @@ body.role-manager .price-only,body.role-viewer .price-only{display:none!importan
       <div class="prof-sec">Акаунт</div>
       <div class="prof-links">
         <button class="prof-link" onclick="changePassword()">🔒 Змінити пароль</button>
+        <button class="prof-link" onclick="clearAppCache()">🧹 Очистити кеш і оновити програму</button>
         <button class="prof-link danger" onclick="logout()">🚪 Вийти з акаунту</button>
       </div>
     </div>
@@ -846,6 +875,7 @@ let mapRegion = "Львів";
 let masterFilter = "";
 let onlyBusy = false;
 let pendingScrollToday = true;
+let daysOff = {};   // {"2026-10-28": {off:true, reason:"Свято"}} — shared via app/daysoff
 const MONTHS_UA = ["Січень","Лютий","Березень","Квітень","Травень","Червень","Липень","Серпень","Вересень","Жовтень","Листопад","Грудень"];
 const MONTHS_GEN = ["Січня","Лютого","Березня","Квітня","Травня","Червня","Липня","Серпня","Вересня","Жовтня","Листопада","Грудня"];
 const DAYS_UA = ["Нд","Пн","Вт","Ср","Чт","Пт","Сб"];
@@ -989,6 +1019,7 @@ function renderSchedule() {
     const dow  = date.getDay();
     const dayOrders = monthOrders.filter(o => o.date === key).sort((a,b) => (a.time||"").localeCompare(b.time||""));
     const isWeekend = dow === 0 || dow === 6;
+    const off       = dayOffInfo(key, dow);
     const isToday   = key === todayKey;
     const isPast    = key < todayKey;
     if(onlyBusy && !dayOrders.length && !isToday) continue;
@@ -997,14 +1028,15 @@ function renderSchedule() {
     const reserves = dayOrders.length - real.length;
     const daySum = real.reduce((s,o)=>s+(+o.sum||0),0);
     const open = dayOrders.length > 0 || isToday;
-    let countTxt = real.length ? `${real.length} ${plural(real.length,"замовлення","замовлення","замовлень")}` : (isWeekend ? "Вихідний" : "Вільний день");
+    let countTxt = real.length ? `${real.length} ${plural(real.length,"замовлення","замовлення","замовлень")}` : (off.off ? off.label : "Вільний день");
+    if(real.length && off.off && !off.custom) countTxt += ` · вихідний`;
     if(reserves) countTxt += ` · резерв`;
 
-    html += `<div class="day-group${isToday?" today":""}${isPast&&!isToday?" past":""}" id="dg-${key}">
-      <div class="day-header${isWeekend?" weekend":""}" onclick="toggleDay('${key}')">
+    html += `<div class="day-group${isToday?" today":""}${isPast&&!isToday?" past":""}${off.off?" dayoff":""}" id="dg-${key}">
+      <div class="day-header${off.off?" weekend":""}" onclick="toggleDay('${key}')">
         <div class="day-num">${day}</div>
         <div class="day-info">
-          <div class="day-name">${isToday ? DAYS_FULL[dow] : DAYS_UA[dow]}${isToday?'<span class="today-badge">Сьогодні</span>':""}</div>
+          <div class="day-name">${isToday ? DAYS_FULL[dow] : DAYS_UA[dow]}${isToday?'<span class="today-badge">Сьогодні</span>':""}${off.off && off.custom ? '<span class="off-badge">' + esc(off.label) + '</span>' : ""}${!off.off && isWeekend ? '<span class="work-badge">Робочий</span>' : ""}</div>
           <div class="day-count">${countTxt}</div>
         </div>
         ${daySum > 0 && can("totals") ? `<div class="day-sum">${fmt(daySum)} ₴</div>` : ""}
@@ -1012,7 +1044,10 @@ function renderSchedule() {
       </div>
       <div class="orders-wrap ${open?"":"collapsed"}" id="ow-${key}">`;
     dayOrders.forEach(o => { html += orderCardHTML(o); });
-    html += `<div class="empty-day" onclick="openModalForDate('${key}')">+ ${dayOrders.length ? "Ще одне замовлення" : "Додати замовлення на " + day + " " + MONTHS_GEN[currentMonth].toLowerCase()}</div>`;
+    html += `<div class="day-actions edit-only">
+      <button class="da-add" onclick="openModalForDate('${key}')">+ ${dayOrders.length ? "Ще одне замовлення" : "Додати замовлення"}</button>
+      <button class="da-off ${off.off ? "is-off" : ""}" onclick="toggleDayOff('${key}')">${off.off ? "💼 Зробити робочим" : "🏖 Зробити вихідним"}</button>
+    </div>`;
     html += `</div></div>`;
   }
   if(!html) html = `<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><p>Цього місяця замовлень немає${masterFilter ? " у майстра " + esc(masterFilter) : ""}</p></div>`;
@@ -1131,6 +1166,8 @@ function openModal(id) {
 }
 function openModalForDate(date) {
   if(!can("edit")) return;
+  const off = dayOffInfo(date, parseDate(date).getDay());
+  if(off.off && !confirm(`${fmtHuman(date)} — ${off.label.toLowerCase()}.\nВсе одно додати замовлення на цей день?`)) return;
   openModal();
   document.getElementById("fDate").value = date;
   if(masterFilter) document.getElementById("fMaster").value = masterFilter;
@@ -1436,6 +1473,39 @@ function plural(n, one, few, many) {
   return many;
 }
 
+// ═══════════════════════════════════════
+// DAYS OFF (weekends + holidays, editable)
+// ═══════════════════════════════════════
+function dayOffInfo(key, dow) {
+  const rec = daysOff[key];
+  const weekend = dow === 0 || dow === 6;
+  if(rec && typeof rec.off === "boolean") {
+    if(rec.off) return {off:true, custom:true, label: (rec.reason || "Вихідний").trim()};
+    return {off:false, custom:true, label:""};
+  }
+  return weekend ? {off:true, custom:false, label:"Вихідний"} : {off:false, custom:false, label:""};
+}
+function toggleDayOff(key) {
+  if(!can("edit")) return;
+  const d = parseDate(key), dow = d.getDay(), weekend = dow === 0 || dow === 6;
+  const cur = dayOffInfo(key, dow);
+  let val, text;
+  if(cur.off) {
+    if(!confirm(`Зробити ${fmtHuman(key)} (${DAYS_FULL[dow].toLowerCase()}) робочим днем?`)) return;
+    val = weekend ? {off:false} : null;
+    text = `Зробив робочим днем: ${fmtHuman(key)}`;
+  } else {
+    const reason = prompt(`${fmtHuman(key)}, ${DAYS_FULL[dow].toLowerCase()} — вихідний.\nПричина (можна змінити):`, "Свято");
+    if(reason === null) return;
+    const r = reason.trim().slice(0, 40) || "Вихідний";
+    val = weekend && r === "Вихідний" ? null : {off:true, reason:r};
+    text = `Позначив вихідним: ${fmtHuman(key)} (${r})`;
+  }
+  const cnt = orders.filter(o => o.date === key && !isReserve(o)).length;
+  if(cur.off === false && cnt) toast(`Увага: на цей день вже ${cnt} ${plural(cnt,"замовлення","замовлення","замовлень")}`, "warn", 4000);
+  setDayOff(key, val, text);
+}
+
 function seedData() {
   if(orders.length > 0) return; // already has data
   const raw = [
@@ -1654,6 +1724,7 @@ const STAMP_FIELDS = ["createdAt","createdBy","createdByName","updatedAt","updat
 let fbAuth = null, fbDb = null;
 let currentUid = null, me = null;          // me = {uid,email,name,role,...}
 let cloudOrders = {}, cloudMeta = null, cloudPrices = {};
+let daysOffDenied = false;
 let ordersLoaded = false, pricesLoaded = false, dataTotals = false, pricesMigrated = false, pricesDenied = false;
 let dataRefs = [], userRef = null, usersRef = null, logRef = null;
 let dataStarted = false, firstOrders = true, loginLogged = false;
@@ -1825,6 +1896,16 @@ function startData() {
     });
     refs.push(pref);
   } else pricesLoaded = true;
+  const dref = fbDb.ref("app/daysoff");
+  dref.on("value", snap => {
+    daysOff = snap.val() || {};
+    try { localStorage.setItem("em_daysoff", JSON.stringify(daysOff)); } catch(e){}
+    renderSchedule();
+  }, err => {
+    console.warn("app/daysoff", err);
+    daysOffDenied = true;
+  });
+  refs.push(dref);
   const mref = fbDb.ref("app/meta");
   mref.on("value", snap => {
     const m = snap.val();
@@ -1881,7 +1962,35 @@ function migrateInlinePrices() {
 }
 function stopData() {
   dataRefs.forEach(r => r.off()); dataRefs = []; dataStarted = false;
-  cloudPrices = {}; ordersLoaded = false; pricesLoaded = false; pricesDenied = false;
+  cloudPrices = {}; ordersLoaded = false; pricesLoaded = false; pricesDenied = false; daysOffDenied = false;
+}
+function setDayOff(key, val, text) {
+  if(!fbDb || !me) return;
+  if(daysOffDenied) { toast("Оновіть правила бази у Firebase, щоб зберігати вихідні дні","warn",7000,{label:"Як?", fn: showRulesHelp}); return; }
+  const prev = daysOff[key];
+  if(val === null) delete daysOff[key]; else daysOff[key] = {...val, by: myName(), at: Date.now()};
+  renderSchedule();
+  const up = {["app/daysoff/" + key]: val === null ? null : daysOff[key]};
+  writeLog([{action:"dayoff", date:key, text}], up);
+  fbDb.ref().update(up).then(() => toast(val && val.off ? "День позначено вихідним 🏖" : "День став робочим", "ok")).catch(err => {
+    if(prev) daysOff[key] = prev; else delete daysOff[key];
+    renderSchedule();
+    if(/permission/i.test(err.code || err.message)) { daysOffDenied = true; toast("Немає дозволу — оновіть правила бази у Firebase","warn",7000,{label:"Як?", fn: showRulesHelp}); }
+    else toast("Не вдалося зберегти: " + err.message, "err");
+  });
+}
+// ── Cache ──
+async function clearAppCache() {
+  if(!confirm("Очистити кеш програми?\n\nБуде видалено збережену на цьому пристрої копію даних і налаштувань відображення, а програма перезавантажиться з сервера (підтягнеться остання версія).\n\nЗамовлення в базі НЕ видаляються, ви залишитеся в акаунті.")) return;
+  try {
+    Object.keys(localStorage).filter(k => k.startsWith("em_")).forEach(k => localStorage.removeItem(k));
+    sessionStorage.clear();
+  } catch(e) {}
+  try { if(window.caches) { const ks = await caches.keys(); await Promise.all(ks.map(k => caches.delete(k))); } } catch(e) {}
+  try { if(navigator.serviceWorker) { const regs = await navigator.serviceWorker.getRegistrations(); await Promise.all(regs.map(r => r.unregister())); } } catch(e) {}
+  if(me && can("view")) writeLog([{action:"admin", text:"Очистив кеш програми на своєму пристрої"}]);
+  toast("Кеш очищено — перезавантаження…","ok",1500);
+  setTimeout(() => { location.replace(location.pathname + "?r=" + Date.now() + location.hash); }, 700);
 }
 function showRulesHelp() {
   alert("Як оновити правила бази:\n\n1. Відкрийте console.firebase.google.com → проєкт GR2026\n2. Realtime Database → вкладка «Rules»\n3. Видаліть усе й вставте вміст файлу database.rules.json\n4. Натисніть «Publish»\n5. Оновіть цю сторінку\n\nПісля цього ціни автоматично перейдуть у захищений розділ.");
@@ -2085,6 +2194,7 @@ function loadLocal() {
     const o = localStorage.getItem("em_orders"); if(o) orders = JSON.parse(o);
     const m = localStorage.getItem("em_masters"); if(m) masters = JSON.parse(m);
     const r = localStorage.getItem("em_region"); if(r !== null) mapRegion = r;
+    const dof = localStorage.getItem("em_daysoff"); if(dof) daysOff = JSON.parse(dof);
   } catch(e) {}
 }
 function loadData() { loadLocal(); }
@@ -2266,7 +2376,7 @@ function logout() {
 // ═══════════════════════════════════════
 // ADMIN PANELS: USERS + ACTIVITY LOG + ORDER HISTORY
 // ═══════════════════════════════════════
-const LOG_ICONS = {create:"➕", update:"✏️", done:"✅", delete:"🗑️", bulk:"📦", admin:"🛡️", login:"🔑"};
+const LOG_ICONS = {create:"➕", update:"✏️", done:"✅", delete:"🗑️", bulk:"📦", admin:"🛡️", login:"🔑", dayoff:"🏖️"};
 
 function goSub(name, silent) {
   document.querySelectorAll(".seg-btn").forEach(b => b.classList.toggle("on", b.dataset.sub === name));
