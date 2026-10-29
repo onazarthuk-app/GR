@@ -98,7 +98,7 @@ button{font-family:inherit}
 .bnav{
   position:fixed;bottom:0;left:0;right:0;z-index:300;background:rgba(255,255,255,.97);
   backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-  border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);
+  border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(6,1fr);
   padding:6px 4px calc(6px + env(safe-area-inset-bottom));
   box-shadow:0 -4px 20px rgba(16,24,40,.06);
 }
@@ -662,10 +662,62 @@ kbd{font-family:'Roboto',sans-serif;font-size:10.5px;font-weight:700;line-height
   /* toasts bottom-right */
   .toast-wrap{left:auto;right:24px;bottom:24px;transform:none;width:360px}
 }
-@media (min-width:1024px) and (max-height:820px){ .mcal{display:none} }
+@media (min-width:1024px) and (max-height:960px){ .mcal{display:none} }
 @media (min-width:1024px) and (max-width:1500px){ .hdr-add .lbl{display:none} .hdr-add{padding:10px 12px} }
 @media (min-width:1024px) and (max-width:1280px){ .hdr-search kbd{display:none} .hdr-title{font-size:21px} .header{gap:16px;padding:14px 24px} .hdr-nav{padding-left:16px} .panel{padding:20px 24px 40px} }
 @media print{ .side,.hdr-actions{display:none!important} body{padding-left:0!important} }
+
+/* ═══ APPROVALS ═══ */
+.order-card.pending{background:#fffbf2;border-left:4px solid #f59e0b}
+.pend-note{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#b45309;background:var(--amber-soft);border:1px solid #fde3b4;padding:4px 9px;border-radius:7px;margin-bottom:10px}
+.appr-bar{display:flex;align-items:center;gap:8px;margin:-4px -4px 12px;padding:8px 8px 8px 12px;border-radius:10px;background:var(--amber-soft);border:1px solid #fde3b4;cursor:default}
+.appr-who{flex:1;min-width:0;font-size:12.5px;color:#92400e;line-height:1.3}
+.appr-who::before{content:'⏳ Очікує підтвердження · ';font-weight:700}
+.appr-ok{padding:8px 12px;border:none;border-radius:8px;background:var(--green);color:#fff;font-weight:800;font-size:13px;cursor:pointer;white-space:nowrap}
+.appr-ok:hover{filter:brightness(1.08)}
+.appr-no{width:34px;height:34px;border-radius:8px;border:1px solid var(--red-line);background:#fff;color:var(--red);font-weight:800;cursor:pointer;flex-shrink:0}
+.appr-no:hover{background:var(--red-soft)}
+.appr-sec{display:flex;align-items:center;gap:10px;margin:18px 2px 8px;font-family:'Roboto Condensed',sans-serif;font-size:17px;font-weight:800}
+.appr-sec b{background:var(--amber);color:#fff;font-size:12px;min-width:22px;height:22px;border-radius:11px;display:inline-flex;align-items:center;justify-content:center;padding:0 7px;font-family:'Roboto',sans-serif}
+.appr-sec .link-btn{margin-left:auto;font-family:'Roboto',sans-serif;font-size:13px}
+.appr-grid{display:grid;gap:4px}
+.appr-grid .res-date{margin-top:8px}
+.appr-grid .meas-card,.m-grid .meas-card{border:1px solid var(--line);border-radius:var(--r2);box-shadow:var(--shadow)}
+
+/* ═══ MEASUREMENTS ═══ */
+.m-head{display:flex;flex-direction:column;gap:10px;margin-bottom:6px}
+.m-head .chip b{font-weight:800;margin-left:3px}
+.m-head .chip b:empty{display:none}
+.m-add{padding:12px;border:none;border-radius:var(--r2);background:var(--red);color:#fff;font-weight:800;font-size:15px;cursor:pointer;box-shadow:0 4px 12px rgba(230,36,41,.25)}
+.m-day{font-size:12px;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin:18px 2px 8px}
+.m-day.today span{color:var(--red)}
+.m-grid{display:grid;gap:10px}
+.meas-card{border-left:4px solid var(--blue)}
+.meas-card.st-pending{border-left-color:#f59e0b;background:#fffbf2}
+.meas-card.st-done{border-left-color:var(--green);background:#f7fcf9}
+.m-pill{display:inline-block;flex-shrink:0;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:800;white-space:nowrap}
+.m-pill.pending{background:var(--amber-soft);color:#b45309}
+.m-pill.approved{background:var(--blue-soft);color:var(--blue)}
+.m-pill.done{background:var(--green-soft);color:var(--green)}
+.day-meas{display:flex;flex-direction:column;gap:6px;padding:10px 14px;border-top:1px solid var(--line);background:#f6f9ff}
+.dm-row{display:flex;align-items:center;gap:8px;width:100%;padding:9px 11px;border:1px solid #d8e5fb;border-radius:10px;background:#fff;font-size:13.5px;color:var(--text);cursor:pointer;text-align:left;font-family:inherit}
+.dm-row:hover{border-color:#b8d0f7}
+.dm-row.st-pending{border-color:#fde3b4;background:#fffbf2}
+.dm-row.st-done{opacity:.7}
+.dm-addr{flex:1;min-width:0;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dm-ic{font-size:15px}
+.bn{position:relative}
+.bn-dot{position:absolute;top:2px;left:50%;margin-left:6px;min-width:16px;height:16px;border-radius:8px;background:#d97706;color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 4px;border:2px solid #fff}
+.btn-approve{width:100%}
+
+@media (min-width:1024px){
+  .m-head{flex-direction:row;align-items:center;justify-content:space-between;margin-bottom:6px}
+  .m-add{padding:10px 18px;font-size:14px}
+  .m-grid{grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:12px}
+  .appr-grid{grid-template-columns:repeat(auto-fill,minmax(400px,1fr));gap:4px 14px}
+  .day-meas{grid-column:1/-1;margin:0;border:1px solid #d8e5fb;border-radius:12px;padding:10px}
+  .order-card.pending:hover{border-color:#f6c56b}
+}
 </style>
 </head>
 <body>
@@ -731,9 +783,9 @@ kbd{font-family:'Roboto',sans-serif;font-size:10.5px;font-weight:700;line-height
     </button>
   </div>
 
-  <button class="side-new edit-only" onclick="openModal()" title="Нове замовлення (N)">
+  <button class="side-new edit-only" onclick="openModal()" title="Нове замовлення">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-    <span class="lbl">Нове замовлення</span><kbd>N</kbd>
+    <span class="lbl">Нове замовлення</span>
   </button>
 
   <nav class="side-nav">
@@ -742,13 +794,17 @@ kbd{font-family:'Roboto',sans-serif;font-size:10.5px;font-weight:700;line-height
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
       <span class="lbl">Графік</span><span class="side-badge" id="sideToday" style="display:none"></span>
     </button>
-    <button class="side-item" data-nav="today" onclick="goToday()" title="Сьогодні (T)">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-      <span class="lbl">Сьогодні</span><kbd>T</kbd>
+    <button class="side-item" data-nav="measures" onclick="goTab('measures',5)" title="Заміри">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.3 15.3a2.4 2.4 0 010 3.4l-2.6 2.6a2.4 2.4 0 01-3.4 0L2.7 8.7a2.41 2.41 0 010-3.4l2.6-2.6a2.41 2.41 0 013.4 0z"/><path d="M14.5 12.5l2-2M11.5 9.5l2-2M8.5 6.5l2-2M17.5 15.5l2-2"/></svg>
+      <span class="lbl">Заміри</span><span class="side-badge warn" id="sideMeasures" style="display:none"></span>
     </button>
-    <button class="side-item" data-nav="search" onclick="goTab('search',1)" title="Пошук (/)">
+    <button class="side-item" data-nav="today" onclick="goToday()" title="Сьогодні">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+      <span class="lbl">Сьогодні</span>
+    </button>
+    <button class="side-item" data-nav="search" onclick="goTab('search',1)" title="Пошук">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-      <span class="lbl">Пошук</span><kbd>/</kbd>
+      <span class="lbl">Пошук</span>
     </button>
     <button class="side-item" data-nav="export" onclick="goTab('export',3)" title="Excel">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M12 18v-6M9 15l3 3 3-3"/></svg>
@@ -756,6 +812,10 @@ kbd{font-family:'Roboto',sans-serif;font-size:10.5px;font-weight:700;line-height
     </button>
 
     <div class="side-sec adm-only">Адміністрування</div>
+    <button class="side-item adm-only" data-nav="settings:approve" onclick="goSettings('approve')" title="Підтвердження">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      <span class="lbl">Підтвердження</span><span class="side-badge" id="sideApprove" style="display:none"></span>
+    </button>
     <button class="side-item adm-only" data-nav="settings:users" onclick="goSettings('users')" title="Користувачі">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
       <span class="lbl">Користувачі</span><span class="side-badge warn" id="sidePending" style="display:none"></span>
@@ -815,7 +875,7 @@ kbd{font-family:'Roboto',sans-serif;font-size:10.5px;font-weight:700;line-height
       <input id="hdrSearch" placeholder="Пошук клієнта, телефону, адреси…" autocomplete="off" oninput="hdrSearchInput(this.value)">
       <kbd>/</kbd>
     </label>
-    <button class="hdr-add edit-only" onclick="openModal()" title="Нове замовлення (N)">
+    <button class="hdr-add edit-only" onclick="openAdd()" title="Додати (N)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
       <span class="lbl">Нове замовлення</span>
     </button>
@@ -828,11 +888,16 @@ kbd{font-family:'Roboto',sans-serif;font-size:10.5px;font-weight:700;line-height
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
     <span>Графік</span>
   </button>
+  <button class="bn" id="bn5" onclick="goTab('measures',5)">
+    <span class="bn-dot" id="bnMeasDot" style="display:none"></span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.3 15.3a2.4 2.4 0 010 3.4l-2.6 2.6a2.4 2.4 0 01-3.4 0L2.7 8.7a2.41 2.41 0 010-3.4l2.6-2.6a2.41 2.41 0 013.4 0z"/><path d="M14.5 12.5l2-2M11.5 9.5l2-2M8.5 6.5l2-2M17.5 15.5l2-2"/></svg>
+    <span>Заміри</span>
+  </button>
   <button class="bn" id="bn1" onclick="goTab('search',1)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
     <span>Пошук</span>
   </button>
-  <button class="bn bn-add edit-only" id="bn2" onclick="openModal()">
+  <button class="bn bn-add edit-only" id="bn2" onclick="openAdd()">
     <div class="plus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><path d="M12 5v14M5 12h14"/></svg></div>
     <span>Додати</span>
   </button>
@@ -857,6 +922,20 @@ kbd{font-family:'Roboto',sans-serif;font-size:10.5px;font-weight:700;line-height
     </div>
   </div>
   <div id="scheduleContent"></div>
+</div>
+
+<!-- ══ ЗАМІРИ ══ -->
+<div class="panel" id="tab-measures">
+  <div class="m-head">
+    <div class="chips" id="measureChips">
+      <button class="chip" data-f="upcoming" onclick="setMeasureFilter('upcoming')">Заплановані <b></b></button>
+      <button class="chip" data-f="pending" onclick="setMeasureFilter('pending')">Очікують підтвердження <b></b></button>
+      <button class="chip" data-f="done" onclick="setMeasureFilter('done')">Заміряно <b></b></button>
+      <button class="chip" data-f="all" onclick="setMeasureFilter('all')">Усі <b></b></button>
+    </div>
+    <button class="m-add edit-only" onclick="openMeasure()">+ Записати на замір</button>
+  </div>
+  <div id="measureList"></div>
 </div>
 
 <!-- ══ ПОШУК ══ -->
@@ -910,6 +989,7 @@ kbd{font-family:'Roboto',sans-serif;font-size:10.5px;font-weight:700;line-height
 <div class="panel" id="tab-settings">
   <div class="seg adm-only" id="segBar">
     <button class="seg-btn on" data-sub="set" onclick="goSub('set')">Налаштування</button>
+    <button class="seg-btn" data-sub="approve" onclick="goSub('approve')">Заявки<span class="seg-badge" id="segApprove" style="display:none"></span></button>
     <button class="seg-btn" data-sub="users" onclick="goSub('users')">Користувачі<span class="seg-badge" id="pendingBadge" style="display:none"></span></button>
     <button class="seg-btn" data-sub="log" onclick="goSub('log')">Журнал</button>
   </div>
@@ -968,12 +1048,16 @@ kbd{font-family:'Roboto',sans-serif;font-size:10.5px;font-weight:700;line-height
 
     <div class="settings-section">
       <div class="settings-row">
-        <div><div class="sr-lbl">Версія</div><div class="sr-sub">Е-Монтаж v6.0 · Командна робота</div></div>
+        <div><div class="sr-lbl">Версія</div><div class="sr-sub">Е-Монтаж v6.1 · Командна робота</div></div>
       </div>
     </div>
   </div>
 
   <!-- SUB: КОРИСТУВАЧІ -->
+  <div class="sub" id="sub-approve">
+    <div class="info-box">Нові замовлення та заміри від Користувачів і Менеджерів з'являються тут. Поки вони не підтверджені, у графіку вони позначені ⏳ жовтим, а для майстрів не відмічаються як виконані. Відхилене замовлення видаляється, а його автор отримує сповіщення.</div>
+    <div id="approveList"></div>
+  </div>
   <div class="sub" id="sub-users">
     <div class="info-box">
       <b>Адміністратор</b> — усе, включно з видаленням, очищенням, імпортом, майстрами, користувачами та журналом.<br>
@@ -1004,6 +1088,9 @@ kbd{font-family:'Roboto',sans-serif;font-size:10.5px;font-weight:700;line-height
         <option value="delete">Видалення</option>
         <option value="bulk">Масові дії</option>
         <option value="admin">Адміністрування</option>
+        <option value="approve">Підтвердження</option>
+        <option value="reject">Відхилення</option>
+        <option value="measure">Заміри</option>
         <option value="dayoff">Вихідні дні</option>
         <option value="login">Входи</option>
       </select>
@@ -1057,6 +1144,7 @@ kbd{font-family:'Roboto',sans-serif;font-size:10.5px;font-weight:700;line-height
 
       <div class="prof-sec adm-only">Адміністрування</div>
       <div class="prof-links adm-only">
+        <button class="prof-link" onclick="closeProfile();goSettings('approve')">✅ Підтвердження <span class="seg-badge" id="profApprove" style="display:none"></span></button>
         <button class="prof-link" onclick="closeProfile();goTab('settings',4);goSub('users')">👥 Користувачі <span class="seg-badge" id="profPending" style="display:none"></span></button>
         <button class="prof-link" onclick="closeProfile();goTab('settings',4);goSub('log')">📋 Журнал дій</button>
       </div>
@@ -1067,6 +1155,35 @@ kbd{font-family:'Roboto',sans-serif;font-size:10.5px;font-weight:700;line-height
         <button class="prof-link" onclick="clearAppCache()">🧹 Очистити кеш і оновити програму</button>
         <button class="prof-link danger" onclick="logout()">🚪 Вийти з акаунту</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MEASURE MODAL ══ -->
+<div class="modal-ov" id="measureModal">
+  <div class="modal-box">
+    <div class="modal-handle"></div>
+    <div class="modal-hd">
+      <div class="modal-title" id="mTitle">Запис на замір</div>
+      <button class="modal-x" onclick="closeMeasure()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="fg-row">
+        <div class="fg"><label>Дата заміру *</label><input type="date" id="mDate"></div>
+        <div class="fg"><label>Час</label><input type="time" id="mTime" value="10:00"></div>
+      </div>
+      <div class="fg"><label>Клієнт *</label><input type="text" id="mClient" placeholder="Ім'я клієнта" autocomplete="off"></div>
+      <div class="fg"><label>Номер телефону</label><input type="tel" id="mPhone" placeholder="0XX XXX XX XX" inputmode="tel" autocomplete="off"></div>
+      <div class="fg"><label>Адреса *</label><input type="text" id="mAddr" placeholder="вул. Назва, будинок, квартира" autocomplete="off"></div>
+      <div class="fg-row">
+        <div class="fg"><label>К-сть дверей</label><input type="number" id="mDoors" min="0" max="99" inputmode="numeric" value="1"></div>
+        <div class="fg"><label>Замірник</label><select id="mMeasurer"></select></div>
+      </div>
+      <div class="fg"><label>Нотатки</label><textarea id="mNotes" placeholder="Які двері цікавлять, поверх, побажання клієнта..."></textarea></div>
+      <div class="audit-box" id="mInfo" style="display:none"></div>
+      <input type="hidden" id="mId" value="">
+      <button class="btn-save edit-only" onclick="saveMeasure()">Зберегти</button>
+      <button class="btn-del adm-only" id="mDelBtn" onclick="deleteMeasure()" style="margin-top:8px;display:none">Видалити замір</button>
     </div>
   </div>
 </div>
@@ -1155,7 +1272,8 @@ window.addEventListener("DOMContentLoaded", () => {
   const logo = document.getElementById("splashLogo").src;
   document.querySelectorAll(".logo-img").forEach(i => i.src = logo);
   document.getElementById("modal").addEventListener("click", e => { if(e.target.id === "modal") closeModal(); });
-  document.addEventListener("keydown", e => { if(e.key === "Escape") { closeModal(); closeProfile(); } });
+  document.addEventListener("keydown", e => { if(e.key === "Escape") { closeModal(); closeProfile(); closeMeasure(); } });
+  document.getElementById("measureModal").addEventListener("click", e => { if(e.target.id === "measureModal") closeMeasure(); });
   try { onlyBusy = localStorage.getItem("em_onlyBusy") === "1"; masterFilter = localStorage.getItem("em_masterFilter") || ""; } catch(e){}
   document.getElementById("onlyBusy").checked = onlyBusy;
   // Refresh "today" highlight if the app stays open past midnight
@@ -1206,6 +1324,7 @@ function goTab(name, idx) {
   document.getElementById("bn"+idx).classList.add("on");
   window.scrollTo({top:0});
   if(name === "export") buildExportPreview();
+  if(name === "measures") renderMeasures();
   if(name === "settings") renderSettings();
   if(name === "search" && !isDesktop()) setTimeout(() => document.getElementById("searchIn").focus(), 150);
   if(name === "search" && isDesktop() && document.activeElement !== document.getElementById("hdrSearch")) setTimeout(() => document.getElementById("hdrSearch").focus(), 50);
@@ -1282,15 +1401,19 @@ function renderSchedule() {
     const off       = dayOffInfo(key, dow);
     const isToday   = key === todayKey;
     const isPast    = key < todayKey;
-    if(onlyBusy && !dayOrders.length && !isToday) continue;
+    if(onlyBusy && !dayOrders.length && !isToday && !measures.some(m => m.date === key)) continue;
 
     const real = dayOrders.filter(o => !isReserve(o));
     const reserves = dayOrders.length - real.length;
     const daySum = real.reduce((s,o)=>s+(+o.sum||0),0);
-    const open = dayOrders.length > 0 || isToday;
+    const open = dayOrders.length > 0 || isToday || measures.some(m => m.date === key);
     let countTxt = real.length ? `${real.length} ${plural(real.length,"замовлення","замовлення","замовлень")}` : (off.off ? off.label : "Вільний день");
     if(real.length && off.off && !off.custom) countTxt += ` · вихідний`;
     if(reserves) countTxt += ` · резерв`;
+    const pendN = dayOrders.filter(isPending).length;
+    if(pendN) countTxt += ` · ⏳ ${pendN} на підтвердженні`;
+    const dayMeas = scheduleMeasuresHTML(key);
+    if(dayMeas) countTxt += ` · 📐 замір`;
 
     html += `<div class="day-group${isToday?" today":""}${isPast&&!isToday?" past":""}${off.off?" dayoff":""}" id="dg-${key}">
       <div class="day-header${off.off?" weekend":""}" onclick="toggleDay('${key}')">
@@ -1304,6 +1427,7 @@ function renderSchedule() {
       </div>
       <div class="orders-wrap ${open?"":"collapsed"}" id="ow-${key}">`;
     dayOrders.forEach(o => { html += orderCardHTML(o); });
+    html += scheduleMeasuresHTML(key);
     html += `<div class="day-actions edit-only">
       <button class="da-add" onclick="openModalForDate('${key}')">+ ${dayOrders.length ? "Ще одне замовлення" : "Додати замовлення"}</button>
       <button class="da-off ${off.off ? "is-off" : ""}" onclick="toggleDayOff('${key}')">${off.off ? "💼 Зробити робочим" : "🏖 Зробити вихідним"}</button>
@@ -1325,12 +1449,15 @@ function orderCardHTML(o) {
   const reserve = isReserve(o);
   const tel = phoneIntl(o.phone);
   const id = esc(o.id);
-  let h = `<div class="order-card${reserve?" reserve":""}${o.done?" done":""}" onclick="editOrder('${id}')">
+  const pend = isPending(o);
+  let h = `<div class="order-card${reserve?" reserve":""}${o.done?" done":""}${pend?" pending":""}" onclick="editOrder('${id}')">
+    ${approveBarHTML("order", o)}
+    ${pend && !can("admin") ? `<div class="pend-note">⏳ Очікує підтвердження адміністратора</div>` : ""}
     <div class="oc-top">
       <div class="oc-time">${esc(o.time||"—")}</div>
       <div class="oc-client">${esc(o.client||"—")}</div>
       ${o.master ? `<div class="oc-store">${esc(o.master)}</div>` : ""}
-      ${reserve ? "" : `<button class="oc-done-btn" title="Виконано" onclick="event.stopPropagation();toggleDone('${id}')">${IC.check}</button>`}
+      ${reserve || pend ? "" : `<button class="oc-done-btn" title="Виконано" onclick="event.stopPropagation();toggleDone('${id}')">${IC.check}</button>`}
     </div>`;
   if(tel) h += `<a class="oc-phone" href="tel:${tel}" onclick="event.stopPropagation()"><span class="ic">${IC.phone}</span>${esc(phoneNice(o.phone))}</a>`;
   if(o.addr) h += `<a class="oc-addr" href="${mapsUrl(o.addr)}" target="_blank" rel="noopener" onclick="event.stopPropagation()"><span class="ic">${IC.pin}</span><span class="txt">${esc(o.addr)}</span></a>`;
@@ -1501,11 +1628,12 @@ function saveOrder() {
   const entry = {...f, id: id || uid()};
   if(id) {
     const i = orders.findIndex(x => x.id === id);
-    if(i >= 0) orders[i] = entry;
+    if(i >= 0) orders[i] = {...orders[i], ...entry};
     toast("Збережено ✓","ok");
   } else {
     orders.push(entry);
-    toast("Додано ✓","ok");
+    toast(can("admin") ? "Додано ✓" : "Додано — очікує підтвердження адміністратора", "ok", can("admin") ? 2500 : 4000);
+    if(window.__fromMeasure) linkMeasureToOrder(entry.id);
   }
   jumpToDate(entry.date);
   saveData(); closeModal(); renderAll();
@@ -2087,6 +2215,7 @@ function onRoleChanged(prevRole) {
     setTimeout(() => openProfile(true), 1300);
   }
   if(prevRole && prevRole !== me.role) toast("Вашу роль змінено: " + ROLES[me.role], "info", 4000);
+  askNotifyPermission();
   if(!loginLogged) {
     loginLogged = true;
     writeLog([{action:"login", text:"Увійшов у програму"}]);
@@ -2108,7 +2237,7 @@ function applyRoleUI() {
 function onSignedOut() {
   stopData(); stopAdmin();
   if(userRef) userRef.off();
-  userRef = null; currentUid = null; me = null; loginLogged = false;
+  userRef = null; currentUid = null; me = null; loginLogged = false; statusMigrated = false; pendUsersCount = 0;
   orders = []; cloudOrders = {}; cloudMeta = null;
   document.body.classList.remove("role-admin","role-user","role-manager","role-viewer");
   document.getElementById("connBadge").style.display = "none";
@@ -2181,6 +2310,7 @@ function startData() {
     if(document.getElementById("tab-settings").classList.contains("on")) renderSettings();
   }, onDbError);
   refs.push(mref);
+  startMeasures(refs);
   dataRefs = refs;
 }
 
@@ -2206,6 +2336,7 @@ function rebuildOrders() {
   orders = Object.keys(cloudOrders).map(mergedOrder);
   saveLocal(); renderAll(); hideSplash();
   migrateInlinePrices();
+  onOrdersSnapshot();
 }
 // One-time (admin): move prices out of order records into app/prices
 function migrateInlinePrices() {
@@ -2225,6 +2356,7 @@ function migrateInlinePrices() {
 function stopData() {
   dataRefs.forEach(r => r.off()); dataRefs = []; dataStarted = false;
   cloudPrices = {}; ordersLoaded = false; pricesLoaded = false; pricesDenied = false; daysOffDenied = false;
+  prevOrderSnap = null; prevMeasureSnap = null; measures = []; cloudMeasures = {}; measuresLoaded = false; measuresDenied = false;
 }
 function setDayOff(key, val, text) {
   if(!fbDb || !me) return;
@@ -2326,6 +2458,7 @@ function saveData(label) {
     else o.sum = priceRec(o).sum;
     if(!base) {
       if(!o.createdAt) { o.createdAt = now; o.createdBy = uid; o.createdByName = name; }
+      if(!o.status) o.status = can("admin") ? "approved" : "pending";
       Object.assign(o, stamp);
       updates["app/orders/" + k] = inline ? {...clean(o), ...priceRec(o)} : stripPrices(clean(o));
       if(totals && !inline) updates["app/prices/" + k] = priceRec(o);
@@ -2457,6 +2590,7 @@ function loadLocal() {
     const m = localStorage.getItem("em_masters"); if(m) masters = JSON.parse(m);
     const r = localStorage.getItem("em_region"); if(r !== null) mapRegion = r;
     const dof = localStorage.getItem("em_daysoff"); if(dof) daysOff = JSON.parse(dof);
+    const mm = localStorage.getItem("em_measures"); if(mm) { measures = JSON.parse(mm); measuresLoaded = true; }
   } catch(e) {}
 }
 function loadData() { loadLocal(); }
@@ -2480,7 +2614,7 @@ function startAdmin() {
       const badge = document.getElementById("pendingBadge");
       badge.style.display = pend ? "inline-flex" : "none"; badge.textContent = pend;
       const pb = document.getElementById("profPending"); pb.style.display = pend ? "inline-flex" : "none"; pb.textContent = pend;
-      const hd = document.getElementById("hdrUserDot"); hd.style.display = pend ? "flex" : "none"; hd.textContent = pend;
+      pendUsersCount = pend; updateAdminBadges();
       const sp = document.getElementById("sidePending"); sp.style.display = pend ? "flex" : "none"; sp.textContent = pend;
       if(pend && !window.__pendNotified) { window.__pendNotified = true; toast(`Нових користувачів очікують підтвердження: ${pend}`, "warn", 5000, {label:"Переглянути", fn:() => { goTab("settings",4); goSub("users"); }}); }
       renderUsers(); fillLogUsers();
@@ -2642,7 +2776,7 @@ function logout() {
 // ═══════════════════════════════════════
 // ADMIN PANELS: USERS + ACTIVITY LOG + ORDER HISTORY
 // ═══════════════════════════════════════
-const LOG_ICONS = {create:"➕", update:"✏️", done:"✅", delete:"🗑️", bulk:"📦", admin:"🛡️", login:"🔑", dayoff:"🏖️"};
+const LOG_ICONS = {create:"➕", update:"✏️", done:"✅", delete:"🗑️", bulk:"📦", admin:"🛡️", login:"🔑", dayoff:"🏖️", approve:"✔️", reject:"⛔", measure:"📐"};
 
 function goSub(name, silent) {
   document.querySelectorAll(".seg-btn").forEach(b => b.classList.toggle("on", b.dataset.sub === name));
@@ -2845,8 +2979,11 @@ function openFromLog(id) {
 // ── Order audit inside the edit modal ──
 function renderAuditBox(o) {
   const box = document.getElementById("auditBox");
-  if(!o || !(o.createdAt || o.updatedAt)) { box.style.display = "none"; return; }
+  if(!o || !(o.createdAt || o.updatedAt || isPending(o))) { box.style.display = "none"; return; }
   let h = "";
+  if(isPending(o)) h += `<div class="pend-note" style="margin:0 0 8px">⏳ Очікує підтвердження адміністратора</div>` +
+    (can("admin") ? `<div class="btn-row" style="margin:0 0 10px"><button class="btn-approve" onclick="approveItem('order','${esc(o.id)}')">✓ Підтвердити</button><button class="btn-del" onclick="rejectItem('order','${esc(o.id)}')">Відхилити</button></div>` : "");
+  else if(o.approvedBy) h += `<div>✅ Підтвердив(ла): <b>${esc(o.approvedBy)}</b>${o.approvedAt ? ", " + relTime(o.approvedAt) : ""}</div>`;
   if(o.createdAt) h += `<div>🆕 Створив(ла): <b>${esc(o.createdByName || "—")}</b>, ${relTime(o.createdAt)}</div>`;
   if(o.updatedAt && o.updatedAt !== o.createdAt) h += `<div>✏️ Останні зміни: <b>${esc(o.updatedByName || "—")}</b>, ${relTime(o.updatedAt)}</div>`;
   if(can("admin")) {
@@ -2858,11 +2995,409 @@ function renderAuditBox(o) {
 }
 
 // ═══════════════════════════════════════
+// APPROVALS (orders + measurements) & MEASUREMENTS ("Заміри")
+// ═══════════════════════════════════════
+let measures = [], cloudMeasures = {}, measuresLoaded = false, measuresDenied = false;
+let measureFilter = "upcoming";
+let pendUsersCount = 0;
+let prevOrderSnap = null, prevMeasureSnap = null;
+let statusMigrated = false;
+const M_STATUS = { pending:"Очікує підтвердження", approved:"Підтверджено", done:"Заміряно" };
+
+function isPending(o)  { return !!o && o.status === "pending"; }
+function mStatus(m)    { return m.status === "approved" || m.status === "done" ? m.status : "pending"; }
+
+// ── Badges for admins: pending users + pending orders + pending measures ──
+function pendingItems() {
+  return {
+    orders: orders.filter(isPending).sort((a,b) => (a.date+a.time).localeCompare(b.date+b.time)),
+    measures: measures.filter(m => mStatus(m) === "pending").sort((a,b) => (a.date+a.time).localeCompare(b.date+b.time))
+  };
+}
+function updateAdminBadges() {
+  const adm = typeof can === "function" && can("admin");
+  const p = adm ? pendingItems() : {orders:[], measures:[]};
+  const items = p.orders.length + p.measures.length;
+  const set = (id, n, disp) => { const e = document.getElementById(id); if(!e) return; e.style.display = n ? (disp || "flex") : "none"; e.textContent = n; };
+  set("sideApprove", items);
+  set("segApprove", items, "inline-flex");
+  set("profApprove", items, "inline-flex");
+  set("hdrUserDot", adm ? items + pendUsersCount : 0);
+  const pm = measures.filter(m => mStatus(m) === "pending").length;
+  set("sideMeasures", adm ? pm : 0);
+  set("bnMeasDot", adm ? pm : 0);
+}
+
+// ── Realtime notifications ──
+function notifyChanges(kind, prev, cur) {
+  if(!me || prev === null) return;
+  const label = kind === "order" ? "замовлення" : "замір";
+  const goApprove = {label:"Переглянути", fn:() => goSettings("approve")};
+  for(const k in cur) {
+    const n = cur[k], o = prev[k];
+    const nPend = kind === "order" ? isPending(n) : mStatus(n) === "pending";
+    const oPend = o ? (kind === "order" ? isPending(o) : mStatus(o) === "pending") : false;
+    if(can("admin") && nPend && !oPend && n.createdBy !== me.uid) {
+      toast(`🔔 Нове ${label} від ${n.createdByName || "користувача"}: ${n.client || ""}, ${n.date ? fmtHuman(n.date) : ""} — потрібне підтвердження`, "warn", 9000, goApprove);
+      desktopNotify(`Нове ${label} на підтвердження`, `${n.createdByName || ""}: ${n.client || ""}, ${n.date ? fmtHuman(n.date) : ""}`);
+    }
+    if(oPend && !nPend && n.createdBy === me.uid && n.approvedBy && n.approvedBy !== myName()) {
+      toast(`✅ ${n.approvedBy} підтвердив(ла) ваше ${label}: ${n.client || ""}`, "ok", 6000);
+    }
+  }
+  for(const k in prev) {
+    const o = prev[k];
+    const oPend = kind === "order" ? isPending(o) : mStatus(o) === "pending";
+    if(!cur[k] && oPend && o.createdBy === me.uid) toast(`⛔ Адміністратор відхилив ваше ${label}: ${o.client || ""}`, "err", 7000);
+  }
+}
+function desktopNotify(title, body) {
+  try {
+    if(!("Notification" in window) || !document.hidden || Notification.permission !== "granted") return;
+    new Notification(title, {body, icon: document.getElementById("splashLogo").src});
+  } catch(e) {}
+}
+function askNotifyPermission() {
+  try { if("Notification" in window && Notification.permission === "default" && can("admin")) Notification.requestPermission(); } catch(e) {}
+}
+
+// Called by the orders listener after each snapshot
+function onOrdersSnapshot() {
+  const snapNow = JSON.parse(JSON.stringify(cloudOrders));
+  notifyChanges("order", prevOrderSnap, snapNow);
+  if(prevOrderSnap === null && can("admin")) {
+    const p = pendingItems();
+    if(p.orders.length) toast(`На підтвердження: ${p.orders.length} ${plural(p.orders.length,"замовлення","замовлення","замовлень")}`, "warn", 6000, {label:"Переглянути", fn:() => goSettings("approve")});
+  }
+  prevOrderSnap = snapNow;
+  migrateStatus();
+  updateAdminBadges();
+  if(currentNavKey() === "settings:approve") renderApprovals();
+}
+// One-time (admin): mark existing orders without status as approved
+function migrateStatus() {
+  if(statusMigrated || !can("admin")) return;
+  const up = {};
+  for(const k in cloudOrders) if(!cloudOrders[k].status) up[`app/orders/${k}/status`] = "approved";
+  statusMigrated = true;
+  if(Object.keys(up).length) fbDb.ref().update(up).catch(err => { statusMigrated = false; console.warn("status migration", err); });
+}
+
+// ── Measures listener (started from startData) ──
+function startMeasures(refs) {
+  measuresLoaded = false; prevMeasureSnap = null;
+  const r = fbDb.ref("app/measures");
+  r.on("value", snap => {
+    cloudMeasures = JSON.parse(JSON.stringify(snap.val() || {}));
+    measures = Object.keys(cloudMeasures).map(k => ({...cloudMeasures[k], id: cloudMeasures[k].id || k}));
+    measuresLoaded = true; measuresDenied = false;
+    const snapNow = JSON.parse(JSON.stringify(cloudMeasures));
+    notifyChanges("measure", prevMeasureSnap, snapNow);
+    if(prevMeasureSnap === null && can("admin")) {
+      const n = measures.filter(m => mStatus(m) === "pending").length;
+      if(n) toast(`На підтвердження: ${n} ${plural(n,"замір","заміри","замірів")}`, "warn", 6000, {label:"Переглянути", fn:() => goSettings("approve")});
+    }
+    prevMeasureSnap = snapNow;
+    try { localStorage.setItem("em_measures", JSON.stringify(measures)); } catch(e) {}
+    renderMeasures(); renderSchedule(); updateAdminBadges();
+    if(currentNavKey() === "settings:approve") renderApprovals();
+  }, err => {
+    console.warn("app/measures", err);
+    measuresDenied = true; measuresLoaded = true;
+    renderMeasures();
+  });
+  refs.push(r);
+}
+
+// ── Approve / reject ──
+function approveItem(kind, id) {
+  if(!can("admin")) return;
+  const isO = kind === "order";
+  const item = isO ? orders.find(o => o.id === id) : measures.find(m => m.id === id);
+  if(!item) return;
+  const k = fbKey(id), base = isO ? "app/orders/" : "app/measures/";
+  const up = {[`${base}${k}/status`]: "approved", [`${base}${k}/approvedBy`]: myName(), [`${base}${k}/approvedAt`]: Date.now()};
+  writeLog([{action:"approve", orderId: isO ? id : undefined, client:item.client||"", date:item.date||"",
+    text:`Підтвердив ${isO ? "замовлення" : "замір"}: ${orderLabel(item)}${item.createdByName ? " (від " + item.createdByName + ")" : ""}`}], up);
+  // optimistic
+  item.status = "approved"; item.approvedBy = myName();
+  if(isO && cloudOrders[k]) { cloudOrders[k].status = "approved"; cloudOrders[k].approvedBy = myName(); }
+  if(!isO && cloudMeasures[k]) { cloudMeasures[k].status = "approved"; cloudMeasures[k].approvedBy = myName(); }
+  if(isO && prevOrderSnap && prevOrderSnap[k]) prevOrderSnap[k].status = "approved";
+  if(!isO && prevMeasureSnap && prevMeasureSnap[k]) prevMeasureSnap[k].status = "approved";
+  afterApprovalChange();
+  fbDb.ref().update(up).then(() => toast(`${isO ? "Замовлення" : "Замір"} підтверджено ✓`, "ok")).catch(err => { toast("Не вдалося: " + permMsg(err), "err", 5000); resync(); });
+}
+function rejectItem(kind, id) {
+  if(!can("admin")) return;
+  const isO = kind === "order";
+  const item = isO ? orders.find(o => o.id === id) : measures.find(m => m.id === id);
+  if(!item) return;
+  const reason = prompt(`Відхилити ${isO ? "замовлення" : "замір"} «${item.client || ""}»? Його буде видалено.\nПричина (необов'язково):`, "");
+  if(reason === null) return;
+  const k = fbKey(id);
+  const up = isO ? {["app/orders/" + k]: null, ["app/prices/" + k]: null} : {["app/measures/" + k]: null};
+  if(isO && pricesDenied) delete up["app/prices/" + k];
+  writeLog([{action:"reject", client:item.client||"", date:item.date||"",
+    text:`Відхилив ${isO ? "замовлення" : "замір"}: ${orderLabel(item)}${item.createdByName ? " (від " + item.createdByName + ")" : ""}${reason.trim() ? " — " + reason.trim() : ""}`}], up);
+  if(isO) { delete cloudOrders[k]; orders = orders.filter(o => o.id !== id); if(prevOrderSnap) delete prevOrderSnap[k]; }
+  else { delete cloudMeasures[k]; measures = measures.filter(m => m.id !== id); if(prevMeasureSnap) delete prevMeasureSnap[k]; }
+  afterApprovalChange();
+  fbDb.ref().update(up).then(() => toast(`${isO ? "Замовлення" : "Замір"} відхилено`, "info")).catch(err => { toast("Не вдалося: " + permMsg(err), "err", 5000); resync(); });
+}
+function afterApprovalChange() {
+  renderAll(); renderMeasures(); updateAdminBadges();
+  if(currentNavKey() === "settings:approve") renderApprovals();
+  if(document.getElementById("modal").classList.contains("on")) closeModal();
+  if(document.getElementById("measureModal").classList.contains("on")) closeMeasure();
+}
+function permMsg(err) { return /permission/i.test(err.code || err.message || "") ? "недостатньо прав (оновіть правила бази у Firebase)" : err.message; }
+
+function approveBarHTML(kind, item) {
+  if(!can("admin")) return "";
+  const pend = kind === "order" ? isPending(item) : mStatus(item) === "pending";
+  if(!pend) return "";
+  const id = esc(item.id);
+  return `<div class="appr-bar" onclick="event.stopPropagation()">
+    <span class="appr-who">від <b>${esc(item.createdByName || "—")}</b> · ${relTime(item.createdAt)}</span>
+    <button class="appr-ok" onclick="approveItem('${kind}','${id}')">✓ Підтвердити</button>
+    <button class="appr-no" onclick="rejectItem('${kind}','${id}')">✕</button>
+  </div>`;
+}
+
+// ── Approvals page (admin) ──
+function renderApprovals() {
+  const box = document.getElementById("approveList");
+  if(!box || !can("admin")) return;
+  const p = pendingItems();
+  if(!p.orders.length && !p.measures.length) {
+    box.innerHTML = `<div class="empty-state"><div style="font-size:44px;margin-bottom:8px">✅</div><p>Усе підтверджено — нових заявок немає</p></div>`;
+    return;
+  }
+  let h = "";
+  if(p.orders.length) {
+    h += `<div class="appr-sec"><span>Замовлення</span><b>${p.orders.length}</b>${p.orders.length > 1 ? `<button class="link-btn" onclick="approveAll('order')">Підтвердити всі</button>` : ""}</div><div class="appr-grid">`;
+    p.orders.forEach(o => { const d = parseDate(o.date); h += `<div><div class="res-date">${d.getDate()} ${MONTHS_GEN[d.getMonth()].toLowerCase()} · ${DAYS_FULL[d.getDay()]}</div><div class="search-card">${orderCardHTML(o)}</div></div>`; });
+    h += `</div>`;
+  }
+  if(p.measures.length) {
+    h += `<div class="appr-sec"><span>Заміри</span><b>${p.measures.length}</b>${p.measures.length > 1 ? `<button class="link-btn" onclick="approveAll('measure')">Підтвердити всі</button>` : ""}</div><div class="appr-grid">`;
+    p.measures.forEach(m => { const d = parseDate(m.date); h += `<div><div class="res-date">${d.getDate()} ${MONTHS_GEN[d.getMonth()].toLowerCase()} · ${DAYS_FULL[d.getDay()]}</div>${measureCardHTML(m)}</div>`; });
+    h += `</div>`;
+  }
+  box.innerHTML = h;
+}
+function approveAll(kind) {
+  const list = kind === "order" ? pendingItems().orders : pendingItems().measures;
+  if(!list.length || !confirm(`Підтвердити всі ${list.length} ${kind === "order" ? plural(list.length,"замовлення","замовлення","замовлень") : plural(list.length,"замір","заміри","замірів")}?`)) return;
+  const base = kind === "order" ? "app/orders/" : "app/measures/", up = {}, now = Date.now();
+  list.forEach(i => { const k = fbKey(i.id); up[`${base}${k}/status`] = "approved"; up[`${base}${k}/approvedBy`] = myName(); up[`${base}${k}/approvedAt`] = now; i.status = "approved";
+    if(kind === "order" && cloudOrders[k]) cloudOrders[k].status = "approved"; if(kind !== "order" && cloudMeasures[k]) cloudMeasures[k].status = "approved";
+    if(kind === "order" && prevOrderSnap && prevOrderSnap[k]) prevOrderSnap[k].status = "approved"; if(kind !== "order" && prevMeasureSnap && prevMeasureSnap[k]) prevMeasureSnap[k].status = "approved"; });
+  writeLog([{action:"approve", text:`Підтвердив усі ${kind === "order" ? "замовлення" : "заміри"}: ${list.length} шт.`}], up);
+  afterApprovalChange();
+  fbDb.ref().update(up).then(() => toast("Підтверджено ✓","ok")).catch(err => { toast("Не вдалося: " + permMsg(err), "err"); resync(); });
+}
+
+// ═══════════════════════════════════════
+// MEASUREMENTS UI
+// ═══════════════════════════════════════
+function setMeasureFilter(f) { measureFilter = f; renderMeasures(); }
+function measureCardHTML(m) {
+  const st = mStatus(m), id = esc(m.id), tel = phoneIntl(m.phone);
+  let h = `<div class="order-card meas-card st-${st}" onclick="openMeasure('${id}')">
+    ${approveBarHTML("measure", m)}
+    <div class="oc-top">
+      <div class="oc-time">${esc(m.time || "—")}</div>
+      <div class="oc-client">${esc(m.client || "—")}</div>
+      ${st === "pending" && can("admin") ? "" : `<span class="m-pill ${st}">${st === "pending" ? "⏳ " : st === "done" ? "✓ " : ""}${M_STATUS[st]}</span>`}
+    </div>`;
+  if(tel) h += `<a class="oc-phone" href="tel:${tel}" onclick="event.stopPropagation()"><span class="ic">${IC.phone}</span>${esc(phoneNice(m.phone))}</a>`;
+  if(m.addr) h += `<a class="oc-addr" href="${mapsUrl(m.addr)}" target="_blank" rel="noopener" onclick="event.stopPropagation()"><span class="ic">${IC.pin}</span><span class="txt">${esc(m.addr)}</span></a>`;
+  if(m.notes) h += `<div class="oc-notes">${esc(m.notes)}</div>`;
+  h += `<div class="oc-actions">`;
+  if(m.addr) h += `<a class="act route" href="${routeUrl(m.addr)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${IC.route}Маршрут</a>`;
+  if(tel) h += `<a class="act viber" href="viber://chat?number=${encodeURIComponent(tel)}" onclick="event.stopPropagation()">${IC.chat}Viber</a>`;
+  if(can("edit") && st !== "pending") h += `<button class="act ${st === "done" ? "copy" : "call"}" onclick="event.stopPropagation();toggleMeasureDone('${id}')">${IC.check}${st === "done" ? "Скасувати «заміряно»" : "Заміряно"}</button>`;
+  if(can("edit") && st === "done" && !m.orderId) h += `<button class="act route" onclick="event.stopPropagation();measureToOrder('${id}')">➜ Створити замовлення</button>`;
+  h += `</div><div class="oc-bottom"><div class="oc-tags">`;
+  if(m.doors) h += `<div class="oc-tag">🚪 ${esc(m.doors)} ${plural(+m.doors,"двері","двері","дверей")}</div>`;
+  if(m.measurer) h += `<div class="oc-tag">📐 ${esc(m.measurer)}</div>`;
+  if(m.orderId) h += `<div class="oc-tag delivery">Є замовлення</div>`;
+  h += `</div></div>`;
+  const who = m.updatedByName || m.createdByName;
+  if(who) h += `<div class="oc-meta">✎ ${esc(who)} · ${relTime(m.updatedAt || m.createdAt)}</div>`;
+  return h + `</div>`;
+}
+function renderMeasures() {
+  const box = document.getElementById("measureList");
+  if(!box) return;
+  const todayKey = fmtDate(new Date());
+  const cnt = {
+    upcoming: measures.filter(m => mStatus(m) !== "done" && m.date >= todayKey).length,
+    pending: measures.filter(m => mStatus(m) === "pending").length,
+    done: measures.filter(m => mStatus(m) === "done").length,
+    all: measures.length
+  };
+  document.querySelectorAll("#measureChips .chip").forEach(c => {
+    const f = c.dataset.f; c.classList.toggle("on", f === measureFilter);
+    const b = c.querySelector("b"); if(b) b.textContent = cnt[f] ? cnt[f] : "";
+  });
+  if(measuresDenied) { box.innerHTML = `<div class="empty-state"><p>Немає доступу до замірів — оновіть правила бази у Firebase.</p></div>`; return; }
+  if(!measuresLoaded) { box.innerHTML = `<div class="muted" style="text-align:center;padding:30px">Завантаження…</div>`; return; }
+  let list = measures.slice();
+  if(measureFilter === "upcoming") list = list.filter(m => mStatus(m) !== "done" && m.date >= todayKey);
+  if(measureFilter === "pending")  list = list.filter(m => mStatus(m) === "pending");
+  if(measureFilter === "done")     list = list.filter(m => mStatus(m) === "done");
+  const asc = measureFilter === "upcoming" || measureFilter === "pending";
+  list.sort((a,b) => asc ? (a.date+a.time).localeCompare(b.date+b.time) : (b.date+b.time).localeCompare(a.date+a.time));
+  if(!list.length) {
+    box.innerHTML = `<div class="empty-state"><div style="font-size:44px;margin-bottom:8px">📐</div><p>${measureFilter === "upcoming" ? "Запланованих замірів немає" : "Немає записів"}</p>${can("edit") ? `<button class="hdr-add" style="display:inline-flex;margin-top:14px" onclick="openMeasure()">+ Записати на замір</button>` : ""}</div>`;
+    return;
+  }
+  let h = "", last = "";
+  list.forEach(m => {
+    if(m.date !== last) {
+      if(last) h += `</div>`;
+      last = m.date;
+      const d = parseDate(m.date);
+      h += `<div class="m-day${m.date === todayKey ? " today" : ""}"><span>${m.date === todayKey ? "Сьогодні · " : ""}${d.getDate()} ${MONTHS_GEN[d.getMonth()].toLowerCase()} ${d.getFullYear()} · ${DAYS_FULL[d.getDay()]}</span></div><div class="m-grid">`;
+    }
+    h += measureCardHTML(m);
+  });
+  box.innerHTML = h + `</div>`;
+}
+
+// ── Measure modal ──
+function openMeasure(id) {
+  const m = id ? measures.find(x => x.id === id) : null;
+  if(!m && !can("edit")) return;
+  const sel = document.getElementById("mMeasurer");
+  sel.innerHTML = `<option value="">— не вказано —</option>` + masters.map(x => `<option value="${esc(x)}">${esc(x)}</option>`).join("");
+  if(m && m.measurer && !masters.includes(m.measurer)) sel.add(new Option(m.measurer, m.measurer));
+  const set = (k, v) => document.getElementById(k).value = v;
+  const t = new Date();
+  set("mId", m ? m.id : ""); set("mDate", m ? m.date : fmtDate(t)); set("mTime", m ? (m.time || "10:00") : "10:00");
+  set("mClient", m ? m.client || "" : ""); set("mPhone", m ? m.phone || "" : ""); set("mAddr", m ? m.addr || "" : "");
+  set("mDoors", m ? (m.doors || "") : "1"); set("mNotes", m ? m.notes || "" : ""); sel.value = m ? m.measurer || "" : "";
+  document.getElementById("mTitle").textContent = m ? (can("edit") ? "Замір" : "Замір (перегляд)") : "Запис на замір";
+  const st = m ? mStatus(m) : null;
+  const info = document.getElementById("mInfo");
+  if(m) {
+    let h = `<div>Статус: <span class="m-pill ${st}">${M_STATUS[st]}</span></div>`;
+    if(m.createdByName) h += `<div>🆕 Записав(ла): <b>${esc(m.createdByName)}</b>, ${relTime(m.createdAt)}</div>`;
+    if(m.approvedBy) h += `<div>✅ Підтвердив(ла): <b>${esc(m.approvedBy)}</b>${m.approvedAt ? ", " + relTime(m.approvedAt) : ""}</div>`;
+    if(m.updatedAt && m.updatedAt !== m.createdAt) h += `<div>✏️ Останні зміни: <b>${esc(m.updatedByName || "—")}</b>, ${relTime(m.updatedAt)}</div>`;
+    info.innerHTML = h + (can("admin") && st === "pending" ? `<div class="btn-row" style="margin-top:10px"><button class="btn-approve" onclick="approveItem('measure','${esc(m.id)}')">✓ Підтвердити</button><button class="btn-del" onclick="rejectItem('measure','${esc(m.id)}')">Відхилити</button></div>` : "");
+    info.style.display = "block";
+  } else {
+    info.innerHTML = can("admin") ? "" : `<div>ℹ️ Після збереження замір потрапить до адміністратора на підтвердження.</div>`;
+    info.style.display = can("admin") ? "none" : "block";
+  }
+  document.getElementById("mDelBtn").style.display = m && can("admin") ? "" : "none";
+  document.getElementById("measureModal").classList.add("on");
+  document.body.style.overflow = "hidden";
+  if(!m) setTimeout(() => document.getElementById("mClient").focus(), 250);
+}
+function closeMeasure() {
+  const md = document.getElementById("measureModal");
+  if(!md.classList.contains("on")) return;
+  md.classList.remove("on"); document.body.style.overflow = "";
+}
+function saveMeasure() {
+  if(!can("edit") || !fbDb) return;
+  const g = k => document.getElementById(k).value.trim();
+  const id = g("mId");
+  const f = {date: g("mDate"), time: g("mTime"), client: g("mClient"), phone: g("mPhone"), addr: g("mAddr"),
+    doors: +g("mDoors") || 0, measurer: document.getElementById("mMeasurer").value, notes: g("mNotes")};
+  if(!f.date)   return toast("Вкажіть дату заміру","err");
+  if(!f.client) return toast("Вкажіть ім'я клієнта","err");
+  if(!f.addr)   return toast("Вкажіть адресу","err");
+  const now = Date.now(), name = myName();
+  const prev = id ? cloudMeasures[fbKey(id)] : null;
+  const rec = prev ? {...prev, ...f, id, updatedAt: now, updatedBy: me.uid, updatedByName: name}
+    : {...f, id: "m" + uid(), status: can("admin") ? "approved" : "pending", createdAt: now, createdBy: me.uid, createdByName: name, updatedAt: now, updatedBy: me.uid, updatedByName: name,
+       ...(can("admin") ? {approvedBy: name, approvedAt: now} : {})};
+  let changes = null;
+  if(prev) {
+    const F = [["date","Дата"],["time","Час"],["client","Клієнт"],["phone","Телефон"],["addr","Адреса"],["doors","К-сть дверей"],["measurer","Замірник"],["notes","Нотатки"]];
+    changes = F.filter(([k]) => String(prev[k] ?? "") !== String(rec[k] ?? "")).map(([k,l]) => ({l, a:String(prev[k] ?? ""), b:String(rec[k] ?? "")}));
+    if(!changes.length) { closeMeasure(); return; }
+  }
+  const k = fbKey(rec.id);
+  const up = {["app/measures/" + k]: rec};
+  writeLog([{action:"measure", client:rec.client, date:rec.date, text:(prev ? "Змінив замір: " : "Записав на замір: ") + orderLabel(rec), changes}], up);
+  cloudMeasures[k] = JSON.parse(JSON.stringify(rec));
+  if(prevMeasureSnap) prevMeasureSnap[k] = JSON.parse(JSON.stringify(rec));
+  measures = Object.keys(cloudMeasures).map(x => ({...cloudMeasures[x], id: cloudMeasures[x].id || x}));
+  closeMeasure(); renderMeasures(); renderSchedule(); updateAdminBadges();
+  fbDb.ref().update(up).then(() => toast(prev ? "Замір збережено ✓" : (can("admin") ? "Замір записано ✓" : "Замір записано — очікує підтвердження адміністратора"), "ok", 3500))
+    .catch(err => { toast("Не вдалося зберегти: " + permMsg(err), "err", 5000); delete cloudMeasures[k]; resyncMeasures(); });
+}
+function resyncMeasures() { fbDb.ref("app/measures").once("value").then(s => { cloudMeasures = s.val() || {}; measures = Object.keys(cloudMeasures).map(k => ({...cloudMeasures[k], id: cloudMeasures[k].id || k})); renderMeasures(); renderSchedule(); }).catch(()=>{}); }
+function toggleMeasureDone(id) {
+  const m = measures.find(x => x.id === id);
+  if(!m || !can("edit") || mStatus(m) === "pending") return;
+  const nv = mStatus(m) === "done" ? "approved" : "done", k = fbKey(id), now = Date.now();
+  const up = {[`app/measures/${k}/status`]: nv, [`app/measures/${k}/updatedAt`]: now, [`app/measures/${k}/updatedBy`]: me.uid, [`app/measures/${k}/updatedByName`]: myName()};
+  writeLog([{action:"measure", client:m.client, date:m.date, text:(nv === "done" ? "Відмітив «заміряно»: " : "Зняв позначку «заміряно»: ") + orderLabel(m)}], up);
+  m.status = nv; if(cloudMeasures[k]) cloudMeasures[k].status = nv; if(prevMeasureSnap && prevMeasureSnap[k]) prevMeasureSnap[k].status = nv;
+  renderMeasures(); renderSchedule();
+  fbDb.ref().update(up).then(() => toast(nv === "done" ? "Відмічено: заміряно ✓" : "Позначку знято", nv === "done" ? "ok" : "info", 1800)).catch(err => { toast("Не вдалося: " + permMsg(err), "err"); resyncMeasures(); });
+}
+function deleteMeasure() {
+  const id = document.getElementById("mId").value;
+  const m = measures.find(x => x.id === id);
+  if(!m || !can("admin") || !confirm(`Видалити замір «${m.client}»?`)) return;
+  const k = fbKey(id), up = {["app/measures/" + k]: null};
+  writeLog([{action:"delete", client:m.client, date:m.date, text:"Видалив замір: " + orderLabel(m)}], up);
+  delete cloudMeasures[k]; if(prevMeasureSnap) delete prevMeasureSnap[k];
+  measures = measures.filter(x => x.id !== id);
+  closeMeasure(); renderMeasures(); renderSchedule(); updateAdminBadges();
+  fbDb.ref().update(up).then(() => toast("Замір видалено","info")).catch(err => { toast("Не вдалося: " + permMsg(err), "err"); resyncMeasures(); });
+}
+// After a measurement: create an order prefilled from it
+function measureToOrder(id) {
+  const m = measures.find(x => x.id === id);
+  if(!m || !can("edit")) return;
+  openModal();
+  const set = (k, v) => document.getElementById(k).value = v;
+  set("fClient", m.client || ""); set("fPhone", m.phone || ""); set("fAddr", m.addr || "");
+  set("fQty", m.doors || 1); set("fNotes", (m.notes ? m.notes + "\n" : "") + `За заміром від ${fmtHuman(m.date)}`);
+  window.__fromMeasure = m.id;
+  updateSumPreview();
+  toast("Вкажіть дату монтажу та збережіть замовлення", "info", 3500);
+  setTimeout(() => document.getElementById("fDate").focus(), 250);
+}
+function linkMeasureToOrder(orderId) {
+  const mid = window.__fromMeasure; window.__fromMeasure = null;
+  if(!mid || !fbDb) return;
+  const k = fbKey(mid);
+  if(cloudMeasures[k]) cloudMeasures[k].orderId = orderId;
+  fbDb.ref().update({[`app/measures/${k}/orderId`]: orderId}).catch(() => {});
+}
+
+// Compact measurement rows inside schedule days
+function scheduleMeasuresHTML(key) {
+  const list = measures.filter(m => m.date === key).sort((a,b) => (a.time||"").localeCompare(b.time||""));
+  if(!list.length) return "";
+  return `<div class="day-meas">` + list.map(m => {
+    const st = mStatus(m);
+    return `<button class="dm-row st-${st}" onclick="openMeasure('${esc(m.id)}')"><span class="dm-ic">📐</span><b>${esc(m.time || "—")}</b> Замір · ${esc(m.client || "")}<span class="dm-addr">${esc(m.addr || "")}</span><span class="m-pill ${st}">${M_STATUS[st]}</span></button>`;
+  }).join("") + `</div>`;
+}
+
+// Context-aware "add" (bottom nav / header / N key)
+function openAdd() {
+  if(document.body.dataset.tab === "measures") openMeasure(); else openModal();
+}
+
+// ═══════════════════════════════════════
 // DESKTOP LAYOUT: sidebar, top bar, mini calendar, shortcuts
 // ═══════════════════════════════════════
 const DESK_MQ = window.matchMedia("(min-width: 1024px)");
 function isDesktop() { return DESK_MQ.matches; }
-const PAGE_TITLES = { schedule:"Графік монтажів", search:"Пошук", export:"Excel",
+const PAGE_TITLES = { schedule:"Графік монтажів", measures:"Заміри дверей", search:"Пошук", export:"Excel", "settings:approve":"Підтвердження",
   "settings:set":"Налаштування", "settings:users":"Користувачі", "settings:log":"Журнал дій" };
 
 function currentNavKey() {
@@ -2876,6 +3411,8 @@ function afterNav() {
   document.body.dataset.tab = key.split(":")[0];
   document.querySelectorAll(".side-item[data-nav]").forEach(b => b.classList.toggle("on", b.dataset.nav === key));
   document.getElementById("hdrTitle").textContent = PAGE_TITLES[key] || "Е-Монтаж";
+  const al = document.querySelector(".hdr-add .lbl"); if(al) al.textContent = key === "measures" ? "Записати на замір" : "Нове замовлення";
+  if(key === "settings:approve") renderApprovals();
   if(key !== "search") { const hs = document.getElementById("hdrSearch"); if(hs && hs.value && document.activeElement !== hs) { hs.value = ""; document.getElementById("searchIn").value = ""; } }
 }
 function goSettings(sub) {
@@ -2958,8 +3495,9 @@ document.addEventListener("keydown", e => {
   if((e.ctrlKey || e.metaKey) && e.code === "KeyK") { e.preventDefault(); focusSearch(); return; }
   if((e.ctrlKey || e.metaKey) && e.code === "KeyB" && isDesktop()) { e.preventDefault(); toggleSide(); return; }
   if((e.ctrlKey || e.metaKey) && e.key === "Enter" && document.getElementById("modal").classList.contains("on")) { e.preventDefault(); if(can("edit")) saveOrder(); return; }
+  if((e.ctrlKey || e.metaKey) && e.key === "Enter" && document.getElementById("measureModal").classList.contains("on")) { e.preventDefault(); if(can("edit")) saveMeasure(); return; }
   if(typing || modalOpen || e.ctrlKey || e.metaKey || e.altKey) return;
-  if(e.code === "KeyN" && can("edit")) { e.preventDefault(); openModal(); }
+  if(e.code === "KeyN" && can("edit")) { e.preventDefault(); openAdd(); }
   else if(e.code === "Slash") { e.preventDefault(); focusSearch(); }
   else if(e.code === "KeyT") { e.preventDefault(); goToday(); }
   else if(e.code === "ArrowLeft"  && document.body.dataset.tab !== "settings") { e.preventDefault(); changeMonth(-1); }
