@@ -735,6 +735,13 @@ kbd{font-family:'Roboto',sans-serif;font-size:10.5px;font-weight:700;line-height
 .req-actions .appr-no{flex:none}
 .req-actions .appr-no{height:auto;width:44px}
 @media (min-width:1024px){.req-actions .appr-ok{flex:1 1 auto}}
+
+/* Measurements inside the schedule: same card as an order, violet accent */
+.meas-card.in-sched{background:linear-gradient(180deg,#f6f2ff,#fbf9ff);border:1.5px solid #d6c8fb;box-shadow:inset 4px 0 0 #7c3aed}
+.meas-card.in-sched.st-done{opacity:.72}
+.meas-card.in-sched .oc-time{background:#ede6ff;color:#6d28d9;border-color:#d6c8fb}
+.meas-kind{display:inline-flex;align-items:center;gap:6px;margin:-2px 0 8px;padding:3px 10px;border-radius:20px;background:#7c3aed;color:#fff;font:800 11.5px 'Roboto Condensed',sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.mcal-d.busy::after{}
 </style>
 </head>
 <body>
@@ -959,7 +966,7 @@ kbd{font-family:'Roboto',sans-serif;font-size:10.5px;font-weight:700;line-height
 <div class="panel" id="tab-search">
   <div class="search-bar">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-    <input class="search-in" id="searchIn" placeholder="Ім'я, телефон, адреса, майстер..." oninput="doSearch()" autocomplete="off">
+    <input class="search-in" id="searchIn" placeholder="Ім'я, телефон, адреса, менеджер..." oninput="doSearch()" autocomplete="off">
     <button class="search-clear" onclick="clearSearch()" id="searchClear" style="display:none">✕</button>
   </div>
   <div id="searchResults"></div>
@@ -1024,11 +1031,11 @@ kbd{font-family:'Roboto',sans-serif;font-size:10.5px;font-weight:700;line-height
     </div>
 
     <div class="settings-section adm-only">
-      <div class="sec-hd">Майстри</div>
+      <div class="sec-hd">Менеджери</div>
       <div class="settings-row" style="display:block">
         <div class="tag-list" id="mastersList"></div>
         <div class="add-row">
-          <input class="inp" id="newMaster" placeholder="Новий майстер..." onkeydown="if(event.key==='Enter')addMaster()">
+          <input class="inp" id="newMaster" placeholder="Новий менеджер..." onkeydown="if(event.key==='Enter')addMaster()">
           <button class="settings-btn" onclick="addMaster()">Додати</button>
         </div>
       </div>
@@ -1065,19 +1072,19 @@ kbd{font-family:'Roboto',sans-serif;font-size:10.5px;font-weight:700;line-height
 
     <div class="settings-section">
       <div class="settings-row">
-        <div><div class="sr-lbl">Версія</div><div class="sr-sub">Е-Монтаж v6.2 · Командна робота</div></div>
+        <div><div class="sr-lbl">Версія</div><div class="sr-sub">Е-Монтаж v6.3 · Командна робота</div></div>
       </div>
     </div>
   </div>
 
   <!-- SUB: КОРИСТУВАЧІ -->
   <div class="sub" id="sub-approve">
-    <div class="info-box">Нові замовлення та заміри від Користувачів і Менеджерів, а також заявки клієнтів з QR-форми з'являються тут. Заявку з QR-форми оформіть кнопкою «Записати на замір» або «Замовлення» — вкажіть дату, і вона зникне зі списку. Поки вони не підтверджені, у графіку вони позначені ⏳ жовтим, а для майстрів не відмічаються як виконані. Відхилене замовлення видаляється, а його автор отримує сповіщення.</div>
+    <div class="info-box">Нові замовлення та заміри від Користувачів і Менеджерів, а також заявки клієнтів з QR-форми з'являються тут. Заявку з QR-форми оформіть кнопкою «Записати на замір» або «Замовлення» — вкажіть дату, і вона зникне зі списку. Поки вони не підтверджені, у графіку вони позначені ⏳ жовтим, а для менеджерів не відмічаються як виконані. Відхилене замовлення видаляється, а його автор отримує сповіщення.</div>
     <div id="approveList"></div>
   </div>
   <div class="sub" id="sub-users">
     <div class="info-box">
-      <b>Адміністратор</b> — усе, включно з видаленням, очищенням, імпортом, майстрами, користувачами та журналом.<br>
+      <b>Адміністратор</b> — усе, включно з видаленням, очищенням, імпортом, менеджерами, користувачами та журналом.<br>
       <b>Користувач</b> — переглядає, додає й редагує замовлення, відмічає виконання. Видаляти не може.<br>
       <b>Менеджер</b> — те саме, що Користувач, але не бачить цін, сум і загальної кількості замовлень і дверей.<br>
       <b>Лише перегляд</b> — бачить графік, дзвонить і будує маршрут, нічого не змінює, не бачить цін і підсумків.<br>
@@ -1195,7 +1202,7 @@ kbd{font-family:'Roboto',sans-serif;font-size:10.5px;font-weight:700;line-height
       <div class="fg"><label>Тип послуги</label><div class="svc-chips" id="mServices"></div></div>
       <div class="fg-row">
         <div class="fg"><label>К-сть дверей</label><input type="number" id="mDoors" min="0" max="99" inputmode="numeric" value="1"></div>
-        <div class="fg"><label>Замірник</label><select id="mMeasurer"></select></div>
+        <div class="fg"><label>Менеджер</label><select id="mMeasurer"></select></div>
       </div>
       <div class="fg"><label>Нотатки</label><textarea id="mNotes" placeholder="Які двері цікавлять, поверх, побажання клієнта..."></textarea></div>
       <div class="audit-box" id="mInfo" style="display:none"></div>
@@ -1232,7 +1239,7 @@ kbd{font-family:'Roboto',sans-serif;font-size:10.5px;font-weight:700;line-height
             <option value="Резерв">Резерв</option>
           </select>
         </div>
-        <div class="fg"><label>Майстер</label><select id="fMaster"></select></div>
+        <div class="fg"><label>Менеджер</label><select id="fMaster"></select></div>
       </div>
       <div class="fg"><label>Виробник</label><input type="text" id="fManuf" placeholder="Марк, Максі, Термінус..." autocomplete="off" list="manufList"><datalist id="manufList"></datalist></div>
       <div class="fg-row">
@@ -1389,7 +1396,7 @@ function renderChips() {
   const list = [...new Set([...masters, ...used])];
   if(masterFilter && !list.includes(masterFilter)) masterFilter = "";
   document.getElementById("masterChips").innerHTML =
-    `<button class="chip ${masterFilter===""?"on":""}" onclick="setMasterFilter('')">Усі майстри</button>` +
+    `<button class="chip ${masterFilter===""?"on":""}" onclick="setMasterFilter('')">Усі менеджери</button>` +
     list.map(m => `<button class="chip ${masterFilter===m?"on":""}" onclick="setMasterFilter(this.dataset.m)" data-m="${esc(m)}">${esc(m)}</button>`).join("");
 }
 function setMasterFilter(m) {
@@ -1415,23 +1422,23 @@ function renderSchedule() {
     const key  = fmtDate(date);
     const dow  = date.getDay();
     const dayOrders = monthOrders.filter(o => o.date === key).sort((a,b) => (a.time||"").localeCompare(b.time||""));
+    const dayMeasList = scheduleMeasures(key);
     const isWeekend = dow === 0 || dow === 6;
     const off       = dayOffInfo(key, dow);
     const isToday   = key === todayKey;
     const isPast    = key < todayKey;
-    if(onlyBusy && !dayOrders.length && !isToday && !measures.some(m => m.date === key)) continue;
+    if(onlyBusy && !dayOrders.length && !isToday && !dayMeasList.length) continue;
 
     const real = dayOrders.filter(o => !isReserve(o));
     const reserves = dayOrders.length - real.length;
     const daySum = real.reduce((s,o)=>s+(+o.sum||0),0);
-    const open = dayOrders.length > 0 || isToday || measures.some(m => m.date === key);
+    const open = dayOrders.length > 0 || isToday || dayMeasList.length > 0;
     let countTxt = real.length ? `${real.length} ${plural(real.length,"замовлення","замовлення","замовлень")}` : (off.off ? off.label : "Вільний день");
     if(real.length && off.off && !off.custom) countTxt += ` · вихідний`;
     if(reserves) countTxt += ` · резерв`;
     const pendN = dayOrders.filter(isPending).length;
     if(pendN) countTxt += ` · ⏳ ${pendN} на підтвердженні`;
-    const dayMeas = scheduleMeasuresHTML(key);
-    if(dayMeas) countTxt += ` · 📐 замір`;
+    if(dayMeasList.length) countTxt += ` · 📐 ${dayMeasList.length} ${plural(dayMeasList.length,"замір","заміри","замірів")}`;
 
     html += `<div class="day-group${isToday?" today":""}${isPast&&!isToday?" past":""}${off.off?" dayoff":""}" id="dg-${key}">
       <div class="day-header${off.off?" weekend":""}" onclick="toggleDay('${key}')">
@@ -1444,15 +1451,16 @@ function renderSchedule() {
         <div class="day-chevron ${open?"open":""}" id="chev-${key}">›</div>
       </div>
       <div class="orders-wrap ${open?"":"collapsed"}" id="ow-${key}">`;
-    dayOrders.forEach(o => { html += orderCardHTML(o); });
-    html += scheduleMeasuresHTML(key);
+    // Orders and measurements in one timeline, measurements highlighted
+    [...dayOrders.map(o => ({t: o.time || "", h: () => orderCardHTML(o)})), ...dayMeasList.map(m => ({t: m.time || "", h: () => measureCardHTML(m, true)}))]
+      .sort((a,b) => a.t.localeCompare(b.t)).forEach(x => { html += x.h(); });
     html += `<div class="day-actions edit-only">
       <button class="da-add" onclick="openModalForDate('${key}')">+ ${dayOrders.length ? "Ще одне замовлення" : "Додати замовлення"}</button>
       <button class="da-off ${off.off ? "is-off" : ""}" onclick="toggleDayOff('${key}')">${off.off ? "💼 Зробити робочим" : "🏖 Зробити вихідним"}</button>
     </div>`;
     html += `</div></div>`;
   }
-  if(!html) html = `<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><p>Цього місяця замовлень немає${masterFilter ? " у майстра " + esc(masterFilter) : ""}</p></div>`;
+  if(!html) html = `<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><p>Цього місяця замовлень немає${masterFilter ? " у менеджера " + esc(masterFilter) : ""}</p></div>`;
   box.innerHTML = html;
   renderMiniCal();
 
@@ -1721,7 +1729,7 @@ function buildExportPreview() {
   const total = mo.reduce((s,o)=>s+(+o.sum||0),0), qty = mo.reduce((s,o)=>s+(+o.qty||0),0);
   document.getElementById("expMonthBtn").textContent = `${MONTHS_UA[currentMonth]} ${currentYear}`;
   const byMaster = {};
-  mo.forEach(o => { const m = o.master||"Без майстра"; (byMaster[m] ||= {c:0,q:0,s:0}); byMaster[m].c++; byMaster[m].q += +o.qty||0; byMaster[m].s += +o.sum||0; });
+  mo.forEach(o => { const m = o.master||"Без менеджера"; (byMaster[m] ||= {c:0,q:0,s:0}); byMaster[m].c++; byMaster[m].q += +o.qty||0; byMaster[m].s += +o.sum||0; });
   const rows = Object.entries(byMaster).sort((a,b)=>b[1].s-a[1].s).map(([m,v]) =>
     `<div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);font-size:14px"><span style="font-weight:600">${esc(m)}</span><span style="color:var(--text3)">${v.c} зам. · ${v.q} шт. · <b style="color:var(--green)">${fmt(v.s)} ₴</b></span></div>`).join("");
   document.getElementById("exportPreview").innerHTML = `
@@ -1739,7 +1747,7 @@ function exportRows(data, title, fname) {
   const wb = XLSX.utils.book_new();
   const money = can("totals");
   const wsData = [["Е-Монтаж — " + title],
-    ["", "День", "Дата", "Час", "Клієнт", "Номер телефону", "Адреса монтажу", "Доставка", "Виробник", "Кіл-ть", ...(money ? ["Ціна", "Сума"] : []), "Майстер", "Виконано", "Нотатки"]];
+    ["", "День", "Дата", "Час", "Клієнт", "Номер телефону", "Адреса монтажу", "Доставка", "Виробник", "Кіл-ть", ...(money ? ["Ціна", "Сума"] : []), "Менеджер", "Виконано", "Нотатки"]];
   [...data].sort((a,b) => (a.date+a.time).localeCompare(b.date+b.time)).forEach(o => {
     wsData.push(["", DAYS_UA[parseDate(o.date).getDay()], o.date, o.time||"", o.client||"", o.phone||"", o.addr||"", o.delivery||"", o.manuf||"", +o.qty||0, ...(money ? [+o.price||0, +o.sum||0] : []), o.master||"", o.done ? "так" : "", o.notes||""]);
   });
@@ -1751,7 +1759,7 @@ function exportRows(data, title, fname) {
   if(can("totals")) {
   const byMaster = {};
   data.forEach(o => { const m = o.master||"Невідомо"; (byMaster[m] ||= {cnt:0,sum:0,qty:0}); byMaster[m].cnt++; byMaster[m].sum += +o.sum||0; byMaster[m].qty += +o.qty||0; });
-  const st = [["Майстер", "Замовлень", "Дверей", "Сума (грн)"], ...Object.entries(byMaster).map(([m,v]) => [m, v.cnt, v.qty, v.sum]),
+  const st = [["Менеджер", "Замовлень", "Дверей", "Сума (грн)"], ...Object.entries(byMaster).map(([m,v]) => [m, v.cnt, v.qty, v.sum]),
     ["ВСЬОГО", data.length, data.reduce((s,o)=>s+(+o.qty||0),0), data.reduce((s,o)=>s+(+o.sum||0),0)]];
   const ws2 = XLSX.utils.aoa_to_sheet(st);
   ws2["!cols"] = [{wch:20},{wch:12},{wch:12},{wch:14}];
@@ -1782,10 +1790,10 @@ function renderSettings() {
 function addMaster() {
   const el = document.getElementById("newMaster"), v = el.value.trim();
   if(!v) return;
-  if(masters.includes(v)) { toast("Такий майстер вже є","warn"); return; }
+  if(masters.includes(v)) { toast("Такий менеджер вже є","warn"); return; }
   masters.push(v); el.value = "";
   saveData(); renderSettings(); renderChips();
-  toast("Майстра додано","ok");
+  toast("Менеджера додано","ok");
 }
 function removeMaster(i) {
   const m = masters[i];
@@ -2002,7 +2010,7 @@ function importExcel(input) {
           else if(hs.includes("Кіл") || hs.includes("кіл") || hs.includes("qty") || hs === "К-сть") colIdx.qty = i;
           else if(hs.includes("Ціна"))         colIdx.price    = i;
           else if(hs.includes("Сума"))         colIdx.sum      = i;
-          else if(hs.includes("Магазин") || hs.includes("Майстер") || hs.includes("майстер")) colIdx.master = i;
+          else if(hs.includes("Магазин") || hs.includes("Майстер") || hs.includes("Менеджер") || hs.includes("майстер")) colIdx.master = i;
         });
 
         // Parse data rows
@@ -2128,7 +2136,7 @@ const firebaseConfig = {
 };
 const ROLES = { admin:"Адміністратор", user:"Користувач", manager:"Менеджер", viewer:"Лише перегляд", pending:"Очікує підтвердження", blocked:"Заблоковано" };
 const ORDER_FIELDS = [["date","Дата"],["time","Час"],["client","Клієнт"],["phone","Телефон"],["addr","Адреса"],["delivery","Доставка"],
-  ["manuf","Виробник"],["qty","К-сть"],["price","Ціна"],["master","Майстер"],["notes","Нотатки"],["done","Виконано"]];
+  ["manuf","Виробник"],["qty","К-сть"],["price","Ціна"],["master","Менеджер"],["notes","Нотатки"],["done","Виконано"]];
 const STAMP_FIELDS = ["createdAt","createdBy","createdByName","updatedAt","updatedBy","updatedByName"];
 
 let fbAuth = null, fbDb = null;
@@ -2526,8 +2534,8 @@ function saveData(label) {
       updates["app/meta"] = {...after, updatedAt: now, updatedBy: name};
       const parts = [];
       const added = after.masters.filter(m => !before.masters.includes(m)), removed = before.masters.filter(m => !after.masters.includes(m));
-      if(added.length) parts.push("додав майстра: " + added.join(", "));
-      if(removed.length) parts.push("прибрав майстра: " + removed.join(", "));
+      if(added.length) parts.push("додав менеджера: " + added.join(", "));
+      if(removed.length) parts.push("прибрав менеджера: " + removed.join(", "));
       if(before.region !== after.region) parts.push(`регіон карт: «${before.region}» → «${after.region}»`);
       if(cloudMeta && parts.length) events.push({action:"admin", text:"Налаштування — " + parts.join("; ")});
     }
@@ -3044,7 +3052,7 @@ function startRequests() {
     if(prevReqSnap !== null) {
       requests.filter(r => !prevReqSnap[r.id]).forEach(r => {
         toast(`📲 Нова заявка з QR-форми: ${r.name || ""}, ${svcShort(r.services) || "послуга не вказана"}`, "warn", 9000, {label:"Переглянути", fn:() => goSettings("approve")});
-        desktopNotify("Нова заявка з QR-форми", `${r.name || ""} · ${svcShort(r.services)} · ${r.phone || ""}`);
+        desktopNotify("Нова заявка з QR-форми", `${r.name || ""} · ${svcShort(r.services)} · ${r.phone || ""}${r.manager ? " · менеджер " + r.manager : ""}`);
       });
     } else if(requests.length) {
       toast(`Заявок з QR-форми: ${requests.length}`, "warn", 6000, {label:"Переглянути", fn:() => goSettings("approve")});
@@ -3059,7 +3067,7 @@ function requestCardHTML(r) {
   const id = esc(r.id), tel = phoneIntl(r.phone);
   let h = `<div class="order-card req-card">
     <div class="req-hd"><span class="req-src">📲 QR-форма${r.shop ? " · " + esc(r.shop) : ""}</span><span class="req-time">${relTime(r.createdAt)}</span></div>
-    <div class="oc-top"><div class="oc-client">${esc(r.name || "—")}</div></div>
+    <div class="oc-top"><div class="oc-client">${esc(r.name || "—")}</div>${r.manager ? `<div class="oc-store">${esc(r.manager)}</div>` : ""}</div>
     <div class="oc-tags req-svc">${svcTags(r.services) || `<div class="oc-tag">Послугу не вказано</div>`}</div>`;
   if(tel) h += `<a class="oc-phone" href="tel:${tel}"><span class="ic">${IC.phone}</span>${esc(phoneNice(r.phone))}</a>`;
   if(r.addr) h += `<a class="oc-addr" href="${mapsUrl(r.addr)}" target="_blank" rel="noopener"><span class="ic">${IC.pin}</span><span class="txt">${esc(r.addr)}</span></a>`;
@@ -3080,12 +3088,14 @@ function acceptRequest(id, kind) {
     openMeasure();
     set("mClient", r.name || ""); set("mPhone", r.phone || ""); set("mAddr", r.addr || ""); set("mNotes", [r.notes || "", r.shop ? "Магазин: " + r.shop : ""].filter(Boolean).join("\n"));
     setMeasureServices(svcList(r.services));
+    if(r.manager) { const sel = document.getElementById("mMeasurer"); if(![...sel.options].some(o => o.value === r.manager)) sel.add(new Option(r.manager, r.manager)); sel.value = r.manager; }
     document.getElementById("mTitle").textContent = "Заявка → замір";
     toast("Вкажіть дату й час заміру та збережіть — заявка зникне зі списку", "info", 4500);
     setTimeout(() => document.getElementById("mDate").focus(), 250);
   } else {
     openModal();
     set("fClient", r.name || ""); set("fPhone", r.phone || ""); set("fAddr", r.addr || ""); set("fNotes", notes);
+    if(r.manager) { const sel = document.getElementById("fMaster"); if(![...sel.options].some(o => o.value === r.manager)) sel.add(new Option(r.manager, r.manager)); sel.value = r.manager; }
     updateSumPreview();
     toast("Вкажіть дату монтажу та збережіть — заявка зникне зі списку", "info", 4500);
     setTimeout(() => document.getElementById("fDate").focus(), 250);
@@ -3332,13 +3342,15 @@ function approveAll(kind) {
 // MEASUREMENTS UI
 // ═══════════════════════════════════════
 function setMeasureFilter(f) { measureFilter = f; renderMeasures(); }
-function measureCardHTML(m) {
+function measureCardHTML(m, inSched) {
   const st = mStatus(m), id = esc(m.id), tel = phoneIntl(m.phone);
-  let h = `<div class="order-card meas-card st-${st}" onclick="openMeasure('${id}')">
+  let h = `<div class="order-card meas-card st-${st}${inSched ? " in-sched" : ""}" onclick="openMeasure('${id}')">
     ${approveBarHTML("measure", m)}
+    ${inSched ? `<div class="meas-kind">📐 Замір${svcShort(m.services) ? " · " + esc(svcShort(m.services).toLowerCase()) : ""}</div>` : ""}
     <div class="oc-top">
       <div class="oc-time">${esc(m.time || "—")}</div>
       <div class="oc-client">${esc(m.client || "—")}</div>
+      ${m.measurer ? `<div class="oc-store">${esc(m.measurer)}</div>` : ""}
       ${st === "pending" && can("admin") ? "" : `<span class="m-pill ${st}">${st === "pending" ? "⏳ " : st === "done" ? "✓ " : ""}${M_STATUS[st]}</span>`}
     </div>`;
   if(tel) h += `<a class="oc-phone" href="tel:${tel}" onclick="event.stopPropagation()"><span class="ic">${IC.phone}</span>${esc(phoneNice(m.phone))}</a>`;
@@ -3352,7 +3364,6 @@ function measureCardHTML(m) {
   h += `</div><div class="oc-bottom"><div class="oc-tags">`;
   h += svcTags(m.services);
   if(m.doors) h += `<div class="oc-tag">🚪 ${esc(m.doors)} ${plural(+m.doors,"двері","двері","дверей")}</div>`;
-  if(m.measurer) h += `<div class="oc-tag">📐 ${esc(m.measurer)}</div>`;
   if(m.orderId) h += `<div class="oc-tag delivery">Є замовлення</div>`;
   h += `</div></div>`;
   const who = m.updatedByName || m.createdByName;
@@ -3453,7 +3464,7 @@ function saveMeasure() {
        ...(can("admin") ? {approvedBy: name, approvedAt: now} : {})};
   let changes = null;
   if(prev) {
-    const F = [["date","Дата"],["time","Час"],["client","Клієнт"],["phone","Телефон"],["addr","Адреса"],["doors","К-сть дверей"],["measurer","Замірник"],["notes","Нотатки"],["services","Послуги"]];
+    const F = [["date","Дата"],["time","Час"],["client","Клієнт"],["phone","Телефон"],["addr","Адреса"],["doors","К-сть дверей"],["measurer","Менеджер"],["notes","Нотатки"],["services","Послуги"]];
     const sv = (k, o) => k === "services" ? svcShort(o[k]) : String(o[k] ?? "");
     changes = F.filter(([k]) => sv(k, prev) !== sv(k, rec)).map(([k,l]) => ({l, a:sv(k, prev), b:sv(k, rec)}));
     if(!changes.length) { closeMeasure(); return; }
@@ -3513,7 +3524,12 @@ function linkMeasureToOrder(orderId) {
   fbDb.ref().update({[`app/measures/${k}/orderId`]: orderId}).catch(() => {});
 }
 
-// Compact measurement rows inside schedule days
+// Measurements shown as cards inside schedule days (respects the manager filter)
+function scheduleMeasures(key) {
+  return measures.filter(m => m.date === key && (!masterFilter || m.measurer === masterFilter))
+    .sort((a,b) => (a.time||"").localeCompare(b.time||""));
+}
+// Compact measurement rows (legacy)
 function scheduleMeasuresHTML(key) {
   const list = measures.filter(m => m.date === key).sort((a,b) => (a.time||"").localeCompare(b.time||""));
   if(!list.length) return "";
@@ -3589,6 +3605,8 @@ function renderMiniCal() {
   const todayKey = fmtDate(new Date());
   const counts = {};
   visibleOrders(getMonthOrders()).forEach(o => { if(!isReserve(o)) counts[o.date] = (counts[o.date] || 0) + 1; });
+  const mPref = `${y}-${pad(m+1)}-`;
+  if(typeof measures !== "undefined") measures.forEach(x => { if(x.date && x.date.startsWith(mPref) && (!masterFilter || x.measurer === masterFilter)) counts[x.date] = (counts[x.date] || 0) + 1; });
   let h = `<div class="mcal-hd">
       <button onclick="changeMonth(-1)" aria-label="Попередній місяць">‹</button>
       <span>${MONTHS_UA[m]} ${y}</span>
