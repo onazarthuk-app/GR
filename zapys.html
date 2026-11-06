@@ -131,7 +131,7 @@ select.inp{padding-right:44px;cursor:pointer}
         <div class="hint">Можна обрати кілька послуг одночасно</div>
         <div class="msg">Оберіть хоча б одну послугу</div>
       </div>
-      <div class="fg" id="g-mgr" hidden>
+      <div class="fg" id="g-mgr">
         <label class="l" for="mgr">Менеджер</label>
         <div class="sel-w"><select class="inp" id="mgr"><option value="">Будь-який менеджер</option></select></div>
         <div class="hint">Оберіть менеджера, який вас консультував</div>
@@ -199,15 +199,10 @@ try {
   db.ref(".info/connected").on("value", s => { online = s.val() !== false; });
 } catch(e) { console.warn(e); }
 
-// Managers = the "Менеджери" list from the schedule app (app/meta/masters, public read)
-if(db) db.ref("app/meta/masters").once("value").then(s => {
-  const v = s.val(); const list = (Array.isArray(v) ? v : Object.values(v || {})).filter(x => typeof x === "string" && x.trim());
-  if(!list.length) return;
-  $("mgr").insertAdjacentHTML("beforeend", list.map(n => `<option>${n.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}</option>`).join(""));
-  const pre = (new URLSearchParams(location.search).get("manager") || "").trim();
-  if(pre && list.includes(pre)) $("mgr").value = pre;
-  $("g-mgr").hidden = false;
-}).catch(e => console.warn("managers", e));
+// Fixed list of store managers
+const MANAGERS = ["Каріна", "Христина", "Анна", "Юля"];
+$("mgr").insertAdjacentHTML("beforeend", MANAGERS.map(n => `<option>${n}</option>`).join(""));
+{ const pre = (new URLSearchParams(location.search).get("manager") || "").trim(); if(MANAGERS.includes(pre)) $("mgr").value = pre; }
 
 // Shop tag from the QR link: zapys.html?shop=Назва
 const params = new URLSearchParams(location.search);
