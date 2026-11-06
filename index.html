@@ -3063,6 +3063,8 @@ function startRequests() {
   reqRef.on("value", snap => {
     const val = snap.val() || {};
     requests = Object.keys(val).map(k => ({...val[k], id: k})).sort((a,b) => (a.createdAt||0) - (b.createdAt||0));
+    // requests sent via the fallback (older rules) carry the form/manager in notes
+    requests.forEach(r => { if(!r.form && /Заміри 2/.test(r.notes || "")) r.form = "2"; if(!r.manager) { const mm = /Менеджер: ([^·\n]+)/.exec(r.notes || ""); if(mm) r.manager = mm[1].trim(); } });
     if(prevReqSnap !== null) {
       requests.filter(r => !prevReqSnap[r.id]).forEach(r => {
         toast(`📲 Нова заявка ${SRC_FORMS[r.form] ? "(" + SRC_FORMS[r.form] + ")" : "з QR-форми"}: ${r.name || ""}, ${svcShort(r.services) || "послуга не вказана"}`, "warn", 9000, {label:"Переглянути", fn:() => goSettings("approve")});

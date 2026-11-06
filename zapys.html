@@ -287,15 +287,26 @@ $("form").addEventListener("submit", async e => {
   if(v.notes) rec.notes = v.notes;
   if(shop) rec.shop = shop;
   if($("mgr").value) rec.manager = $("mgr").value.slice(0, 60);
+  const send = r => Promise.race([
+    db.ref("app/requests").push().set(r),
+    new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), 15000))
+  ]);
   try {
-    await Promise.race([
-      db.ref("app/requests").push().set(rec),
-      new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), 15000))
-    ]);
+    try { await send(rec); }
+    catch(err) {
+      if(/timeout/.test(err.message)) throw err;
+      // Fallback for older database rules: send only the basic fields, keep the rest in notes
+      const extra = [rec.manager ? "Менеджер: " + rec.manager : "", rec.form === "2" ? "Заміри 2" : "", rec.shop ? "Магазин: " + rec.shop : ""].filter(Boolean).join(" · ");
+      const basic = { services: rec.services, name: rec.name, phone: rec.phone, addr: rec.addr, status: "new", createdAt: rec.createdAt };
+      const notes = [rec.notes || "", extra].filter(Boolean).join("\n");
+      if(notes) basic.notes = notes.slice(0, 1000);
+      console.warn("full request rejected, retrying basic", err);
+      await send(basic);
+    }
     finish(v);
   } catch(err) {
     console.warn(err);
-    showAlert(/timeout/.test(err.message) ? "Сервер не відповідає. Перевірте інтернет і спробуйте ще раз." : "Не вдалося надіслати заявку. Спробуйте ще раз або зателефонуйте нам.");
+    showAlert(/timeout/.test(err.message) ? "Сервер не відповідає. Перевірте інтернет і спробуйте ще раз." : "Не вдалося надіслати заявку. Спробуйте ще раз або зателефонуйте нам. (" + (err.code || err.message || "помилка") + ")");
   } finally {
     busy = false; $("send").disabled = false; $("send").classList.remove("busy"); $("sendTxt").textContent = "Надіслати заявку";
   }
