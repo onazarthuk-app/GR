@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<meta http-equiv="Cache-Control" content="no-cache">
+<title>Запис на замір</title>
+<meta name="description" content="Запис на заміри підлоги, плінтуса, дверей, монтаж дверей або консультацію.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTUiIGZpbGw9IiNlNjI0MjkiLz48ZyB0cmFuc2Zvcm09InJvdGF0ZSgtNDUgMzIgMzIpIj48cmVjdCB4PSI1IiB5PSIyMyIgd2lkdGg9IjU0IiBoZWlnaHQ9IjE4IiByeD0iMy41IiBmaWxsPSIjZmZmIi8+PGcgc3Ryb2tlPSIjZTYyNDI5IiBzdHJva2Utd2lkdGg9IjIuNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48cGF0aCBkPSJNMTEgMjN2OE0xNyAyM3Y1TTIzIDIzdjhNMjkgMjN2NU0zNSAyM3Y4TTQxIDIzdjVNNDcgMjN2OE01MyAyM3Y1Ii8+PC9nPjwvZz48L3N2Zz4=">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@600;700;800;900&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --red:#e62429;--red2:#b8161c;--red-soft:#fff1f1;--red-line:#ffd0d2;
+  --ink:#17171b;--ink2:#3a3a42;--mut:#74747e;--line:#e6e6eb;--soft:#f5f5f7;--bg:#f2f2f5;
+  --green:#16a34a;--green-soft:#eaf7ef;--r:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{background:var(--bg)}
+body{font-family:'Roboto',system-ui,-apple-system,sans-serif;color:var(--ink);font-size:16px;line-height:1.45;min-height:100vh;min-height:100dvh}
+.wrap{max-width:520px;margin:0 auto;padding:0 0 calc(28px + env(safe-area-inset-bottom))}
+/* hero */
+.hero{background:#141417;color:#fff;padding:calc(22px + env(safe-area-inset-top)) 20px 64px;position:relative;overflow:hidden;border-radius:0 0 28px 28px}
+.hero::before{content:"";position:absolute;right:-90px;top:-70px;width:260px;height:200px;background:linear-gradient(135deg,#ff3b30,#a3110d);transform:rotate(38deg);opacity:.95}
+.hero::after{content:"";position:absolute;left:-120px;bottom:-120px;width:280px;height:170px;background:linear-gradient(135deg,#d42a22,#7c0c08);transform:rotate(38deg);opacity:.9}
+.hero>*{position:relative;z-index:1}
+.badge{display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:14px;padding:6px 14px 6px 6px;font:800 13px 'Roboto Condensed',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#fff}
+.badge img{width:38px;height:38px;display:block;border-radius:10px;box-shadow:0 4px 14px rgba(0,0,0,.35)}
+.hero h1{font-family:'Roboto Condensed',sans-serif;font-weight:900;font-size:34px;line-height:1;text-transform:uppercase;margin-top:22px;letter-spacing:.005em}
+.hero h1 span{color:#ff4b44}
+.hero p{margin-top:10px;color:#d4d4dc;font-size:15px;max-width:380px}
+.shop{display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:12.5px;font-weight:700;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:20px;padding:4px 11px;color:#fff}
+/* card */
+.card{background:#fff;border-radius:22px;margin:-40px 14px 0;padding:22px 18px 20px;box-shadow:0 10px 30px rgba(20,20,30,.08);position:relative;z-index:2}
+.sec{display:flex;align-items:center;gap:10px;margin:2px 0 14px}
+.sec .n{width:26px;height:26px;border-radius:50%;background:var(--ink);color:#fff;font:800 13px 'Roboto Condensed',sans-serif;display:flex;align-items:center;justify-content:center;flex:none}
+.sec h2{font:800 17px 'Roboto Condensed',sans-serif;text-transform:uppercase;letter-spacing:.02em}
+.sec+.fg{margin-top:0}
+.divider{height:1px;background:var(--line);margin:22px -18px}
+.fg{margin-bottom:14px}
+label.l{display:block;font:700 12px 'Roboto Condensed',sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin-bottom:6px}
+label.l b{color:var(--red)}
+.inp{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--soft);border:1.5px solid transparent;border-radius:var(--r);padding:14px 15px;outline:none;transition:border-color .15s,background .15s;-webkit-appearance:none;appearance:none}
+.inp::placeholder{color:#a3a3ad}
+.inp:focus{border-color:var(--ink);background:#fff}
+textarea.inp{min-height:92px;resize:vertical}
+.fg.err .inp,.fg.err .ms-field{border-color:var(--red);background:var(--red-soft)}
+.msg{display:none;color:var(--red);font-size:13px;margin-top:6px;font-weight:500}
+.fg.err .msg{display:block}
+.phone-w{position:relative}
+/* multiselect */
+.ms{position:relative}
+.ms-field{width:100%;min-height:54px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:var(--soft);border:1.5px solid transparent;border-radius:var(--r);padding:9px 44px 9px 12px;cursor:pointer;text-align:left;font:inherit;color:var(--ink)}
+.ms.open .ms-field{border-color:var(--ink);background:#fff}
+.ms-ph{color:#a3a3ad;padding-left:3px}
+.ms-arrow{position:absolute;right:15px;top:50%;width:10px;height:10px;border-right:2.5px solid var(--ink2);border-bottom:2.5px solid var(--ink2);transform:translateY(-70%) rotate(45deg);transition:transform .2s;pointer-events:none}
+.ms.open .ms-arrow{transform:translateY(-25%) rotate(-135deg)}
+.tag{display:inline-flex;align-items:center;gap:6px;background:var(--red-soft);color:var(--red2);border:1px solid var(--red-line);border-radius:20px;padding:5px 6px 5px 10px;font-size:14px;font-weight:700;line-height:1}
+.tag i{font-style:normal;width:18px;height:18px;border-radius:50%;background:rgba(230,36,41,.14);display:inline-flex;align-items:center;justify-content:center;font-size:12px;cursor:pointer}
+.ms-panel{display:none;position:absolute;left:0;right:0;top:calc(100% + 6px);background:#fff;border-radius:16px;box-shadow:0 14px 40px rgba(20,20,30,.2);border:1px solid var(--line);padding:6px;z-index:20}
+.ms.open .ms-panel{display:block;animation:pop .16s ease-out}
+@keyframes pop{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.opt{display:flex;align-items:center;gap:12px;width:100%;padding:12px 10px;border:none;background:none;border-radius:11px;font:inherit;font-size:16px;color:var(--ink);cursor:pointer;text-align:left}
+.opt:active,.opt:hover{background:var(--soft)}
+.opt .ic{width:36px;height:36px;border-radius:10px;background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:19px;flex:none}
+.opt .t{flex:1;font-weight:500}
+.opt .ck{width:24px;height:24px;border-radius:7px;border:2px solid #cfcfd6;flex:none;display:flex;align-items:center;justify-content:center;transition:.15s}
+.opt.on .ck{background:var(--red);border-color:var(--red)}
+.opt.on .ck::after{content:"";width:6px;height:11px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.opt.on .ic{background:var(--red-soft)}
+.ms-done{display:block;width:calc(100% - 8px);margin:6px 4px 4px;padding:12px;border:none;border-radius:11px;background:var(--ink);color:#fff;font:800 15px 'Roboto Condensed',sans-serif;text-transform:uppercase;letter-spacing:.04em;cursor:pointer}
+.hint{font-size:13px;color:var(--mut);margin-top:6px}
+.sel-w{position:relative}
+.sel-w::after{content:"";position:absolute;right:17px;top:50%;width:9px;height:9px;border-right:2.5px solid var(--ink2);border-bottom:2.5px solid var(--ink2);transform:translateY(-70%) rotate(45deg);pointer-events:none}
+select.inp{padding-right:44px;cursor:pointer}
+/* submit */
+.btn{width:100%;border:none;border-radius:16px;padding:17px;background:linear-gradient(135deg,#ff3b30,#c4141a);color:#fff;font:900 18px 'Roboto Condensed',sans-serif;text-transform:uppercase;letter-spacing:.05em;cursor:pointer;box-shadow:0 8px 20px rgba(230,36,41,.35);display:flex;align-items:center;justify-content:center;gap:10px;transition:transform .1s,filter .15s}
+.btn:active{transform:scale(.985)}
+.btn[disabled]{filter:grayscale(.3) brightness(.95);cursor:default}
+.spin{width:20px;height:20px;border-radius:50%;border:3px solid rgba(255,255,255,.35);border-top-color:#fff;animation:sp .8s linear infinite;display:none}
+.btn.busy .spin{display:block}
+@keyframes sp{to{transform:rotate(360deg)}}
+.consent{font-size:12.5px;color:var(--mut);text-align:center;margin-top:12px;line-height:1.4}
+.alert{display:none;background:var(--red-soft);border:1px solid var(--red-line);color:var(--red2);border-radius:12px;padding:12px 14px;font-size:14px;margin-bottom:14px;font-weight:500}
+.alert.on{display:block}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+/* success */
+.done{display:none;text-align:center;padding:14px 4px 6px}
+.done.on{display:block}
+.done .ok{width:84px;height:84px;border-radius:50%;background:var(--green-soft);display:flex;align-items:center;justify-content:center;margin:4px auto 16px;animation:pop2 .4s cubic-bezier(.2,1.6,.4,1)}
+@keyframes pop2{from{transform:scale(.4);opacity:0}to{transform:none;opacity:1}}
+.done .ok::after{content:"";width:22px;height:40px;border:solid var(--green);border-width:0 6px 6px 0;transform:rotate(45deg) translate(-3px,-4px)}
+.done h2{font:900 26px 'Roboto Condensed',sans-serif;text-transform:uppercase}
+.done p{color:var(--ink2);margin-top:8px}
+.sum{background:var(--soft);border-radius:14px;padding:14px 16px;margin:18px 0;text-align:left;font-size:14.5px}
+.sum div{display:flex;gap:10px;padding:4px 0}
+.sum span:first-child{color:var(--mut);width:84px;flex:none}
+.sum span:last-child{font-weight:600}
+.btn2{width:100%;border:1.5px solid var(--line);background:#fff;border-radius:14px;padding:14px;font:800 15px 'Roboto Condensed',sans-serif;text-transform:uppercase;letter-spacing:.04em;color:var(--ink);cursor:pointer}
+.foot{text-align:center;color:var(--mut);font-size:12.5px;margin-top:20px}
+.foot b{color:var(--ink)}
+.trust{display:flex;justify-content:center;gap:18px;margin:16px 14px 0;flex-wrap:wrap}
+.trust div{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--ink2);font-weight:500}
+.trust i{font-style:normal;width:22px;height:22px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;box-shadow:0 2px 6px rgba(0,0,0,.08)}
+@media (min-width:560px){.card{margin-top:-44px;padding:28px 26px}.divider{margin:24px -26px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <div class="badge"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTUiIGZpbGw9IiNlNjI0MjkiLz48ZyB0cmFuc2Zvcm09InJvdGF0ZSgtNDUgMzIgMzIpIj48cmVjdCB4PSI1IiB5PSIyMyIgd2lkdGg9IjU0IiBoZWlnaHQ9IjE4IiByeD0iMy41IiBmaWxsPSIjZmZmIi8+PGcgc3Ryb2tlPSIjZTYyNDI5IiBzdHJva2Utd2lkdGg9IjIuNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48cGF0aCBkPSJNMTEgMjN2OE0xNyAyM3Y1TTIzIDIzdjhNMjkgMjN2NU0zNSAyM3Y4TTQxIDIzdjVNNDcgMjN2OE01MyAyM3Y1Ii8+PC9nPjwvZz48L3N2Zz4=" alt="">Заміри та монтаж</div>
+    <h1>Запис<br>на <span>замір</span></h1>
+    <p>Залиште заявку — менеджер зателефонує вам, щоб узгодити зручний день і час.</p>
+    <div class="shop" id="shopTag" hidden>📍 <span id="shopName"></span></div>
+  </header>
+
+  <main class="card">
+    <form id="form" novalidate>
+      <div class="alert" id="alert"></div>
+
+      <div class="sec"><span class="n">1</span><h2>Тип послуги</h2></div>
+      <div class="fg" id="g-svc">
+        <label class="l" id="svcLabel">Що потрібно <b>*</b></label>
+        <div class="ms" id="ms">
+          <button type="button" class="ms-field" id="msField" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="svcLabel">
+            <span class="ms-ph">Оберіть одну або кілька послуг</span>
+          </button>
+          <span class="ms-arrow"></span>
+          <div class="ms-panel" role="listbox" aria-multiselectable="true" id="msPanel"></div>
+        </div>
+        <div class="hint">Можна обрати кілька послуг одночасно</div>
+        <div class="msg">Оберіть хоча б одну послугу</div>
+      </div>
+      <div class="fg" id="g-mgr">
+        <label class="l" for="mgr">Менеджер</label>
+        <div class="sel-w"><select class="inp" id="mgr">
+          <option value="">Будь-який менеджер</option>
+          <option>Каріна</option>
+          <option>Христина</option>
+          <option>Анна</option>
+          <option>Юля</option>
+        </select></div>
+        <div class="hint">Оберіть менеджера, який вас консультував</div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="sec"><span class="n">2</span><h2>Контакти</h2></div>
+      <div class="fg" id="g-name">
+        <label class="l" for="name">Ім'я та прізвище <b>*</b></label>
+        <input class="inp" id="name" autocomplete="name" placeholder="Наприклад, Ірина Коваль" maxlength="80">
+        <div class="msg">Вкажіть ім'я та прізвище</div>
+      </div>
+      <div class="fg" id="g-phone">
+        <label class="l" for="phone">Номер телефону <b>*</b></label>
+        <input class="inp" id="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="0XX XXX XX XX" maxlength="20">
+        <div class="msg">Вкажіть номер у форматі 0XX XXX XX XX</div>
+      </div>
+      <div class="fg" id="g-addr">
+        <label class="l" for="addr">Адреса об'єкта <b>*</b></label>
+        <input class="inp" id="addr" autocomplete="street-address" placeholder="Місто, вулиця, будинок, квартира" maxlength="200">
+        <div class="msg">Вкажіть адресу об'єкта</div>
+      </div>
+      <div class="fg" id="g-notes">
+        <label class="l" for="notes">Примітки</label>
+        <textarea class="inp" id="notes" placeholder="Зручний час для дзвінка, поверх, кількість кімнат чи дверей…" maxlength="1000"></textarea>
+      </div>
+      <input class="hp" id="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+      <button class="btn" id="send" type="submit"><span class="spin"></span><span id="sendTxt">Надіслати заявку</span></button>
+      <p class="consent">Натискаючи кнопку, ви погоджуєтесь, що ми використаємо ці дані лише для зв'язку щодо вашої заявки.</p>
+    </form>
+
+    <section class="done" id="done" aria-live="polite">
+      <div class="ok"></div>
+      <h2>Заявку надіслано!</h2>
+      <p>Дякуємо! Менеджер зателефонує вам найближчим часом, щоб узгодити час.</p>
+      <div class="sum" id="sum"></div>
+      <button class="btn2" type="button" id="again">Надіслати ще одну заявку</button>
+    </section>
+  </main>
+
+  <div class="trust"><div><i>✓</i>Безкоштовна консультація</div><div><i>✓</i>Зручний для вас час</div></div>
+  <p class="foot">Заміри підлоги, плінтуса та дверей · монтаж дверей</p>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script>
+// Must match SERVICES in the main app (measures.js)
+const SERVICES = [["floor","Заміри підлоги","📏"],["plinth","Заміри плінтуса","📐"],["doors","Заміри дверей","🚪"],["install","Монтаж дверей","🔧"],["consult","Консультація","💬"]];
+const firebaseConfig = {
+  apiKey: "AIzaSyBNgEIqrWhs1qSTq2A0PLgQ6WlpwVwR3XI",
+  authDomain: "gr2026-3a155.firebaseapp.com",
+  databaseURL: "https://gr2026-3a155-default-rtdb.firebaseio.com",
+  projectId: "gr2026-3a155",
+  storageBucket: "gr2026-3a155.firebasestorage.app",
+  messagingSenderId: "473524966677",
+  appId: "1:473524966677:web:0ef32531c29d917f32c51c"
+};
+const $ = id => document.getElementById(id);
+let db = null, online = true;
+try {
+  firebase.initializeApp(firebaseConfig);
+  db = firebase.database();
+  db.ref(".info/connected").on("value", s => { online = s.val() !== false; });
+} catch(e) { console.warn(e); }
+
+// Managers are listed directly in the HTML (<select id="mgr">). Optional preselect: zapys.html?manager=Каріна
+{ const pre = (new URLSearchParams(location.search).get("manager") || "").trim(); if([...$("mgr").options].some(o => o.value && o.value === pre)) $("mgr").value = pre; }
+
+// Shop tag from the QR link: zapys.html?shop=Назва
+const params = new URLSearchParams(location.search);
+const shop = (params.get("shop") || "").trim().slice(0, 60);
+if(shop) { $("shopName").textContent = shop; $("shopTag").hidden = false; }
+
+// ── Multi-select dropdown ──
+const picked = new Set();
+const ms = $("ms"), panel = $("msPanel"), field = $("msField");
+panel.innerHTML = SERVICES.map(([k,l,i]) => `<button type="button" class="opt" role="option" aria-selected="false" data-k="${k}"><span class="ic">${i}</span><span class="t">${l}</span><span class="ck"></span></button>`).join("")
+  + `<button type="button" class="ms-done">Готово</button>`;
+function renderField() {
+  field.innerHTML = picked.size
+    ? SERVICES.filter(([k]) => picked.has(k)).map(([k,l,i]) => `<span class="tag">${i} ${l}<i data-x="${k}" aria-label="Прибрати">✕</i></span>`).join("")
+    : `<span class="ms-ph">Оберіть одну або кілька послуг</span>`;
+  panel.querySelectorAll(".opt").forEach(o => { const on = picked.has(o.dataset.k); o.classList.toggle("on", on); o.setAttribute("aria-selected", on); });
+  if(picked.size) $("g-svc").classList.remove("err");
+}
+function setOpen(v) { ms.classList.toggle("open", v); field.setAttribute("aria-expanded", v); }
+field.addEventListener("click", e => {
+  const x = e.target.closest("[data-x]");
+  if(x) { picked.delete(x.dataset.x); renderField(); e.stopPropagation(); return; }
+  setOpen(!ms.classList.contains("open"));
+});
+panel.addEventListener("click", e => {
+  const o = e.target.closest(".opt");
+  if(o) { picked.has(o.dataset.k) ? picked.delete(o.dataset.k) : picked.add(o.dataset.k); renderField(); return; }
+  if(e.target.closest(".ms-done")) setOpen(false);
+});
+document.addEventListener("click", e => { if(!ms.contains(e.target)) setOpen(false); });
+document.addEventListener("keydown", e => { if(e.key === "Escape") setOpen(false); });
+
+// ── Phone formatting: 0XX XXX XX XX (accepts +380… and 80…) ──
+function phoneParts(v) {
+  const d = v.replace(/\D/g, ""), plus = v.trim().startsWith("+");
+  if(!d) return {pre: plus ? "+" : "", nat: ""};
+  if(d.startsWith("38")) return {pre: "+38 ", nat: d.slice(2, 12)};
+  if(d === "3") return {pre: "+3", nat: ""};
+  if(d === "8") return {pre: "8", nat: ""};
+  if(d.startsWith("80")) return {pre: "", nat: d.slice(1, 11)};
+  return {pre: "", nat: (d[0] === "0" ? d : "0" + d).slice(0, 10)};
+}
+const groupNat = n => [n.slice(0,3), n.slice(3,6), n.slice(6,8), n.slice(8,10)].filter(Boolean).join(" ");
+$("phone").addEventListener("input", e => {
+  const p = phoneParts(e.target.value);
+  e.target.value = p.pre + groupNat(p.nat);
+});
+["name","addr","phone"].forEach(id => $(id).addEventListener("input", () => $("g-" + id).classList.remove("err")));
+
+// ── Submit ──
+function validate() {
+  const nat = phoneParts($("phone").value).nat;
+  const v = { name: $("name").value.trim().replace(/\s+/g, " "), phone: groupNat(nat), addr: $("addr").value.trim().replace(/\s+/g, " "), notes: $("notes").value.trim() };
+  const bad = [];
+  if(!picked.size) bad.push("svc");
+  if(v.name.length < 2) bad.push("name");
+  if(!/^0\d{9}$/.test(nat)) bad.push("phone");
+  if(v.addr.length < 3) bad.push("addr");
+  ["svc","name","phone","addr"].forEach(k => $("g-" + k).classList.toggle("err", bad.includes(k)));
+  return bad.length ? (document.getElementById("g-" + bad[0]).scrollIntoView({behavior:"smooth", block:"center"}), null) : v;
+}
+function showAlert(t) { const a = $("alert"); a.textContent = t; a.classList.toggle("on", !!t); if(t) a.scrollIntoView({behavior:"smooth", block:"center"}); }
+let busy = false;
+$("form").addEventListener("submit", async e => {
+  e.preventDefault();
+  if(busy) return;
+  showAlert("");
+  const v = validate();
+  if(!v) return;
+  if($("website").value) { finish(v); return; }               // bot trap: pretend success
+  if(!db) return showAlert("Не вдалося підключитися до сервера. Оновіть сторінку і спробуйте ще раз.");
+  if(!online || navigator.onLine === false) return showAlert("Немає інтернету. Перевірте з'єднання і натисніть «Надіслати заявку» ще раз.");
+  busy = true; $("send").disabled = true; $("send").classList.add("busy"); $("sendTxt").textContent = "Надсилаємо…";
+  const TS = firebase.database && firebase.database.ServerValue ? firebase.database.ServerValue.TIMESTAMP : Date.now();
+  const rec = { services: SERVICES.map(([k]) => k).filter(k => picked.has(k)), name: v.name, phone: v.phone, addr: v.addr, status: "new", createdAt: TS };
+  if(v.notes) rec.notes = v.notes;
+  if(shop) rec.shop = shop;
+  if($("mgr").value) rec.manager = $("mgr").value.slice(0, 60);
+  try {
+    await Promise.race([
+      db.ref("app/requests").push().set(rec),
+      new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), 15000))
+    ]);
+    finish(v);
+  } catch(err) {
+    console.warn(err);
+    showAlert(/timeout/.test(err.message) ? "Сервер не відповідає. Перевірте інтернет і спробуйте ще раз." : "Не вдалося надіслати заявку. Спробуйте ще раз або зателефонуйте нам.");
+  } finally {
+    busy = false; $("send").disabled = false; $("send").classList.remove("busy"); $("sendTxt").textContent = "Надіслати заявку";
+  }
+});
+function finish(v) {
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  $("sum").innerHTML = `<div><span>Послуги</span><span>${esc(SERVICES.filter(([k]) => picked.has(k)).map(x => x[1]).join(", "))}</span></div>
+    ${$("mgr").value ? `<div><span>Менеджер</span><span>${esc($("mgr").value)}</span></div>` : ""}<div><span>Ім'я</span><span>${esc(v.name)}</span></div><div><span>Телефон</span><span>${esc(v.phone)}</span></div><div><span>Адреса</span><span>${esc(v.addr)}</span></div>`;
+  $("form").style.display = "none"; $("done").classList.add("on");
+  window.scrollTo({top: 0, behavior: "smooth"});
+}
+$("again").addEventListener("click", () => {
+  const keepMgr = $("mgr").value; $("form").reset(); $("mgr").value = keepMgr; picked.clear(); renderField(); showAlert("");
+  document.querySelectorAll(".fg.err").forEach(g => g.classList.remove("err"));
+  $("done").classList.remove("on"); $("form").style.display = "";
+  window.scrollTo({top: 0, behavior: "smooth"});
+});
+renderField();
+</script>
+</body>
+</html>
