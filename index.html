@@ -743,13 +743,15 @@ kbd{font-family:'Roboto',sans-serif;font-size:10.5px;font-weight:700;line-height
 .meas-kind{display:inline-flex;align-items:center;gap:6px;margin:-2px 0 8px;padding:3px 10px;border-radius:20px;background:#7c3aed;color:#fff;font:800 11.5px 'Roboto Condensed',sans-serif;letter-spacing:.06em;text-transform:uppercase}
 .mcal-d.busy::after{}
 
-/* Second QR form / shop ("Заміри 2"): yellow outline everywhere */
-.order-card.src-f2{border:2.5px solid #f5c000 !important;box-shadow:0 0 0 3px rgba(250,204,21,.28),0 4px 14px rgba(180,140,0,.12) !important}
-.meas-card.in-sched.src-f2{box-shadow:inset 4px 0 0 #7c3aed,0 0 0 3px rgba(250,204,21,.28) !important}
-.req-card.src-f2{background:linear-gradient(180deg,#fffbe6,#fff 60px)}
+/* Second QR form ("Заміри 2", yellow poster): yellow edge; first form / manual measurements stay violet */
+.order-card.src-f2{border:1.5px solid #f2cf3a !important;box-shadow:inset 5px 0 0 #f5c000,0 2px 10px rgba(180,140,0,.12) !important}
+.meas-card.in-sched.src-f2{background:linear-gradient(180deg,#fffbe8,#fffdf4);border:1.5px solid #f2cf3a;box-shadow:inset 5px 0 0 #f5c000 !important}
+.meas-card.src-f2 .meas-kind{background:#f5c000;color:#3d2e00}
+.meas-card.in-sched.src-f2 .oc-time{background:#fff3b0;color:#6b5200;border-color:#f2cf3a}
+.req-card.src-f2{background:linear-gradient(180deg,#fffbe6,#fff 60px);border:1.5px solid #f2cf3a;box-shadow:inset 5px 0 0 #f5c000}
 .req-card.src-f2 .req-src{background:#ffe066;color:#5c4400}
 .src-badge{display:inline-flex;align-items:center;gap:5px;margin:-2px 6px 8px 0;padding:3px 10px;border-radius:20px;background:#ffd60a;color:#4a3700;font:800 11.5px 'Roboto Condensed',sans-serif;letter-spacing:.06em;text-transform:uppercase}
-.req-card .src-badge{display:none}
+.req-card .src-badge,.meas-card.in-sched .src-badge{display:none}
 </style>
 </head>
 <body>
@@ -1669,7 +1671,7 @@ function saveOrder() {
   } else {
     orders.push(entry);
     toast(can("admin") ? "Додано ✓" : "Додано — очікує підтвердження адміністратора", "ok", can("admin") ? 2500 : 4000);
-    if(window.__fromMeasure) { const mm = measures.find(x => x.id === window.__fromMeasure); if(mm && mm.srcForm) entry.srcForm = mm.srcForm; linkMeasureToOrder(entry.id); }
+    if(window.__fromMeasure) { const mm = measures.find(x => x.id === window.__fromMeasure); if(mm && srcOf(mm)) entry.srcForm = srcOf(mm); linkMeasureToOrder(entry.id); }
     if(window.__fromRequest) consumeRequest("order", entry);
   }
   jumpToDate(entry.date);
@@ -3051,8 +3053,10 @@ function svcShort(x) { const l = svcList(x); if(!l.length) return ""; const t = 
 
 // ── QR sources: form 1 = zapys.html, form 2 = zamiry2.html (yellow outline) ──
 const SRC_FORMS = { "2": "Заміри 2" };
-function srcClass(x) { return x && SRC_FORMS[x.srcForm || x.form] ? " src-f" + (x.srcForm || x.form) : ""; }
-function srcBadge(x) { const f = x && (x.srcForm || x.form); return SRC_FORMS[f] ? `<div class="src-badge">📲 ${SRC_FORMS[f]}</div>` : ""; }
+// Source form of a request / measure / order (also recognises "Заміри 2" written into notes by the fallback send)
+function srcOf(x) { if(!x) return ""; const f = x.srcForm || x.form; if(f) return String(f); return /Заміри 2/.test(x.notes || "") ? "2" : ""; }
+function srcClass(x) { const f = srcOf(x); return SRC_FORMS[f] ? " src-f" + f : ""; }
+function srcBadge(x) { const f = srcOf(x); return SRC_FORMS[f] ? `<div class="src-badge">📲 ${SRC_FORMS[f]}</div>` : ""; }
 
 // ── Requests from the public QR form (admin only) ──
 let requests = [], reqRef = null, prevReqSnap = null;
@@ -3123,7 +3127,7 @@ function consumeRequest(kind, rec) {
   const id = window.__fromRequest; window.__fromRequest = null;
   const r = requests.find(x => x.id === id);
   if(!id || !fbDb) return {};
-  if(r && r.form && SRC_FORMS[r.form]) rec.srcForm = r.form;
+  if(r && SRC_FORMS[srcOf(r)]) rec.srcForm = srcOf(r);
   requests = requests.filter(x => x.id !== id); if(prevReqSnap) delete prevReqSnap[id];
   updateAdminBadges();
   const up = {["app/requests/" + id]: null};
@@ -3364,7 +3368,7 @@ function measureCardHTML(m, inSched) {
   let h = `<div class="order-card meas-card st-${st}${inSched ? " in-sched" : ""}${srcClass(m)}" onclick="openMeasure('${id}')">
     ${srcBadge(m)}
     ${approveBarHTML("measure", m)}
-    ${inSched ? `<div class="meas-kind">📐 Замір${svcShort(m.services) ? " · " + esc(svcShort(m.services).toLowerCase()) : ""}</div>` : ""}
+    ${inSched ? `<div class="meas-kind">📐 ${srcOf(m) === "2" ? "Заміри 2" : "Замір"}${svcShort(m.services) ? " · " + esc(svcShort(m.services).toLowerCase()) : ""}</div>` : ""}
     <div class="oc-top">
       <div class="oc-time">${esc(m.time || "—")}</div>
       <div class="oc-client">${esc(m.client || "—")}</div>
