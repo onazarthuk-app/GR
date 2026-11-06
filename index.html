@@ -1666,7 +1666,7 @@ function saveOrder() {
   const entry = {...f, id: id || uid()};
   if(id) {
     const i = orders.findIndex(x => x.id === id);
-    if(i >= 0) orders[i] = {...orders[i], ...entry};
+    if(i >= 0) { const src = srcOf(orders[i]); orders[i] = {...orders[i], ...entry}; if(src) orders[i].srcForm = src; }   // keep the QR source colour after edits
     toast("Збережено ✓","ok");
   } else {
     orders.push(entry);
@@ -3481,7 +3481,8 @@ function saveMeasure() {
   if(!f.addr)   return toast("Вкажіть адресу","err");
   const now = Date.now(), name = myName();
   const prev = id ? cloudMeasures[fbKey(id)] : null;
-  const rec = prev ? {...prev, ...f, id, updatedAt: now, updatedBy: me.uid, updatedByName: name}
+  const prevSrc = prev ? srcOf(prev) : "";     // QR source must survive any edit (incl. notes changes)
+  const rec = prev ? {...prev, ...f, id, updatedAt: now, updatedBy: me.uid, updatedByName: name, ...(prevSrc ? {srcForm: prevSrc} : {})}
     : {...f, id: "m" + uid(), status: can("admin") ? "approved" : "pending", createdAt: now, createdBy: me.uid, createdByName: name, updatedAt: now, updatedBy: me.uid, updatedByName: name,
        ...(can("admin") ? {approvedBy: name, approvedAt: now} : {})};
   let changes = null;
