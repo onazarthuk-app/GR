@@ -1082,7 +1082,7 @@ kbd{font-family:'Roboto',sans-serif;font-size:10.5px;font-weight:700;line-height
 
     <div class="settings-section">
       <div class="settings-row">
-        <div><div class="sr-lbl">Версія</div><div class="sr-sub">Е-Монтаж v6.4 · Командна робота</div></div>
+        <div><div class="sr-lbl">Версія</div><div class="sr-sub">Е-Монтаж v6.5 · Командна робота</div></div>
       </div>
     </div>
   </div>
@@ -1776,7 +1776,7 @@ function exportRows(data, title, fname) {
   ws2["!cols"] = [{wch:20},{wch:12},{wch:12},{wch:14}];
   XLSX.utils.book_append_sheet(wb, ws2, "Статистика");
   }
-  XLSX.writeFile(wb, fname);
+  saveWorkbook(wb, fname);
   return true;
 }
 function exportExcel() {
@@ -3691,6 +3691,42 @@ function focusSearch() {
   afterNav();
   DESK_MQ.addEventListener && DESK_MQ.addEventListener("change", () => { afterNav(); renderMiniCal(); });
 })();
+
+// ═══════════════════════════════════════
+// ANDROID APP (APK) INTEGRATION — active only inside the Е-Монтаж Android app
+// ═══════════════════════════════════════
+const IS_ANDROID_APP = !!(window.AndroidApp && typeof window.AndroidApp.saveFile !== "undefined");
+function saveWorkbook(wb, fname) {
+  if(IS_ANDROID_APP) {
+    try {
+      const b64 = XLSX.write(wb, {bookType: "xlsx", type: "base64"});
+      const r = String(AndroidApp.saveFile(b64, fname, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
+      if(r.startsWith("ok")) toast(`📥 Файл збережено в «Завантаження»: ${fname}`, "ok", 6000);
+      else toast("Не вдалося зберегти файл: " + r.replace(/^err:/, ""), "err", 7000);
+    } catch(e) { console.warn(e); toast("Не вдалося зберегти файл", "err", 5000); }
+    return;
+  }
+  XLSX.writeFile(wb, fname);
+}
+if(IS_ANDROID_APP) {
+  document.documentElement.classList.add("in-app");
+  window.print = () => { try { AndroidApp.print(); } catch(e) { console.warn(e); } };
+  // Hardware/gesture "Back": close the top window, then return to the schedule, then minimise the app
+  window.__androidBack = () => {
+    const open = [...document.querySelectorAll(".modal-ov.on")];
+    if(open.length) {
+      const id = open[open.length - 1].id;
+      if(id === "measureModal") closeMeasure();
+      else if(id === "profileModal") closeProfile();
+      else if(id === "modal") closeModal();
+      else open[open.length - 1].classList.remove("on");
+      return "1";
+    }
+    const tab = (document.querySelector(".panel.on") || {}).id;
+    if(tab && tab !== "tab-schedule") { goTab("schedule", 0); return "1"; }
+    AndroidApp.exitApp(); return "0";
+  };
+}
 
 </script>
 </body>
