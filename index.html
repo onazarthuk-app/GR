@@ -742,6 +742,14 @@ kbd{font-family:'Roboto',sans-serif;font-size:10.5px;font-weight:700;line-height
 .meas-card.in-sched .oc-time{background:#ede6ff;color:#6d28d9;border-color:#d6c8fb}
 .meas-kind{display:inline-flex;align-items:center;gap:6px;margin:-2px 0 8px;padding:3px 10px;border-radius:20px;background:#7c3aed;color:#fff;font:800 11.5px 'Roboto Condensed',sans-serif;letter-spacing:.06em;text-transform:uppercase}
 .mcal-d.busy::after{}
+
+/* Second QR form / shop ("Заміри 2"): yellow outline everywhere */
+.order-card.src-f2{border:2.5px solid #f5c000 !important;box-shadow:0 0 0 3px rgba(250,204,21,.28),0 4px 14px rgba(180,140,0,.12) !important}
+.meas-card.in-sched.src-f2{box-shadow:inset 4px 0 0 #7c3aed,0 0 0 3px rgba(250,204,21,.28) !important}
+.req-card.src-f2{background:linear-gradient(180deg,#fffbe6,#fff 60px)}
+.req-card.src-f2 .req-src{background:#ffe066;color:#5c4400}
+.src-badge{display:inline-flex;align-items:center;gap:5px;margin:-2px 6px 8px 0;padding:3px 10px;border-radius:20px;background:#ffd60a;color:#4a3700;font:800 11.5px 'Roboto Condensed',sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.req-card .src-badge{display:none}
 </style>
 </head>
 <body>
@@ -1072,7 +1080,7 @@ kbd{font-family:'Roboto',sans-serif;font-size:10.5px;font-weight:700;line-height
 
     <div class="settings-section">
       <div class="settings-row">
-        <div><div class="sr-lbl">Версія</div><div class="sr-sub">Е-Монтаж v6.3 · Командна робота</div></div>
+        <div><div class="sr-lbl">Версія</div><div class="sr-sub">Е-Монтаж v6.4 · Командна робота</div></div>
       </div>
     </div>
   </div>
@@ -1476,7 +1484,8 @@ function orderCardHTML(o) {
   const tel = phoneIntl(o.phone);
   const id = esc(o.id);
   const pend = isPending(o);
-  let h = `<div class="order-card${reserve?" reserve":""}${o.done?" done":""}${pend?" pending":""}" onclick="editOrder('${id}')">
+  let h = `<div class="order-card${reserve?" reserve":""}${o.done?" done":""}${pend?" pending":""}${srcClass(o)}" onclick="editOrder('${id}')">
+    ${srcBadge(o)}
     ${approveBarHTML("order", o)}
     ${pend && !can("admin") ? `<div class="pend-note">⏳ Очікує підтвердження адміністратора</div>` : ""}
     <div class="oc-top">
@@ -1660,7 +1669,7 @@ function saveOrder() {
   } else {
     orders.push(entry);
     toast(can("admin") ? "Додано ✓" : "Додано — очікує підтвердження адміністратора", "ok", can("admin") ? 2500 : 4000);
-    if(window.__fromMeasure) linkMeasureToOrder(entry.id);
+    if(window.__fromMeasure) { const mm = measures.find(x => x.id === window.__fromMeasure); if(mm && mm.srcForm) entry.srcForm = mm.srcForm; linkMeasureToOrder(entry.id); }
     if(window.__fromRequest) consumeRequest("order", entry);
   }
   jumpToDate(entry.date);
@@ -3040,6 +3049,11 @@ function svcList(x) { return (Array.isArray(x) ? x : Object.values(x || {})).fil
 function svcTags(x) { return svcList(x).map(k => `<div class="oc-tag svc">${SVC[k].i} ${SVC[k].l}</div>`).join(""); }
 function svcShort(x) { const l = svcList(x); if(!l.length) return ""; const t = l.map(k => SVC[k].s).join(", "); return t[0].toUpperCase() + t.slice(1); }
 
+// ── QR sources: form 1 = zapys.html, form 2 = zamiry2.html (yellow outline) ──
+const SRC_FORMS = { "2": "Заміри 2" };
+function srcClass(x) { return x && SRC_FORMS[x.srcForm || x.form] ? " src-f" + (x.srcForm || x.form) : ""; }
+function srcBadge(x) { const f = x && (x.srcForm || x.form); return SRC_FORMS[f] ? `<div class="src-badge">📲 ${SRC_FORMS[f]}</div>` : ""; }
+
 // ── Requests from the public QR form (admin only) ──
 let requests = [], reqRef = null, prevReqSnap = null;
 function startRequests() {
@@ -3051,7 +3065,7 @@ function startRequests() {
     requests = Object.keys(val).map(k => ({...val[k], id: k})).sort((a,b) => (a.createdAt||0) - (b.createdAt||0));
     if(prevReqSnap !== null) {
       requests.filter(r => !prevReqSnap[r.id]).forEach(r => {
-        toast(`📲 Нова заявка з QR-форми: ${r.name || ""}, ${svcShort(r.services) || "послуга не вказана"}`, "warn", 9000, {label:"Переглянути", fn:() => goSettings("approve")});
+        toast(`📲 Нова заявка ${SRC_FORMS[r.form] ? "(" + SRC_FORMS[r.form] + ")" : "з QR-форми"}: ${r.name || ""}, ${svcShort(r.services) || "послуга не вказана"}`, "warn", 9000, {label:"Переглянути", fn:() => goSettings("approve")});
         desktopNotify("Нова заявка з QR-форми", `${r.name || ""} · ${svcShort(r.services)} · ${r.phone || ""}${r.manager ? " · менеджер " + r.manager : ""}`);
       });
     } else if(requests.length) {
@@ -3065,8 +3079,8 @@ function startRequests() {
 function stopRequests() { if(reqRef) reqRef.off(); reqRef = null; requests = []; prevReqSnap = null; }
 function requestCardHTML(r) {
   const id = esc(r.id), tel = phoneIntl(r.phone);
-  let h = `<div class="order-card req-card">
-    <div class="req-hd"><span class="req-src">📲 QR-форма${r.shop ? " · " + esc(r.shop) : ""}</span><span class="req-time">${relTime(r.createdAt)}</span></div>
+  let h = `<div class="order-card req-card${srcClass(r)}">
+    <div class="req-hd"><span class="req-src">📲 ${SRC_FORMS[r.form] ? SRC_FORMS[r.form] : "QR-форма"}${r.shop ? " · " + esc(r.shop) : ""}</span><span class="req-time">${relTime(r.createdAt)}</span></div>
     <div class="oc-top"><div class="oc-client">${esc(r.name || "—")}</div>${r.manager ? `<div class="oc-store">${esc(r.manager)}</div>` : ""}</div>
     <div class="oc-tags req-svc">${svcTags(r.services) || `<div class="oc-tag">Послугу не вказано</div>`}</div>`;
   if(tel) h += `<a class="oc-phone" href="tel:${tel}"><span class="ic">${IC.phone}</span>${esc(phoneNice(r.phone))}</a>`;
@@ -3107,6 +3121,7 @@ function consumeRequest(kind, rec) {
   const id = window.__fromRequest; window.__fromRequest = null;
   const r = requests.find(x => x.id === id);
   if(!id || !fbDb) return {};
+  if(r && r.form && SRC_FORMS[r.form]) rec.srcForm = r.form;
   requests = requests.filter(x => x.id !== id); if(prevReqSnap) delete prevReqSnap[id];
   updateAdminBadges();
   const up = {["app/requests/" + id]: null};
@@ -3344,7 +3359,8 @@ function approveAll(kind) {
 function setMeasureFilter(f) { measureFilter = f; renderMeasures(); }
 function measureCardHTML(m, inSched) {
   const st = mStatus(m), id = esc(m.id), tel = phoneIntl(m.phone);
-  let h = `<div class="order-card meas-card st-${st}${inSched ? " in-sched" : ""}" onclick="openMeasure('${id}')">
+  let h = `<div class="order-card meas-card st-${st}${inSched ? " in-sched" : ""}${srcClass(m)}" onclick="openMeasure('${id}')">
+    ${srcBadge(m)}
     ${approveBarHTML("measure", m)}
     ${inSched ? `<div class="meas-kind">📐 Замір${svcShort(m.services) ? " · " + esc(svcShort(m.services).toLowerCase()) : ""}</div>` : ""}
     <div class="oc-top">
